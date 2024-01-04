@@ -1,9 +1,9 @@
 # ReviewZip-BE
 ### 1. 브랜치 규칙
 
-feature/{기능} 형식
+feat/#이슈번호
 
-예시 : feature/Login, feature/Chart
+예시 : feat/#12, feat/#13
 
 ### 2. Commit Message
 
