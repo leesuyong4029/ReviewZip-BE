@@ -1,4 +1,4 @@
-package com.reviewzip.ReviewZIP;
+package com.example.ReviewZIP;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

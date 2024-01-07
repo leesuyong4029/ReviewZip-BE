@@ -1,4 +1,4 @@
-package com.reviewzip.ReviewZIP;
+package com.example.ReviewZIP;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
