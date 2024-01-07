@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetMyPageResDto {
+public class MyPageResDto {
     private Long userId;
     private String name;
     private String nickname;

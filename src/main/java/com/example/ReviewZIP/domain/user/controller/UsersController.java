@@ -1,8 +1,7 @@
 package com.example.ReviewZIP.domain.user.controller;
 
-import com.example.ReviewZIP.domain.user.dto.response.GetMyPageResDto;
+import com.example.ReviewZIP.domain.user.dto.response.MyPageResDto;
 import com.example.ReviewZIP.domain.user.service.UsersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ public class UsersController {
 
     // 내 정보(마이페이지) 가져오기
     @GetMapping("me/{id}")
-    public GetMyPageResDto getMyPageById(@PathVariable Long id){
+    public MyPageResDto getMyPageById(@PathVariable Long id){
         return usersService.getMyPageById(id);
     }
 }

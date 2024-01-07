@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GetMyPageReqDto {
+public class MyPageReqDto {
     private Long userId;
 }
