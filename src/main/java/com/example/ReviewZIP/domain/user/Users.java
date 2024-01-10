@@ -40,6 +40,8 @@ public class Users {
     @Column(nullable = false)
     private String nickname;
 
+    private boolean status;
+
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     List<Follows> followingList = new ArrayList<>();
 
