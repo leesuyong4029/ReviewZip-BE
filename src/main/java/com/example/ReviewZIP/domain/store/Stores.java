@@ -23,7 +23,7 @@ public class Stores extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Posts post_id;
+    private Posts post;
 
     @Column(nullable = false)
     private String name;

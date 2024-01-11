@@ -20,10 +20,10 @@ public class PostHashtags {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
-    private Posts post_id;
+    private Posts post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id")
-    private Hashtags hashtag_id;
+    private Hashtags hashtag;
 
 }

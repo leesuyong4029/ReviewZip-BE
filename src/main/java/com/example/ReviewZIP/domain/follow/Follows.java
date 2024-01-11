@@ -20,9 +20,9 @@ public class Follows extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
-    private Users sender_id;
+    private Users sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
-    private Users receiver_id;
+    private Users receiver;
 }
