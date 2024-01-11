@@ -62,4 +62,5 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PostLikes> postLikeList = new ArrayList<>();
+
 }

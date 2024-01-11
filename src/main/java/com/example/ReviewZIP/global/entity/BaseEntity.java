@@ -7,6 +7,10 @@ import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9a8ae7b (feat: 유저아이디로 유저 팔로우)
 import java.time.LocalDate;
 
 @Getter
@@ -20,4 +24,8 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDate updatedAt;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9a8ae7b (feat: 유저아이디로 유저 팔로우)
