@@ -44,10 +44,10 @@ public class Users extends BaseEntity {
     private Status status;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    List<Follows> followingList = new ArrayList<>();
+    private List<Follows> followingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    List<Follows> followerList = new ArrayList<>();
+    private List<Follows> followerList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Scrabs> scrabList = new ArrayList<>();

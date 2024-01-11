@@ -23,10 +23,6 @@ public class Posts {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users user;
-
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
@@ -36,6 +32,10 @@ public class Posts {
     @Column(nullable = false)
     private Boolean read;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Images> postImageList = new ArrayList<>();
 
@@ -44,6 +44,5 @@ public class Posts {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostHashtags> postHashtagList = new ArrayList<>();
-
 
 }

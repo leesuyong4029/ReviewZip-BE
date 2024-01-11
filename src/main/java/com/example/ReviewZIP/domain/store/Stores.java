@@ -21,10 +21,6 @@ public class Stores extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Posts post;
-
     @Column(nullable = false)
     private String name;
 
@@ -36,4 +32,8 @@ public class Stores extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal latitude;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Posts post;
 }
