@@ -1,10 +1,16 @@
 package com.example.ReviewZIP.post;
 
+import com.example.ReviewZIP.domain.image.Images;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
+import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.user.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,9 +27,6 @@ public class Posts {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @Column(nullable = false)
-    private String title;
-
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
@@ -32,5 +35,15 @@ public class Posts {
 
     @Column(nullable = false)
     private Boolean read;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Images> postImageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostLikes> postLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostHashtags> postHashtagList = new ArrayList<>();
+
 
 }

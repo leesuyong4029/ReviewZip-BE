@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,12 +21,6 @@ public class Users extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    List<Follows> followingList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    List<Follows> followerList = new ArrayList<>();
 
     @Column(nullable = false)
     private String email;
@@ -47,4 +42,13 @@ public class Users extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    List<Follows> followingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    List<Follows> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Scrabs> scrabList = new ArrayList<>();
 }
