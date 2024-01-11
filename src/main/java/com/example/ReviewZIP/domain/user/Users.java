@@ -1,6 +1,8 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class Users {
+public class Users extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -24,9 +26,6 @@ public class Users {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(nullable = true)
-    private String profile_image;
 
     @Column(nullable = false)
     private String user_id;
@@ -40,11 +39,15 @@ public class Users {
     @Column(nullable = false)
     private String nickname;
 
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    List<Follows> followingList = new ArrayList<>();
+    private List<Follows> followingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    List<Follows> followerList = new ArrayList<>();
+    private List<Follows> followerList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Scrabs> scrabList = new ArrayList<>();
 }
