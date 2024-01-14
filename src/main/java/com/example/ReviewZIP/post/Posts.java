@@ -30,7 +30,7 @@ public class Posts {
     private Double point;
 
     @Column(nullable = false)
-    private Boolean read;
+    private Boolean is_read;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

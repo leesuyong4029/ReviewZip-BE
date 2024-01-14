@@ -5,7 +5,7 @@ import com.example.ReviewZIP.domain.user.dto.response.OtherInfoResDto;
 public class UsersConverter {
     public static OtherInfoResDto toOtherInfoDto(Users user, Integer followingNum, Integer followerNum){
 
-        String imageUrl = (user.getImage() != null) ? user.getImage().getUrl() : null;
+        String imageUrl = (user.getImage() != null) ? user.getImageUrl() : null;
 
         return OtherInfoResDto.builder()
                 .userId(user.getId())

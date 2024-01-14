@@ -41,6 +41,8 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
+    private String imageUrl;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
