@@ -2,6 +2,7 @@ package com.example.ReviewZIP.domain.follow;
 
 import com.example.ReviewZIP.domain.follow.dto.response.FollowResDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +15,9 @@ public class FollowsController {
     private final FollowsService followsService;
 
     @PostMapping("/users/{userId}")
-    public FollowResDto follow(@PathVariable(name="userId") Long userId){
+    public ResponseEntity<FollowResDto> follow(@PathVariable(name="userId") Long userId){
         Follows follows = followsService.createFollowing(userId);
 
-        return FollowsConverter.toCreateFollowDto(follows);
+        return ResponseEntity.ok(FollowsConverter.toCreateFollowDto(follows));
     }
 }
