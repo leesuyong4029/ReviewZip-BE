@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -42,6 +43,9 @@ public class Users extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Images image;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Follows> followingList = new ArrayList<>();
