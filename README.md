@@ -1,9 +1,9 @@
 # ReviewZip-BE
 ### 1. 브랜치 규칙
 
-feat/#이슈번호
+feat/#이슈번호-기능요약
 
-예시 : feat/#12, feat/#13
+예시 : feat/#12-login
 
 ### 2. Commit Message
 
@@ -17,8 +17,4 @@ feat/#이슈번호
 - resource : 이미지 리소스, prefab 등의 코드와 상관없는 리소스 추가
 
 ### 3. Pull Request
-dev <- feat/#이슈번호가 되도록
-
-네이밍은 반드시 [이름] 작업 기능과 같은 형식
-
-예시: [댕] Feat MyPage
+dev <- feat/#이슈번호-기능요약
