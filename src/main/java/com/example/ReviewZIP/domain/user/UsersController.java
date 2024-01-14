@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.user;
 
+import com.example.ReviewZIP.domain.user.dto.response.DeleteUserResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

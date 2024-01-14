@@ -29,20 +29,20 @@ public class Posts {
     @Column(nullable = false)
     private Double point;
 
-    @Column(nullable = false)
+    @Column(name = "is_read", nullable = false)
     private Boolean read;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Images> postImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostLikes> postLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<PostHashtags> postHashtagList = new ArrayList<>();
 
 }
