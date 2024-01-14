@@ -2,7 +2,7 @@ package com.example.ReviewZIP.domain.image;
 
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
-import com.example.ReviewZIP.post.Posts;
+import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +26,6 @@ public class Images extends BaseEntity {
 
     @Column(nullable = false)
     private String url;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

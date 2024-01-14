@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.post;
+package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
@@ -30,7 +30,7 @@ public class Posts {
     private Double point;
 
     @Column(nullable = false)
-    private Boolean read;
+    private Boolean is_read;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
