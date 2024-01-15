@@ -29,6 +29,8 @@ public class UsersService {
     public void deleteUser(Long userId){
         Users user = usersRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("NOT FOUND USER"));
 
+        postLikesRepository.deleteById(userId);
+
         for (Scrabs scrab : user.getScrabList()) {
             scrabsRepository.delete(scrab);
         }
