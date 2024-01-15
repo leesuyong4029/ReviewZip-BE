@@ -32,5 +32,6 @@ public class OtherPostsResDto {
         private String comment;
         private Double point;
         private Integer likesNum;
+        private LocalDate createdAt;
     }
 }

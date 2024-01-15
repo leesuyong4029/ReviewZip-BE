@@ -18,6 +18,7 @@ public class UsersConverter {
                 .imageUrl(post.getPostImageList().stream()
                         .map(Images::getUrl)
                         .collect(Collectors.toList()))
+                .createdAt(post.getCreatedAt())
                 .build();
     }
 
