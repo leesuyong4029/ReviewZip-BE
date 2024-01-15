@@ -3,6 +3,7 @@ package com.example.ReviewZIP.domain.user;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -53,15 +54,20 @@ public class Users extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
     private Status status;
 
-    @OneToMany
-    private List<Posts> postsList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Posts> postList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PostLikes> postLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Scrabs> scrabList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Follows> followingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private List<Follows> followerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Scrabs> scrabList = new ArrayList<>();
+
 }

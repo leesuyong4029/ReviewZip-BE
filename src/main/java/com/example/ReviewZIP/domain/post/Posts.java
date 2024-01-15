@@ -3,6 +3,8 @@ package com.example.ReviewZIP.domain.post;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.store.Stores;
 import com.example.ReviewZIP.domain.user.Users;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,13 +38,19 @@ public class Posts {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Scrabs> scrabList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Stores> storeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Images> postImageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLikes> postLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostHashtags> postHashtagList = new ArrayList<>();
 
 }
