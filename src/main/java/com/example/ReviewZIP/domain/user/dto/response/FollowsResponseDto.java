@@ -12,8 +12,8 @@ public class FollowsResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class FollowsPreviewListDto{
-        private List<FollowsPreviewDto> followsList;
+    public static class FollowerPreviewListDto{
+        private List<FollowerPreviewDto> followsList;
         private Integer listSize;
         private Integer totalPage;
         private Long totalElements;
@@ -25,7 +25,7 @@ public class FollowsResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class FollowsPreviewDto{
+    public static class FollowerPreviewDto{
         private Long followerId;
         private String profileUrl;
         private String nickname;

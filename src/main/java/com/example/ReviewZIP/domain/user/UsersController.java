@@ -15,7 +15,7 @@ public class UsersController {
 
     // 특정 유저의 팔로워 목록 가져오기
     @GetMapping("/{userId}/followers")
-    public ResponseEntity<FollowsResponseDto.FollowsPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
+    public ResponseEntity<FollowsResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
         Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
 
         return ResponseEntity.ok(UsersConverter.followsPreviewListDto(FollowsPage));
