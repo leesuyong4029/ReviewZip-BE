@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static FollowsResponseDto.FollowerPreviewDto followsPreviewDto(Follows follows){
+    public static FollowsResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowsResponseDto.FollowerPreviewDto.builder()
                 .followerId(follows.getSender().getId())
                 .nickname(follows.getSender().getNickname())
@@ -16,9 +16,9 @@ public class UsersConverter {
                 .build();
     }
 
-    public static FollowsResponseDto.FollowerPreviewListDto followsPreviewListDto(Page<Follows> followsList){
+    public static FollowsResponseDto.FollowerPreviewListDto toFollowsPreviewListDto(Page<Follows> followsList){
         List<FollowsResponseDto.FollowerPreviewDto> followsPreviewDtoList = followsList.stream()
-                .map(UsersConverter::followsPreviewDto).collect(Collectors.toList());
+                .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
 
         return FollowsResponseDto.FollowerPreviewListDto.builder()
                 .isLast(followsList.isLast())

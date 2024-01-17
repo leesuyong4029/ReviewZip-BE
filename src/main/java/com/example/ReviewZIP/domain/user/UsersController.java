@@ -18,7 +18,7 @@ public class UsersController {
     public ResponseEntity<FollowsResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
         Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
 
-        return ResponseEntity.ok(UsersConverter.followsPreviewListDto(FollowsPage));
+        return ResponseEntity.ok(UsersConverter.toFollowsPreviewListDto(FollowsPage));
     }
 
 }
