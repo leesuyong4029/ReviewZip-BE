@@ -42,6 +42,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑을 자동화
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 	// Swagger 의존성 추가
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
