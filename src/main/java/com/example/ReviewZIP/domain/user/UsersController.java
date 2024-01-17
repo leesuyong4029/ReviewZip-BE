@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.domain.user;
 
-import com.example.ReviewZIP.domain.user.dto.response.OtherInfoResDto;
+import com.example.ReviewZIP.domain.user.dto.response.OtherInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class UsersController {
     private final UsersService usersService;
     @GetMapping("/{userId}")
-    public ResponseEntity<OtherInfoResDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
+    public ResponseEntity<OtherInfoResponseDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
 
         return ResponseEntity.ok(usersService.getOtherInfo(userId));
     }

@@ -1,17 +1,17 @@
 package com.example.ReviewZIP.domain.user;
 
-import com.example.ReviewZIP.domain.user.dto.response.OtherInfoResDto;
+import com.example.ReviewZIP.domain.user.dto.response.OtherInfoResponseDto;
 
 public class UsersConverter {
-    public static OtherInfoResDto toOtherInfoDto(Users user, Integer followingNum, Integer followerNum){
+    public static OtherInfoResponseDto toOtherInfoDto(Users user, Integer followingNum, Integer followerNum){
 
         String imageUrl = (user.getProfileUrl() != null) ? user.getProfileUrl() : null;
 
-        return OtherInfoResDto.builder()
+        return OtherInfoResponseDto.builder()
                 .userId(user.getId())
                 .name(user.getName())
                 .nickname(user.getNickname())
-                .imageUrl(imageUrl)
+                .profileUrl(imageUrl)
                 .followingNum(followingNum)
                 .followerNum(followerNum)
                 .build();
