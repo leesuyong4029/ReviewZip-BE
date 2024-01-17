@@ -15,7 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsersService {
     private final UsersRepository usersRepository;
     private final FollowsRepository followsRepository;
-    Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
+
+
+    @Transactional
+    public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("NOT FOUND USER"));
         Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
 

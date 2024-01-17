@@ -8,25 +8,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static FollowsResponseDto.FollowingPreviewDto followingPreviewDto(Follows follows){
+    public static FollowsResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowsResponseDto.FollowingPreviewDto.builder()
                 .followingId(follows.getReceiver().getId())
-                .nickname(follows.getReceiver().getNickname())
                 .profileUrl(follows.getReceiver().getProfileUrl())
+                .nickname(follows.getReceiver().getNickname())
                 .build();
     }
 
-    public static FollowsResponseDto.FollowingPreviewListDto followingPreviewListDto(Page<Follows> followsList){
-        List<FollowsResponseDto.FollowingPreviewDto> followsPreviewDtoList = followsList.stream()
-                .map(UsersConverter::followingPreviewDto).collect(Collectors.toList());
+    public static FollowsResponseDto.FollowingPreviewListDto toFollowingPreviewListDto(Page<Follows> followsList){
+        List<FollowsResponseDto.FollowingPreviewDto> followingPreviewDtoList = followsList.stream()
+                .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
 
         return FollowsResponseDto.FollowingPreviewListDto.builder()
                 .isLast(followsList.isLast())
                 .isFirst(followsList.isFirst())
                 .totalElements(followsList.getTotalElements())
                 .totalPage(followsList.getTotalPages())
-                .listSize(followsPreviewDtoList.size())
-                .followsList(followsPreviewDtoList)
+                .listSize(followingPreviewDtoList.size())
+                .followsList(followingPreviewDtoList)
                 .build();
     }
 }
