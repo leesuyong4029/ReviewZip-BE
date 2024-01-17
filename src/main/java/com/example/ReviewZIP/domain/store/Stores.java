@@ -1,7 +1,7 @@
 package com.example.ReviewZIP.domain.store;
 
 import com.example.ReviewZIP.global.entity.BaseEntity;
-import com.example.ReviewZIP.post.Posts;
+import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
