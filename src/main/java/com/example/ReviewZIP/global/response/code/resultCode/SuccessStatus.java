@@ -1,7 +1,7 @@
 package com.example.ReviewZIP.global.response.code.resultCode;
 
 import com.example.ReviewZIP.global.response.code.BaseCode;
-import com.example.ReviewZIP.global.response.code.ReasonDTO;
+import com.example.ReviewZIP.global.response.code.ReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -62,8 +62,8 @@ public enum SuccessStatus implements BaseCode {
     private final String message;
 
     @Override
-    public ReasonDTO getReason() {
-        return ReasonDTO.builder()
+    public ReasonDto getReason() {
+        return ReasonDto.builder()
                 .message(message)
                 .code(code)
                 .isSuccess(true)
@@ -71,8 +71,8 @@ public enum SuccessStatus implements BaseCode {
     }
 
     @Override
-    public ReasonDTO getReasonHttpStatus() {
-        return ReasonDTO.builder()
+    public ReasonDto getReasonHttpStatus() {
+        return ReasonDto.builder()
                 .message(message)
                 .code(code)
                 .isSuccess(true)

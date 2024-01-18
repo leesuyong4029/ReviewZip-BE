@@ -1,7 +1,7 @@
 package com.example.ReviewZIP.global.response.code;
 
 public interface BaseErrorCode {
-    public ErrorReasonDTO getReason();
+    public ErrorReasonDto getReason();
 
-    public ErrorReasonDTO getReasonHttpStatus();
+    public ErrorReasonDto getReasonHttpStatus();
 }
