@@ -3,7 +3,10 @@ package com.example.ReviewZIP.domain.post;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.store.Stores;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +38,12 @@ public class Posts extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Scrabs> scrabList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Stores> storeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Images> postImageList = new ArrayList<>();
