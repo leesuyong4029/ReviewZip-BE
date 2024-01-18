@@ -1,7 +1,7 @@
 package com.example.ReviewZIP.global.response.code;
 
 public interface BaseCode {
-    public ReasonDTO getReason();
+    public ReasonDto getReason();
 
-    public ReasonDTO getReasonHttpStatus();
+    public ReasonDto getReasonHttpStatus();
 }
