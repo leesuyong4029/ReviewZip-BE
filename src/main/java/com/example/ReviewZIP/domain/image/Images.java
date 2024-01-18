@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.domain.scrab;
+package com.example.ReviewZIP.domain.image;
 
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
@@ -12,16 +12,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "scrabs")
-public class Scrabs extends BaseEntity {
+public class Images extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name="id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users user;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String type;
+
+    @Column(nullable = false)
+    private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

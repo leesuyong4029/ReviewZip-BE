@@ -1,19 +1,18 @@
 package com.example.ReviewZIP.domain.follow;
 
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "follows")
-public class Follows {
+public class Follows extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

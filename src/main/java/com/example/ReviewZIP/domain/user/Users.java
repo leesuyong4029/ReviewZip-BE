@@ -1,18 +1,20 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class Users extends BaseEntity {
@@ -39,6 +41,9 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
+    private String profileUrl;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -50,4 +55,7 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Scrabs> scrabList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Posts> postList = new ArrayList<>();
 }
