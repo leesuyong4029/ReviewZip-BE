@@ -6,6 +6,8 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import com.example.ReviewZIP.domain.image.Images;
+import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ public class S3Service {
     private String bucket;
 
     private final AmazonS3Client amazonS3Client;
+    private final ImagesRepository imagesRepository;
 
     private String getFileExtension(String fileName) {
         try {
@@ -40,28 +43,26 @@ public class S3Service {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
-    public List<S3Result> uploadFile(List<MultipartFile> multipartFiles) {
-        List<S3Result> fileList = new ArrayList<>();
+    public Long uploadFile(MultipartFile file) {
+        String fileName = createFileName(file.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.getSize());
+        objectMetadata.setContentType(file.getContentType());
 
-        // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileList에 추가
-        multipartFiles.forEach(file -> {
-            String fileName = createFileName(file.getOriginalFilename());
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentLength(file.getSize());
-            objectMetadata.setContentType(file.getContentType());
+        try(InputStream inputStream = file.getInputStream()) {
+            String bucketPath = "ReviewImage/" + fileName;
+            amazonS3Client.putObject(new PutObjectRequest(bucket, bucketPath, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch(IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
+        }
 
-            try(InputStream inputStream = file.getInputStream()) {
-                amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
-            } catch(IOException e) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
-            }
-            fileList.add(new S3Result(amazonS3Client.getUrl(bucket,fileName).toString()));
-        });
-        return fileList;
-    }
+        Images image = new Images();
+        image.setName(fileName);
+        image.setUrl(bucket + "/ReviewImage/" + fileName);
+        image.setType(file.getContentType());
+        imagesRepository.save(image);
 
-    public void deleteFile(String fileName) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        return image.getId();
     }
 }
