@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowResDto {
+public class FollowResponseDto {
     private Long followId;
 }

@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.domain.follow;
 
-import com.example.ReviewZIP.domain.follow.dto.response.FollowResDto;
+import com.example.ReviewZIP.domain.follow.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.Users;
 
 public class FollowsConverter {
@@ -11,8 +11,8 @@ public class FollowsConverter {
                 .build();
     }
 
-    public static FollowResDto toCreateFollowDto(Follows follow){
-        return FollowResDto.builder()
+    public static FollowResponseDto toCreateFollowDto(Follows follow){
+        return FollowResponseDto.builder()
                 .followId(follow.getId())
                 .build();
     }
