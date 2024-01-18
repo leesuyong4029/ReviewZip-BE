@@ -1,7 +1,7 @@
 package com.example.ReviewZIP.global.response.exception;
 
 import com.example.ReviewZIP.global.response.ApiResponse;
-import com.example.ReviewZIP.global.response.code.ErrorReasonDTO;
+import com.example.ReviewZIP.global.response.code.ErrorReasonDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
@@ -41,11 +41,11 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = GeneralException.class)
     public ResponseEntity onThrowException(GeneralException generalException, HttpServletRequest request) {
-        ErrorReasonDTO errorReasonHttpStatus = generalException.getErrorReasonHttpStatus();
+        ErrorReasonDto errorReasonHttpStatus = generalException.getErrorReasonHttpStatus();
         return handleExceptionInternal(generalException,errorReasonHttpStatus,null,request);
     }
 
-    private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorReasonDTO reason,
+    private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorReasonDto reason,
                                                            HttpHeaders headers, HttpServletRequest request) {
 
         ApiResponse<Object> body = ApiResponse.onFailure(reason.getCode(),reason.getMessage(),null);

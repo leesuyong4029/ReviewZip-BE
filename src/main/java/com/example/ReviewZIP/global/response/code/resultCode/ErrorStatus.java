@@ -2,7 +2,7 @@ package com.example.ReviewZIP.global.response.code.resultCode;
 
 
 import com.example.ReviewZIP.global.response.code.BaseErrorCode;
-import com.example.ReviewZIP.global.response.code.ErrorReasonDTO;
+import com.example.ReviewZIP.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -41,16 +41,18 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE401", "존재하지 않는 가게입니다."),
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다.");
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다."),
 
+    //Follow
+    FOLLOW_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOLLOW401", "이미 팔로우한 상태입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
 
     @Override
-    public ErrorReasonDTO getReason() {
-        return ErrorReasonDTO.builder()
+    public ErrorReasonDto getReason() {
+        return ErrorReasonDto.builder()
                 .message(message)
                 .code(code)
                 .isSuccess(false)
@@ -58,8 +60,8 @@ public enum ErrorStatus implements BaseErrorCode {
     }
 
     @Override
-    public ErrorReasonDTO getReasonHttpStatus() {
-        return ErrorReasonDTO.builder()
+    public ErrorReasonDto getReasonHttpStatus() {
+        return ErrorReasonDto.builder()
                 .message(message)
                 .code(code)
                 .isSuccess(false)

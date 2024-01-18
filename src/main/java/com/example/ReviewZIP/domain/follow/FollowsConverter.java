@@ -11,8 +11,8 @@ public class FollowsConverter {
                 .build();
     }
 
-    public static FollowResponseDto toCreateFollowDto(Follows follow){
-        return FollowResponseDto.builder()
+    public static FollowResponseDto.toCreateFollowDto toCreateFollowDto(Follows follow){
+        return FollowResponseDto.toCreateFollowDto.builder()
                 .followId(follow.getId())
                 .build();
     }

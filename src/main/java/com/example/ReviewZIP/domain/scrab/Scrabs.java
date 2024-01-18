@@ -1,14 +1,9 @@
 package com.example.ReviewZIP.domain.scrab;
 
-<<<<<<< HEAD
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import com.example.ReviewZIP.domain.post.Posts;
-=======
-import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.user.Users;
-import com.example.ReviewZIP.global.entity.BaseEntity;
->>>>>>> 9a8ae7b (feat: 유저아이디로 유저 팔로우)
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
