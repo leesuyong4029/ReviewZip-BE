@@ -2,15 +2,15 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.user.dto.response.OtherPostsResDto;
+import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static OtherPostsResDto.PostPreviewDto postPreviewDto(Posts post){
-        return OtherPostsResDto.PostPreviewDto.builder()
+    public static UserResponseDto.PostPreviewDto postPreviewDto(Posts post){
+        return UserResponseDto.PostPreviewDto.builder()
                 .postId(post.getId())
                 .comment(post.getComment())
                 .point(post.getPoint())
@@ -22,11 +22,11 @@ public class UsersConverter {
                 .build();
     }
 
-    public static OtherPostsResDto.PostPreviewListDto postPreviewListDto(Page<Posts> postList){
-        List<OtherPostsResDto.PostPreviewDto> postPreviewDtoList = postList.stream()
+    public static UserResponseDto.PostPreviewListDto postPreviewListDto(Page<Posts> postList){
+        List<UserResponseDto.PostPreviewDto> postPreviewDtoList = postList.stream()
                 .map(UsersConverter::postPreviewDto).collect(Collectors.toList());
 
-        return OtherPostsResDto.PostPreviewListDto.builder()
+        return UserResponseDto.PostPreviewListDto.builder()
                 .isLast(postList.isLast())
                 .isFirst(postList.isFirst())
                 .totalPage(postList.getTotalPages())
