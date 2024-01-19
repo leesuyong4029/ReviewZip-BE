@@ -1,6 +1,8 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -40,6 +42,8 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
+    private String profileUrl;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -51,4 +55,10 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Scrabs> scrabList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Posts> postList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PostLikes> postLikeList = new ArrayList<>();
 }
