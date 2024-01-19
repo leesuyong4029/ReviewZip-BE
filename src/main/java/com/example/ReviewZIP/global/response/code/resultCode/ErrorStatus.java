@@ -39,9 +39,13 @@ public enum ErrorStatus implements BaseErrorCode {
     // Hashtag
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG401", "존재하지 않는 해쉬태그입니다."),
 
-    //Store
+    // Store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE401", "존재하지 않는 가게입니다."),
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다.");
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다."),
+
+    // Image
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "IMAGE401", "파일이 존재하지 않습니다.");
+
 
 
     private final HttpStatus httpStatus;
