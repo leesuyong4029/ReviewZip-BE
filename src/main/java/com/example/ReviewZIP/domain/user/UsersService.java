@@ -58,6 +58,5 @@ public class UsersService {
         } catch (Exception e){
             throw new UsersHandler(ErrorStatus.USER_DELETE_FAIL);
         }
-        // 추후 응답으로 반환 예정
     }
 }
