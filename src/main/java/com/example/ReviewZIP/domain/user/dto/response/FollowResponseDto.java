@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class FollowsResponseDto {
+public class FollowResponseDto {
     @Builder
     @Getter
     @NoArgsConstructor
