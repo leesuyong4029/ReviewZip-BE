@@ -22,6 +22,8 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final PostsRepository postsRepository;
 
+    @Transactional
+
     public Page<Posts> getOtherPostList(Long userId, Integer size, Integer page){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
