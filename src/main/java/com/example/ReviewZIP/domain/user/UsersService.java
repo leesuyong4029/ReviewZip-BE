@@ -10,6 +10,9 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.global.response.code.BaseErrorCode;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,30 +30,34 @@ public class UsersService {
 
     @Transactional
     public void deleteUser(Long userId){
-        Users user = usersRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("NOT FOUND USER"));
+        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        postLikesRepository.deleteById(userId);
+        try {
+            postLikesRepository.deleteById(userId);
 
-        for (Scrabs scrab : user.getScrabList()) {
-            scrabsRepository.delete(scrab);
+            for (Scrabs scrab : user.getScrabList()) {
+                scrabsRepository.delete(scrab);
+            }
+
+            for (Posts post : user.getPostList()) {
+                for (Images image : post.getPostImageList()) {
+                    imagesRepository.delete(image);
+                }
+
+                for (PostLikes postLike : post.getPostLikeList()) {
+                    postLikesRepository.delete(postLike);
+                }
+
+                for (PostHashtags postHashtag : post.getPostHashtagList()) {
+                    postHashtagsRepository.delete(postHashtag);
+                }
+                postsRepository.delete(post);
+            }
+
+            usersRepository.deleteById(userId);
+        } catch (Exception e){
+            throw new UsersHandler(ErrorStatus.USER_DELETE_FAIL);
         }
-
-        for (Posts post : user.getPostList()) {
-            for (Images image : post.getPostImageList()) {
-                imagesRepository.delete(image);
-            }
-
-            for (PostLikes postLike : post.getPostLikeList()) {
-                postLikesRepository.delete(postLike);
-            }
-
-            for (PostHashtags postHashtag : post.getPostHashtagList()) {
-                postHashtagsRepository.delete(postHashtag);
-            }
-            postsRepository.delete(post);
-        }
-
-        usersRepository.deleteById(userId);
         // 추후 응답으로 반환 예정
     }
 }

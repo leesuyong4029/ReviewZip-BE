@@ -6,6 +6,7 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.store.Stores;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "posts")
-public class Posts {
+public class Posts extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,8 +32,8 @@ public class Posts {
     @Column(nullable = false)
     private Double point;
 
-    @Column(name = "is_read", nullable = false)
-    private Boolean read;
+    @Column(nullable = false)
+    private Boolean is_read;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
