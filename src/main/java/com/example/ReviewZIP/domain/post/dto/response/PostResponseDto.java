@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostsResponseDto {
+public class PostResponseDto {
+    private Long postId;
     private Long userId;
-    private Long imageId;
     private String comment;
     private Double point;
+    private List<Long> imageIds;
 }
