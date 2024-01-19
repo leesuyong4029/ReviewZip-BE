@@ -32,7 +32,7 @@ public class Posts extends BaseEntity {
     @Column(nullable = false)
     private Double point;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "boolean default false")
     private Boolean is_read;
 
     @ManyToOne(fetch = FetchType.LAZY)
