@@ -2,6 +2,8 @@ package com.example.ReviewZIP.domain.follow;
 
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +16,10 @@ public class FollowsService {
     private final UsersRepository usersRepository;
     @Transactional
     public void unfollowUser(Long userId){
-        Users sender = usersRepository.findById(1L).orElseThrow(()->new IllegalArgumentException("not found sender"));
-        Users receiver = usersRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("not found receiver"));
+        Users sender = usersRepository.findById(1L).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        Users receiver = usersRepository.findById(userId).orElseThrow(()->new  UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Follows unfollow = followsRepository.findBySenderIdAndReceiverId(1L, receiver.getId())
-                .orElseThrow(()->new IllegalArgumentException("NOT FOUND FOLLOWS TABLE"));
+        Follows unfollow = followsRepository.getBySenderIdAndReceiverId(1L, receiver.getId());
 
         followsRepository.delete(unfollow);
     }
