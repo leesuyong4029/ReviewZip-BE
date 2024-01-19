@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.user.dto.response;
 
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,10 +29,9 @@ public class UserResponseDto {
     @AllArgsConstructor
     public static class PostPreviewDto{
         private Long postId;
-        private List<String> imageUrl;
-        private String comment;
-        private Double point;
-        private Integer likesNum;
+        private String postImageUrl;
+        private Integer likeNum;
+        private Integer scrabNum;
         private LocalDate createdAt;
     }
 }

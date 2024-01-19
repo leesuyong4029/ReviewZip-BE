@@ -18,12 +18,10 @@ public class PostHashtags {
     @Column(name = "id")
     private Long id;
 
+    private String hashtag;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Posts post;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hashtag_id")
-    private Hashtags hashtag;
 
 }
