@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class S3Result {
-    private String imgUrl;
+    private String fileUrl;
 
-    public S3Result(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public S3Result(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 }

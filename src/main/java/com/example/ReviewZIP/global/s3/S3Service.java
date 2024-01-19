@@ -7,6 +7,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
+import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 @Service
 @RequiredArgsConstructor
@@ -34,30 +38,25 @@ public class S3Service {
         }
     }
 
+    // UUID(랜덤) 사용: 동시에 여러 파일이 업로드 되는 상황에도 안전하게 파일 관리
     private String createFileName(String fileName) {
         return UUID.randomUUID().toString().concat(getFileExtension(fileName));
     }
 
-    public Long uploadFile(MultipartFile file) {
+    public S3Result uploadFile(MultipartFile file) {
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType(file.getContentType());
 
-        try(InputStream inputStream = file.getInputStream()) {
+        try (InputStream inputStream = file.getInputStream()) {
             String bucketPath = "ReviewImage/" + fileName;
             amazonS3Client.putObject(new PutObjectRequest(bucket, bucketPath, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
         }
 
-        Images image = new Images();
-        image.setName(fileName);
-        image.setUrl(bucket + "/ReviewImage/" + fileName);
-        image.setType(file.getContentType());
-        imagesRepository.save(image);
-
-        return image.getId();
+        return new S3Result(bucket + "/ReviewImage/" + fileName);
     }
 }
