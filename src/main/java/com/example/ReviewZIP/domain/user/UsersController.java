@@ -15,6 +15,6 @@ public class UsersController {
 
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable(name = "userId")Long userId) {
-        return ApiResponse.onFailure("USER410", "유저 삭제에 실패하였습니다.", null);
+        return ApiResponse.onSuccess(null);
     }
 }
