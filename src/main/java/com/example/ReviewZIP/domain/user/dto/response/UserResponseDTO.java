@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-public class UserResponseDTO {
+public class UserResponseDto {
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserListDTO {
-        List<UserDTO> userList;
+    public static class UserPreviewListDto {
+        List<UserPreviewDto> userList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -29,30 +29,10 @@ public class UserResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserDTO {
-        @NotNull
+    public static class UserPreviewDto {
         private Long id;
-
-        @NotBlank
-        private String email;
-
-        @NotBlank
-        private String name;
-
-        @NotBlank
-        private String user_id;
-
-        @NotBlank
-        private String password;
-
-        @NotBlank
-        private String phone_num;
-
-        @NotBlank
         private String nickname;
-        private Status status;
+        private String profileImages;
 
-        private LocalDate createdAt;
-        private LocalDate updatedAt;
     }
 }
