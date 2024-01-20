@@ -1,5 +1,7 @@
 package com.example.ReviewZIP.domain.postLike;
 
+import com.example.ReviewZIP.global.response.ApiResponse;
+import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +15,9 @@ public class PostLikesController {
 
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<String> postRemoveLike(@PathVariable Long postId) {
+    public ApiResponse<SuccessStatus> postRemoveLike(@PathVariable Long postId) {
         postLikesService.removeLike(postId, 1L);
-        return ResponseEntity.ok("message : " + 1 + " delete " + postId + "'s like");
+        return ApiResponse.onSuccess(SuccessStatus.POST_CANCEL_LIKE_SUCCESS);
     }
 
 }

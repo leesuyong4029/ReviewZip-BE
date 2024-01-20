@@ -41,8 +41,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE401", "존재하지 않는 가게입니다."),
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다.");
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다."),
 
+    //PostLike
+    POSTLIKE_NOT_FOUND(HttpStatus.NOT_FOUND,"POSTLIKE403","존재하지 않는 공감입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
