@@ -5,12 +5,15 @@ import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.store.Stores;
+import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Where(clause = "status = 'ENABLED'")
+@SQLDelete(sql = "UPDATE reviewzip.posts SET status = 'DISABLED' WHERE id = ?")
 @NoArgsConstructor
 @Table(name = "posts")
 public class Posts extends BaseEntity {
@@ -34,6 +39,10 @@ public class Posts extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean is_read;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
+    private PostStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
