@@ -10,7 +10,7 @@ public class UsersConverter {
     public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user) {
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .nickname(user.getNickname())
                 .profileImage(user.getProfileUrl())
                 .build();
     }

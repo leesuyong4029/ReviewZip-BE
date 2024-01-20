@@ -31,7 +31,7 @@ public class UserResponseDto {
     @AllArgsConstructor
     public static class UserPreviewDto {
         private Long id;
-        private String name;
+        private String nickname;
         private String profileImage;
 
     }
