@@ -1,9 +1,9 @@
 package com.example.ReviewZIP.domain.postLike;
 
-import com.example.ReviewZIP.domain.postLike.dto.request.PostLikesRequestDTO;
-import com.example.ReviewZIP.domain.postLike.dto.response.PostLikesResponseDTO;
+import com.example.ReviewZIP.domain.postLike.dto.request.PostLikesRequestDto;
+import com.example.ReviewZIP.global.response.ApiResponse;
+import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,8 +14,9 @@ public class PostLikesController {
     private final PostLikesService postLikesService;
 
     @PostMapping("/")
-    public ResponseEntity<PostLikesResponseDTO.PostLikesResultDTO> postAddLike(@RequestBody PostLikesRequestDTO.PostLikesDTO postLikesDTO) {
-        return ResponseEntity.ok(postLikesService.addLike(postLikesDTO));
+    public ApiResponse<SuccessStatus> postAddLike(@RequestBody PostLikesRequestDto.PostLikesDto postLikesDto) {
+        postLikesService.addLike(postLikesDto);
+        return ApiResponse.onSuccess(SuccessStatus.POST_CHOOSE_LIKE_SUCCESS);
     }
 
 }

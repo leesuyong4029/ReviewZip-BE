@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.global.response.code.resultCode;
 
 
+import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.global.response.code.BaseErrorCode;
 import com.example.ReviewZIP.global.response.code.ErrorReasonDto;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE401", "존재하지 않는 가게입니다."),
-    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다.");
+    LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다."),
+
+    //PostLike
+    POSTLIKE_CREATE_FAIL(HttpStatus.NOT_FOUND,"POSTLIKE401","공감 누르기에 실패하였습니다"),
+    POSTLIKE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "POSTLIKE402","이미 공감한 게시물입니다");
 
 
     private final HttpStatus httpStatus;
