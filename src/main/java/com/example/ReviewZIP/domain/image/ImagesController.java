@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.domain.image;
 
-import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
+import com.example.ReviewZIP.domain.image.dto.response.ImageUploadResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +15,9 @@ public class ImagesController {
     private final ImagesService imageService;
 
     @PostMapping("/users/{userId}")
-    public ApiResponse<ImageResponseDto.ImageUploadListDto> uploadImage(@PathVariable(name="userId") Long userId, @RequestParam("fileList") List<MultipartFile> fileList){
+    public ApiResponse<ImageUploadResponseDto> uploadImage(@PathVariable(name="userId") Long userId, @RequestParam("fileList") List<MultipartFile> fileList){
         List<Images> imageList = imageService.uploadImage(fileList, userId);
-        ImageResponseDto.ImageUploadListDto imageResponseDto = ImageConverter.toUploadImageDto(imageList);
+        ImageUploadResponseDto imageResponseDto = ImageConverter.toUploadImageDto(imageList);
         return ApiResponse.onSuccess(imageResponseDto);
     }
 }
