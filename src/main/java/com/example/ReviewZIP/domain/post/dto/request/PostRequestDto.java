@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class PostRequestDto {
     private Long userId;
     private String comment;

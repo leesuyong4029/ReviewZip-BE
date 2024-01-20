@@ -17,7 +17,7 @@ public class PostsController {
     private final PostsConverter postsConverter;
 
     @PostMapping
-    public ApiResponse<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto){
+    public ApiResponse<PostResponseDto.CreatedPostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto){
         Posts post = postsService.createPost(postRequestDto);
         return ApiResponse.onSuccess(PostsConverter.toPostResponseDto(post));
     }

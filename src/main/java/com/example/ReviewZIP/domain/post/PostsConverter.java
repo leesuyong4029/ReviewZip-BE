@@ -9,18 +9,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class PostsConverter {
-    public static PostResponseDto toPostResponseDto(Posts post) {
-        PostResponseDto responseDto = new PostResponseDto();
-        responseDto.setPostId(post.getId());
-        responseDto.setComment(post.getComment());
-        responseDto.setPoint(post.getPoint());
-        responseDto.setUserId(post.getUser().getId());
-
+    public static PostResponseDto.CreatedPostResponseDto toPostResponseDto(Posts post) {
         List<Long> imageIds = post.getPostImageList().stream()
                 .map(Images::getId)
                 .collect(Collectors.toList());
-        responseDto.setImageIds(imageIds);
 
-        return responseDto;
+        return PostResponseDto.CreatedPostResponseDto.builder()
+                .postId(post.getId())
+                .comment(post.getComment())
+                .point(post.getPoint())
+                .userId(post.getUser().getId())
+                .imageIds(imageIds)
+                .build();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostsService {
     private final ImagesRepository imagesRepository;
     private final UsersRepository usersRepository;

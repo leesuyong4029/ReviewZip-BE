@@ -8,6 +8,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageUploadResponseDto {
+public class UploadImageResponseDto {
     public List<Long> imageIds;
 }
