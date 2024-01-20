@@ -18,9 +18,11 @@ public class UsersController {
     private final UsersService userService;
 
     @GetMapping("/search/nickname")
-    public ApiResponse<UserResponseDto.UserListDto> searchUsersByNickname(@RequestParam String nickname, @RequestParam (defaultValue = "0") Integer page) {
+    public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByNickname(@RequestParam String nickname, @RequestParam (defaultValue = "0") Integer page) {
         Page<Users> userPage = userService.findUsersByNickname(nickname, page);
-        UserResponseDto.UserListDto userListDto = UsersConverter.toUserListDto(userPage);
+        UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserListDto(userPage);
         return ApiResponse.onSuccess(userListDto);
     }
+
+
 }

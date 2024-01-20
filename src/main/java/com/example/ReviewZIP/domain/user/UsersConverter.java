@@ -7,27 +7,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static UserResponseDto.UserDto toUserDto(Users user) {
-        return UserResponseDto.UserDto.builder()
+    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user) {
+        return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
-                .email(user.getEmail())
                 .name(user.getName())
-                .user_id(user.getUser_id())
-                .password(user.getPassword())
-                .phone_num(user.getPhone_num())
-                .nickname(user.getNickname())
-                .status(user.getStatus())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
+                .profileImage(user.getProfileUrl())
                 .build();
     }
 
-    public static UserResponseDto.UserListDto toUserListDto(Page<Users> userList) {
-        List<UserResponseDto.UserDto> userDtoList = userList.stream()
-                .map(UsersConverter::toUserDto)
+    public static UserResponseDto.UserPreviewListDto toUserListDto(Page<Users> userList) {
+        List<UserResponseDto.UserPreviewDto> userDtoList = userList.stream()
+                .map(UsersConverter::toUserPreviewDto)
                 .collect(Collectors.toList());
 
-        return UserResponseDto.UserListDto.builder()
+        return UserResponseDto.UserPreviewListDto.builder()
                 .isLast(userList.isLast())
                 .isFirst(userList.isFirst())
                 .totalPage(userList.getTotalPages())

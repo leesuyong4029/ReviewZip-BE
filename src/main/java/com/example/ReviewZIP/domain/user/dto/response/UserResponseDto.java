@@ -16,8 +16,8 @@ public class UserResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserListDto {
-        List<UserDto> userList;
+    public static class UserPreviewListDto {
+        List<UserPreviewDto> userList;
         Integer listSize;
         Integer totalPage;
         Long totalElements;
@@ -29,31 +29,11 @@ public class UserResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserDto {
-        @NotNull
+    public static class UserPreviewDto {
         private Long id;
-
-        @NotBlank
-        private String email;
-
-        @NotBlank
         private String name;
+        private String profileImage;
 
-        @NotBlank
-        private String user_id;
-
-        @NotBlank
-        private String password;
-
-        @NotBlank
-        private String phone_num;
-
-        @NotBlank
-        private String nickname;
-        private Status status;
-
-        private LocalDate createdAt;
-        private LocalDate updatedAt;
     }
 }
 
