@@ -15,6 +15,7 @@ public class PostsContoroller {
 
     @DeleteMapping("/{postId}")
     public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId){
+        postsService.deletePost(postId);
         return ApiResponse.onSuccess(null);
     }
 
