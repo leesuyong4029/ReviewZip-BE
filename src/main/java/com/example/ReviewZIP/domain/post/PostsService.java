@@ -31,26 +31,6 @@ public class PostsService {
     public void deletePost(Long postId){
         Posts post = postsRepository.findById(postId).orElseThrow(()-> new PostsHandler(ErrorStatus.POST_NOT_FOUND));
 
-        for (Scrabs scrab : post.getScrabList()) {
-            scrabsRepository.delete(scrab);
-        }
-
-        for (Images images : post.getPostImageList()){
-            imagesRepository.delete(images);
-        }
-
-        for (PostLikes likes : post.getPostLikeList()){
-            postLikesRepository.delete(likes);
-        }
-
-        for (PostHashtags hashtags : post.getPostHashtagList()){
-            postHashtagsRepository.delete(hashtags);
-        }
-
-        for (Stores store : post.getStoreList()){
-            storesRepository.delete(store);
-        }
-
         postsRepository.deleteById(post.getId());
 
     }
