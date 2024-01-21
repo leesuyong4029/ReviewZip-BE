@@ -1,6 +1,5 @@
 package com.example.ReviewZIP.domain.postHashtag;
 
-import com.example.ReviewZIP.domain.hashtag.Hashtags;
 import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,10 +17,10 @@ public class PostHashtags {
     @Column(name = "id")
     private Long id;
 
-    private String hashtag;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Posts post;
+
+    private String hashtag;
 
 }
