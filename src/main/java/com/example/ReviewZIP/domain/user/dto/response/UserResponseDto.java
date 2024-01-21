@@ -32,6 +32,5 @@ public class UserResponseDto {
         private String postImageUrl;
         private Integer likeNum;
         private Integer scrabNum;
-        private LocalDate createdAt;
     }
 }
