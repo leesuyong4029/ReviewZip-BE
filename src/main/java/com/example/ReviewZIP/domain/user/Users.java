@@ -42,7 +42,6 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String nickname;
 
-    @Column(nullable = false)
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)

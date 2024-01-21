@@ -44,9 +44,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws s3
 
 	// Swagger 의존성 추가
-	implementation 'io.springfox:springfox-swagger2:2.9.2'
-	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
+
 
 	tasks.named('test') {
 		useJUnitPlatform()
