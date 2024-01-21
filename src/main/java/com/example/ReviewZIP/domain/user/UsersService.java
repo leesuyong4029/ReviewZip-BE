@@ -1,9 +1,7 @@
 package com.example.ReviewZIP.domain.user;
 
-import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
-import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
