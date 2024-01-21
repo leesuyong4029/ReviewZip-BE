@@ -21,8 +21,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Where(clause = "status = 'ENABLED'")
-@SQLDelete(sql = "UPDATE reviewzip.posts SET status = 'DISABLED' WHERE id = ?")
 @NoArgsConstructor
 @Table(name = "posts")
 public class Posts extends BaseEntity {
@@ -39,10 +37,6 @@ public class Posts extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean is_read;
-
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
-    private PostStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
