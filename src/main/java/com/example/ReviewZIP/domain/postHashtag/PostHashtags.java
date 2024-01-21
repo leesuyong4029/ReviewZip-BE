@@ -1,6 +1,5 @@
 package com.example.ReviewZIP.domain.postHashtag;
 
-import com.example.ReviewZIP.domain.hashtag.Hashtags;
 import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
 import lombok.Getter;
