@@ -15,6 +15,7 @@ public class UsersController {
 
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable(name = "userId")Long userId) {
+        usersService.deleteUser(userId);
         return ApiResponse.onSuccess(null);
     }
 }

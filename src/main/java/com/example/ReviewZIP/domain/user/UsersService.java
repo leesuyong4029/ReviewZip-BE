@@ -32,31 +32,17 @@ public class UsersService {
     public void deleteUser(Long userId){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        try {
-            postLikesRepository.deleteById(userId);
+        postLikesRepository.deleteById(userId);
 
-            for (Scrabs scrab : user.getScrabList()) {
-                scrabsRepository.delete(scrab);
-            }
-
-            for (Posts post : user.getPostList()) {
-                for (Images image : post.getPostImageList()) {
-                    imagesRepository.delete(image);
-                }
-
-                for (PostLikes postLike : post.getPostLikeList()) {
-                    postLikesRepository.delete(postLike);
-                }
-
-                for (PostHashtags postHashtag : post.getPostHashtagList()) {
-                    postHashtagsRepository.delete(postHashtag);
-                }
-                postsRepository.delete(post);
-            }
-
-            usersRepository.deleteById(userId);
-        } catch (Exception e){
-            throw new UsersHandler(ErrorStatus.USER_DELETE_FAIL);
+        for (Scrabs scrab : user.getScrabList()) {
+            scrabsRepository.delete(scrab);
         }
+
+        for (Posts post : user.getPostList()) {
+            postsRepository.delete(post);
+        }
+
+        usersRepository.deleteById(userId);
+
     }
 }
