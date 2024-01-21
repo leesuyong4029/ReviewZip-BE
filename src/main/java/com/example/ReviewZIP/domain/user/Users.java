@@ -49,6 +49,7 @@ public class Users extends BaseEntity {
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
     private Status status;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
