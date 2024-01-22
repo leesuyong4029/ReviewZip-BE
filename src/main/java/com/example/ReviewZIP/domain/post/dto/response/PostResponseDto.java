@@ -17,7 +17,6 @@ public class PostResponseDto {
     public static class UserInfoDto{
         private Long id;
         private String nickname;
-        private String name;
         private String profileUrl;
     }
 

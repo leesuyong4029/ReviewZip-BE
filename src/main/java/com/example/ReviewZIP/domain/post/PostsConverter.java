@@ -13,7 +13,6 @@ public class PostsConverter {
         return PostResponseDto.UserInfoDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
-                .name(user.getName())
                 .profileUrl(user.getProfileUrl())
                 .build();
     }
