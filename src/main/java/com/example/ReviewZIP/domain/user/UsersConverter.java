@@ -12,6 +12,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
+  
+    // 팔로잉 목록 converter
+    public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
+        return FollowResponseDto.FollowingPreviewDto.builder()
+                .followingId(follows.getReceiver().getId())
+                .profileUrl(follows.getReceiver().getProfileUrl())
+                .nickname(follows.getReceiver().getNickname())
+                .build();
+    }
+
+    public static FollowResponseDto.FollowingPreviewListDto toFollowingPreviewListDto(Page<Follows> followsList){
+        List<FollowResponseDto.FollowingPreviewDto> followingPreviewDtoList = followsList.stream()
+                .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
+
+        return FollowResponseDto.FollowingPreviewListDto.builder()
+    }
+  
+    // 팔로워 목록 converter
     public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowResponseDto.FollowerPreviewDto.builder()
                 .followerId(follows.getSender().getId())
@@ -29,11 +47,14 @@ public class UsersConverter {
                 .isFirst(followsList.isFirst())
                 .totalElements(followsList.getTotalElements())
                 .totalPage(followsList.getTotalPages())
+                .listSize(followingPreviewDtoList.size())
+                .followsList(followingPreviewDtoList)
                 .listSize(followsPreviewDtoList.size())
                 .followsList(followsPreviewDtoList)
                 .build();
     }
 
+    // 게시글 미리보기 converter
     public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(post.getId())
@@ -57,6 +78,7 @@ public class UsersConverter {
                 .build();
     }
 
+    // scrab한 게시글 미리보기 converter
     public static UserResponseDto.PostPreviewDto toScrabPreviewDto(Scrabs scrabs){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(scrabs.getPost().getId())

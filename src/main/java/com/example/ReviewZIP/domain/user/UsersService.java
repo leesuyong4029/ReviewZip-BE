@@ -20,11 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UsersService {
-
     private final UsersRepository usersRepository;
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
+
+    @Transactional
+    public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
+        Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
+        if(FollowsPage.isEmpty()){
+            throw new FollowsHandler(ErrorStatus.FOLLOWING_LIST_NOT_FOUND);
+        }
+        return FollowsPage;
+    }
 
     @Transactional
     public Page<Follows> getOtherFollowerList(Long userId, Integer page, Integer size){
