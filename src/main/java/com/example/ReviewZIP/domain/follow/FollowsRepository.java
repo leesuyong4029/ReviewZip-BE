@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FollowsRepository extends JpaRepository<Follows, Long> {
     Page<Follows> findAllBySender(Users sender, PageRequest pageRequest);
+    Page<Follows> findAllByReceiver(Users user, PageRequest pageRequest);
 }

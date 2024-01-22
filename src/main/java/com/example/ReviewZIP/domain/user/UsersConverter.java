@@ -2,12 +2,18 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
+import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
+  
+    // 팔로잉 목록 converter
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowResponseDto.FollowingPreviewDto.builder()
                 .followingId(follows.getReceiver().getId())
@@ -21,12 +27,78 @@ public class UsersConverter {
                 .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
 
         return FollowResponseDto.FollowingPreviewListDto.builder()
+    }
+  
+    // 팔로워 목록 converter
+    public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
+        return FollowResponseDto.FollowerPreviewDto.builder()
+                .followerId(follows.getSender().getId())
+                .nickname(follows.getSender().getNickname())
+                .profileUrl(follows.getReceiver().getProfileUrl())
+                .build();
+    }
+
+    public static FollowResponseDto.FollowerPreviewListDto toFollowsPreviewListDto(Page<Follows> followsList){
+        List<FollowResponseDto.FollowerPreviewDto> followsPreviewDtoList = followsList.stream()
+                .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
+
+        return FollowResponseDto.FollowerPreviewListDto.builder()
                 .isLast(followsList.isLast())
                 .isFirst(followsList.isFirst())
                 .totalElements(followsList.getTotalElements())
                 .totalPage(followsList.getTotalPages())
                 .listSize(followingPreviewDtoList.size())
                 .followsList(followingPreviewDtoList)
+                .listSize(followsPreviewDtoList.size())
+                .followsList(followsPreviewDtoList)
+                .build();
+    }
+
+    // 게시글 미리보기 converter
+    public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
+        return UserResponseDto.PostPreviewDto.builder()
+                .postId(post.getId())
+                .likeNum(post.getPostLikeList().size())
+                .scrabNum(post.getScrabList().size())
+                .postImageUrl(post.getPostImageList().get(0).getUrl())
+                .build();
+    }
+
+    public static UserResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Posts> postList){
+        List<UserResponseDto.PostPreviewDto> userPostPriviewDtoList = postList.stream()
+                .map(UsersConverter::toPostPreviewDto).collect(Collectors.toList());
+
+        return UserResponseDto.PostPreviewListDto.builder()
+                .isLast(postList.isLast())
+                .isFirst(postList.isFirst())
+                .totalElements(postList.getTotalElements())
+                .totalPage(postList.getTotalPages())
+                .listSize(userPostPriviewDtoList.size())
+                .postList(userPostPriviewDtoList)
+                .build();
+    }
+
+    // scrab한 게시글 미리보기 converter
+    public static UserResponseDto.PostPreviewDto toScrabPreviewDto(Scrabs scrabs){
+        return UserResponseDto.PostPreviewDto.builder()
+                .postId(scrabs.getPost().getId())
+                .likeNum(scrabs.getPost().getPostLikeList().size())
+                .scrabNum(scrabs.getPost().getScrabList().size())
+                .postImageUrl(scrabs.getPost().getPostImageList().get(0).getUrl())
+                .build();
+    }
+
+    public static UserResponseDto.PostPreviewListDto toScrabPreviewListDto(Page<Scrabs> scrabList){
+        List<UserResponseDto.PostPreviewDto> scrabPriviewDtoList = scrabList.stream()
+                .map(UsersConverter::toScrabPreviewDto).collect(Collectors.toList());
+
+        return UserResponseDto.PostPreviewListDto.builder()
+                .isLast(scrabList.isLast())
+                .isFirst(scrabList.isFirst())
+                .totalElements(scrabList.getTotalElements())
+                .totalPage(scrabList.getTotalPages())
+                .listSize(scrabPriviewDtoList.size())
+                .postList(scrabPriviewDtoList)
                 .build();
     }
 }
