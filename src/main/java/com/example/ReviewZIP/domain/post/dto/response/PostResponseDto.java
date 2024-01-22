@@ -37,8 +37,8 @@ public class PostResponseDto {
         private String comment;
         private Double point;
         private Integer likeNum;
-        private boolean iLike;
-        private boolean iScrab;
+        private boolean checkLike;
+        private boolean checkScrab;
         private LocalDate createdAt;
         private UserInfoDto userInfo;
         private List<String> hashtags;
