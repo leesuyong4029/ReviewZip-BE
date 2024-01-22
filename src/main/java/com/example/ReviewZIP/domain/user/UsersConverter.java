@@ -1,5 +1,7 @@
 package com.example.ReviewZIP.domain.user;
 
+import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
+
     public static UserResponseDto.PostPreviewDto toUserPostPreviewDto(Scrabs scrabs){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(scrabs.getPost().getId())
