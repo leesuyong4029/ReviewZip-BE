@@ -11,7 +11,30 @@ import java.util.stream.Collectors;
 
 public class UsersConverter {
 
-    public static UserResponseDto.PostPreviewDto toUserPostPreviewDto(Scrabs scrabs){
+    public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
+        return UserResponseDto.PostPreviewDto.builder()
+                .postId(post.getId())
+                .likeNum(post.getPostLikeList().size())
+                .scrabNum(post.getScrabList().size())
+                .postImageUrl(post.getPostImageList().get(0).getUrl())
+                .build();
+    }
+
+    public static UserResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Posts> postList){
+        List<UserResponseDto.PostPreviewDto> userPostPriviewDtoList = postList.stream()
+                .map(UsersConverter::toPostPreviewDto).collect(Collectors.toList());
+
+        return UserResponseDto.PostPreviewListDto.builder()
+                .isLast(postList.isLast())
+                .isFirst(postList.isFirst())
+                .totalElements(postList.getTotalElements())
+                .totalPage(postList.getTotalPages())
+                .listSize(userPostPriviewDtoList.size())
+                .postList(userPostPriviewDtoList)
+                .build();
+    }
+
+    public static UserResponseDto.PostPreviewDto toScrabPreviewDto(Scrabs scrabs){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(scrabs.getPost().getId())
                 .likeNum(scrabs.getPost().getPostLikeList().size())
@@ -20,17 +43,17 @@ public class UsersConverter {
                 .build();
     }
 
-    public static UserResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Scrabs> scrabList){
-        List<UserResponseDto.PostPreviewDto> userPostPriviewDtoList = scrabList.stream()
-                .map(UsersConverter::toUserPostPreviewDto).collect(Collectors.toList());
+    public static UserResponseDto.PostPreviewListDto toScrabPreviewListDto(Page<Scrabs> scrabList){
+        List<UserResponseDto.PostPreviewDto> scrabPriviewDtoList = scrabList.stream()
+                .map(UsersConverter::toScrabPreviewDto).collect(Collectors.toList());
 
         return UserResponseDto.PostPreviewListDto.builder()
                 .isLast(scrabList.isLast())
                 .isFirst(scrabList.isFirst())
                 .totalElements(scrabList.getTotalElements())
                 .totalPage(scrabList.getTotalPages())
-                .listSize(userPostPriviewDtoList.size())
-                .postList(userPostPriviewDtoList)
+                .listSize(scrabPriviewDtoList.size())
+                .postList(scrabPriviewDtoList)
                 .build();
     }
 }

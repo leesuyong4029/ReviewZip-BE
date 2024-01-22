@@ -23,14 +23,12 @@ public class UsersService {
     private final ScrabsRepository scrabsRepository;
 
     @Transactional
-    public Page<Posts> getOtherPostList(Long userId, Integer size, Integer page){
+    public Page<Posts> getOtherPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
       
         return UserPage;
     }
-
-    
 
     @Transactional
     public Page<Scrabs> getOtherScrabList(Long userId, Integer page, Integer size){
