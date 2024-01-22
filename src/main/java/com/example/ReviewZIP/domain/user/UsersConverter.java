@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static UserResponseDto.PostPreviewDto toUserPostPreviewDto(Posts post){
+    public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(post.getId())
                 .likeNum(post.getPostLikeList().size())
@@ -19,7 +19,7 @@ public class UsersConverter {
 
     public static UserResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Posts> postList){
         List<UserResponseDto.PostPreviewDto> userPostPriviewDtoList = postList.stream()
-                .map(UsersConverter::toUserPostPreviewDto).collect(Collectors.toList());
+                .map(UsersConverter::toPostPreviewDto).collect(Collectors.toList());
 
         return UserResponseDto.PostPreviewListDto.builder()
                 .isLast(postList.isLast())
