@@ -27,6 +27,13 @@ public class UsersConverter {
                 .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
 
         return FollowResponseDto.FollowingPreviewListDto.builder()
+                .isLast(followsList.isLast())
+                .isFirst(followsList.isFirst())
+                .totalElements(followsList.getTotalElements())
+                .totalPage(followsList.getTotalPages())
+                .listSize(followingPreviewDtoList.size())
+                .followsList(followingPreviewDtoList)
+                .build();
     }
   
     // 팔로워 목록 converter
@@ -38,8 +45,8 @@ public class UsersConverter {
                 .build();
     }
 
-    public static FollowResponseDto.FollowerPreviewListDto toFollowsPreviewListDto(Page<Follows> followsList){
-        List<FollowResponseDto.FollowerPreviewDto> followsPreviewDtoList = followsList.stream()
+    public static FollowResponseDto.FollowerPreviewListDto toFollowerPreviewListDto(Page<Follows> followsList){
+        List<FollowResponseDto.FollowerPreviewDto> followerPreviewDtoList = followsList.stream()
                 .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
 
         return FollowResponseDto.FollowerPreviewListDto.builder()
@@ -47,10 +54,8 @@ public class UsersConverter {
                 .isFirst(followsList.isFirst())
                 .totalElements(followsList.getTotalElements())
                 .totalPage(followsList.getTotalPages())
-                .listSize(followingPreviewDtoList.size())
-                .followsList(followingPreviewDtoList)
-                .listSize(followsPreviewDtoList.size())
-                .followsList(followsPreviewDtoList)
+                .listSize(followerPreviewDtoList.size())
+                .followsList(followerPreviewDtoList)
                 .build();
     }
 
