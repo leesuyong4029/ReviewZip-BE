@@ -36,7 +36,7 @@ public class UsersController {
     public ApiResponse<FollowResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
         Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowsPreviewListDto(FollowsPage));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
     }
 
     // 특정 유저의 게시글들 가져오기
