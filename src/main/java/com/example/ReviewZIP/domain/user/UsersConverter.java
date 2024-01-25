@@ -26,7 +26,7 @@ public class UsersConverter {
         List<FollowResponseDto.FollowingPreviewDto> followingPreviewDtoList = followsList.stream()
                 .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
 
-        return FollowResponseDto.FollowingPreviewListDto.builder()
+        return FollowResponseDto.FollowingPreviewListDto.builder().build();
     }
   
     // 팔로워 목록 converter
@@ -38,21 +38,21 @@ public class UsersConverter {
                 .build();
     }
 
-    public static FollowResponseDto.FollowerPreviewListDto toFollowsPreviewListDto(Page<Follows> followsList){
-        List<FollowResponseDto.FollowerPreviewDto> followsPreviewDtoList = followsList.stream()
-                .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
-
-        return FollowResponseDto.FollowerPreviewListDto.builder()
-                .isLast(followsList.isLast())
-                .isFirst(followsList.isFirst())
-                .totalElements(followsList.getTotalElements())
-                .totalPage(followsList.getTotalPages())
-                .listSize(followingPreviewDtoList.size())
-                .followsList(followingPreviewDtoList)
-                .listSize(followsPreviewDtoList.size())
-                .followsList(followsPreviewDtoList)
-                .build();
-    }
+//    public static FollowResponseDto.FollowerPreviewListDto toFollowsPreviewListDto(Page<Follows> followsList){
+//        List<FollowResponseDto.FollowerPreviewDto> followsPreviewDtoList = followsList.stream()
+//                .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
+//
+//        return FollowResponseDto.FollowerPreviewListDto.builder()
+//                .isLast(followsList.isLast())
+//                .isFirst(followsList.isFirst())
+//                .totalElements(followsList.getTotalElements())
+//                .totalPage(followsList.getTotalPages())
+//                .listSize(followingPreviewDtoList.size())
+//                .followsList(followingPreviewDtoList)
+//                .listSize(followsPreviewDtoList.size())
+//                .followsList(followsPreviewDtoList)
+//                .build();
+//    }
 
     // 게시글 미리보기 converter
     public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
