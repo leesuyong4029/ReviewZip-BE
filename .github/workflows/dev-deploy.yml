@@ -18,7 +18,7 @@ jobs:
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
-          registry: ${{env.REGISTRY}}
+          registry: ${{env.REGISTRY}}c
           username: ${{github.actor}}
           password: ${{secrets.PERSONAL_TOKEN}}
 
@@ -28,11 +28,15 @@ jobs:
         with:
           images: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}
 
+      # gradlew 권한 변경
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # 빌드(test는 제외)
       - name: Build with Gradle
-        run : ./gradlew build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean build
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
