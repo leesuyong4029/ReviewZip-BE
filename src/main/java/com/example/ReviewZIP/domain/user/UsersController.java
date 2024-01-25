@@ -31,13 +31,13 @@ public class UsersController {
         return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
     }
 
-//    // 특정 유저의 팔로워 목록 가져오기
-//    @GetMapping("/{userId}/followers")
-//    public ApiResponse<FollowResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
-//        Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
-//
-//        return ApiResponse.onSuccess(UsersConverter.toFollowsPreviewListDto(FollowsPage));
-//    }
+    // 특정 유저의 팔로워 목록 가져오기
+    @GetMapping("/{userId}/followers")
+    public ApiResponse<FollowResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
+        Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
+
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
+    }
 
     // 특정 유저의 게시글들 가져오기
     @GetMapping("/{userId}/posts")
