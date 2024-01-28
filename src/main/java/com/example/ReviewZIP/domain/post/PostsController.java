@@ -30,7 +30,7 @@ public class PostsController {
     private final PostsConverter postsConverter;
 
     @PostMapping
-    @Operation(summary = "게시글 생성",description = "게시글 코멘트, 별점 생성")
+    @Operation(summary = "게시글 생성", description = "PostRequestDto, CreatedPostResponseDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST403", description = "게시글 작성 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -41,7 +41,7 @@ public class PostsController {
     }
 
     @GetMapping("/random")
-    @Operation(summary = "랜덤으로 게시글 3개 가져오기",description = "로그인한 유저를 제외한 랜덤 게시글 3개")
+    @Operation(summary = "랜덤으로 게시글 3개 가져오기",description = "PostInfoDto")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "랜덤으로 게시글 3개 가져오기 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),

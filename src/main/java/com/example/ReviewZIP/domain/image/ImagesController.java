@@ -19,7 +19,7 @@ public class ImagesController {
     private final ImagesService imageService;
 
     @PostMapping("/users/{userId}")
-    @Operation(summary = "이미지 업로드")
+    @Operation(summary = "이미지 업로드", description = "UploadImageResponseDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE402", description = "이미지 업로드 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
