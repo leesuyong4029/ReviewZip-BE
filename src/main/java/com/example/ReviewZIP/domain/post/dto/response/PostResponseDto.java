@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
+
 public class PostResponseDto {
 
     @Builder
@@ -26,6 +27,18 @@ public class PostResponseDto {
     public static class ImageListDto{
         private Long id;
         private String url;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreatedPostResponseDto {
+        private Long postId;
+        private Long userId;
+        private String comment;
+        private Double point;
+        private List<Long> imageIds;
     }
 
     @Builder
