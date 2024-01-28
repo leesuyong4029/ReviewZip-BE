@@ -15,8 +15,6 @@ import java.util.List;
 public interface PostsRepository extends JpaRepository<Posts, Long> {
     Page<Posts> findAllByUser(Users user, PageRequest pageRequest);
 
-    List<Images> findAllByUser(Users user);
-
     @Query("SELECT count(p) FROM Posts p WHERE p.user != :user")
     long countByUserNot(@Param("user") Users user);
 
