@@ -3,7 +3,6 @@ package com.example.ReviewZIP.domain.user;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,44 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-  
+    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user) {
+        return UserResponseDto.UserPreviewDto.builder()
+                .id(user.getId())
+                .nickname(user.getNickname())
+                .profileImages(user.getProfileUrl())
+                .build();
+    }
+
+    public static UserResponseDto.UserPreviewListDto toUserPreviewListDto(Page<Users> userList) {
+        List<UserResponseDto.UserPreviewDto> userDTOList = userList.stream()
+                .map(UsersConverter::toUserPreviewDto)
+                .collect(Collectors.toList());
+
+        return UserResponseDto.UserPreviewListDto.builder()
+                .isLast(userList.isLast())
+                .isFirst(userList.isFirst())
+                .totalPage(userList.getTotalPages())
+                .totalElements(userList.getTotalElements())
+                .listSize(userDTOList.size())
+                .userList(userDTOList)
+                .build();
+    }
+
+    public static UserResponseDto.UserPreviewListDto toUserListDto(Page<Users> userList) {
+        List<UserResponseDto.UserPreviewDto> userDtoList = userList.stream()
+                .map(UsersConverter::toUserPreviewDto)
+                .collect(Collectors.toList());
+
+        return UserResponseDto.UserPreviewListDto.builder()
+                .isLast(userList.isLast())
+                .isFirst(userList.isFirst())
+                .totalPage(userList.getTotalPages())
+                .totalElements(userList.getTotalElements())
+                .listSize(userDtoList.size())
+                .userList(userDtoList)
+                .build();
+    }
+
     // 팔로잉 목록 converter
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowResponseDto.FollowingPreviewDto.builder()
@@ -35,7 +71,7 @@ public class UsersConverter {
                 .followsList(followingPreviewDtoList)
                 .build();
     }
-  
+
     // 팔로워 목록 converter
     public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowResponseDto.FollowerPreviewDto.builder()
