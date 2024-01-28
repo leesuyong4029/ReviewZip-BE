@@ -47,10 +47,11 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api:2.3.1' // XML 문서와 Java 객체 간 매핑을 자동화
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws s3
 
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
 	// Swagger 의존성 추가
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
+
+	// Redis 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.1.5'
 
 	tasks.named('test') {
 		useJUnitPlatform()
