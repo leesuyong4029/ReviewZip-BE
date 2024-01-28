@@ -29,6 +29,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NICKNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "USER407", "존재하지 않는 유저 닉네임입니다."),
     NAME_NOT_FOUND(HttpStatus.NOT_FOUND, "USER408", "존재하지 않는 유저 이름입니다."),
     USER_CREATE_FAIL(HttpStatus.BAD_REQUEST,"USER409", "유저 생성에 실패하였습니다."),
+    USER_DELETE_FAIL(HttpStatus.BAD_REQUEST,"USER410", "유저 삭제에 실패하였습니다."),
 
 
     // Post

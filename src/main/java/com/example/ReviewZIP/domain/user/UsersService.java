@@ -103,4 +103,12 @@ public class UsersService {
 
         return UserPage;
     }
+
+    @Transactional
+    public void deleteUser(Long userId){
+        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        usersRepository.deleteById(userId);
+
+    }
 }

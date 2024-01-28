@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Where(clause = "status = 'ENABLED'")
+@SQLDelete(sql = "UPDATE reviewzip.users SET status = 'DISABLED' WHERE id = ?")
 @NoArgsConstructor
 @Table(name = "users")
 public class Users extends BaseEntity {
@@ -45,6 +49,7 @@ public class Users extends BaseEntity {
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
     private Status status;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
