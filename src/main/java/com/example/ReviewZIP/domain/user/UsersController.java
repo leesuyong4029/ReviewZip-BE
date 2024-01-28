@@ -46,9 +46,6 @@ public class UsersController {
         return ApiResponse.onSuccess(userListDto);
     }
 
-
-    private final UsersService usersService;
-
     // 특정 유저의 팔로잉 목록 가져오기
     @GetMapping("{userId}/following")
     public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getOtherFollowingList(@PathVariable(name = "userId") Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
