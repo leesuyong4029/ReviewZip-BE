@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import org.springframework.web.bind.annotation.*;
+import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 
 @RestController
 @RequiredArgsConstructor

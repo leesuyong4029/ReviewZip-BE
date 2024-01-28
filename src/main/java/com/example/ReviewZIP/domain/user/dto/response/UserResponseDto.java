@@ -26,6 +26,11 @@ public class UserResponseDto {
         private Boolean isFirst;
         private Boolean isLast;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserPreviewListDto {
         List<UserPreviewDto> userList;
         Integer listSize;
@@ -46,6 +51,10 @@ public class UserResponseDto {
         private Integer scrabNum;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserPreviewDto {
         private Long id;
         private String nickname;
