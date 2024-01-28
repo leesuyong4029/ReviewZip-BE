@@ -53,7 +53,7 @@ public class PostsController {
     }
 
     @GetMapping("/random")
-    @Operation(summary = "랜덤으로 게시글 3개 가져오기",description = "PostInfoDto")
+    @Operation(summary = "랜덤으로 게시글 3개 가져오기", description = "PostInfoDto")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "랜덤으로 게시글 3개 가져오기 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
