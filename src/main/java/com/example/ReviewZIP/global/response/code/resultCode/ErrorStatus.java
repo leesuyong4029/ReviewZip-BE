@@ -35,6 +35,7 @@ public enum ErrorStatus implements BaseErrorCode {
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST401", "게시글을 찾을 수 없습니다."),
     LIKE_PERSON_NOT_FOUND(HttpStatus.BAD_REQUEST, "POST402", "공감 누른 사람을 찾을 수 없습니다."),
     POST_CREATE_FAIL(HttpStatus.BAD_REQUEST,"POST403", "게시글 작성에 실패하였습니다"),
+    SCRAB_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "스크랩 목록을 찾을 수 없습니다."),
 
     // Hashtag
     HASHTAG_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAG401", "존재하지 않는 해쉬태그입니다."),
