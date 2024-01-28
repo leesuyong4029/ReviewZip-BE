@@ -3,7 +3,6 @@ package com.example.ReviewZIP.domain.user;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import org.springframework.data.domain.Page;
