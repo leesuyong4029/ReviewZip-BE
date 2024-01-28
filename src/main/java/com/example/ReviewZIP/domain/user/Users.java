@@ -6,9 +6,7 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +14,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 public class Users extends BaseEntity {
