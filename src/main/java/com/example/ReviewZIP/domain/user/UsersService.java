@@ -104,6 +104,7 @@ public class UsersService {
         return UserPage;
     }
 
+    // 해당 유저가 맞는지에 대한 검증 필요, 원래 1L 필요하나 일단 데이터베이스 확인을 위하여 다음과 같이 진행
     @Transactional
     public void deleteUser(Long userId){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
