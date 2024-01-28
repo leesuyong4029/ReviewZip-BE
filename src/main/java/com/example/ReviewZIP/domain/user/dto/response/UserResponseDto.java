@@ -58,7 +58,7 @@ public class UserResponseDto {
     public static class UserPreviewDto {
         private Long id;
         private String nickname;
-        private String profileImage;
+        private String profileImages;
 
     }
 }

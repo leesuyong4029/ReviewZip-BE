@@ -26,8 +26,8 @@ import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 @RequiredArgsConstructor
 @RequestMapping("/v1/users")
 public class UsersController {
-
     private final UsersService usersService;
+
 
     @GetMapping("/search/name")
     public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByName(@RequestParam String name, @RequestParam (defaultValue = "0") Integer page) {

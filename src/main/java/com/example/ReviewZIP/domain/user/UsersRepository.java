@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface UsersRepository extends JpaRepository<Users, Long> {
 
     Page<Users> findByName(String name, Pageable pageable);
-}
     Page<Users> findByNickname(String nickname, Pageable pageable);
 }
