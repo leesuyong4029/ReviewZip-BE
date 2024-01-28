@@ -9,6 +9,7 @@ import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -100,7 +101,9 @@ public class UsersService {
     public Page<Posts> getOtherPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
-
+        if(UserPage.isEmpty()){
+            throw new PostsHandler(ErrorStatus.POST_LIST_NOT_FOUND);
+        }
         return UserPage;
     }
 
@@ -108,7 +111,9 @@ public class UsersService {
     public Page<Scrabs> getOtherScrabList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
-
+        if(UserPage.isEmpty()){
+            throw new PostsHandler(ErrorStatus.POST_LIST_NOT_FOUND);
+        }
         return UserPage;
     }
 }
