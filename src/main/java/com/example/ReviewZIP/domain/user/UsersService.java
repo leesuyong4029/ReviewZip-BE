@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class UsersService {
     private final UsersRepository userRepository;
 
-    public Page<Users> findUsersByNickname(String nickname, Integer page) throws UsersHandler {
-        Page<Users> pageUsers = userRepository.findByNickname(nickname, PageRequest.of(page, 10));
+    public Page<Users> findUsersByNickname(String nickname, Integer page, Integer size) throws UsersHandler {
+        Page<Users> pageUsers = userRepository.findByNickname(nickname, PageRequest.of(page, size));
         Users users = userRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         if (pageUsers.isEmpty()) {
