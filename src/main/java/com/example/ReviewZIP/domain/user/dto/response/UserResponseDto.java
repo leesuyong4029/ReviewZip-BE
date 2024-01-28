@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.user.dto.response;
 
 
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,30 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class UserResponseDto {
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserPreviewListDto {
+        List<UserPreviewDto> userList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserPreviewDto {
+        private Long id;
+        private String nickname;
+        private String profileImages;
+
+    }
+
     @Builder
     @Getter
     @NoArgsConstructor

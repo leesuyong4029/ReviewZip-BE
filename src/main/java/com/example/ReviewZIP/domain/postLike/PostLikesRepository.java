@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
-
+    boolean existsByUserAndPost(Users user, Posts post);
 }
