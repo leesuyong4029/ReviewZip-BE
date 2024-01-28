@@ -92,9 +92,10 @@ public class PostsService {
         return randomPostInfoDtos;
     }
 
+    // 특정 게시물의 정보 가져오기
     @Transactional
     public PostResponseDto.PostInfoDto getPostInfoDto(Long postId){
-        // 1L로 해당 유저를 대체
+        // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
         Users user = usersRepository.getById(1L);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);

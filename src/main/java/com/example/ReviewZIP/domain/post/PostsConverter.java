@@ -4,10 +4,6 @@ import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.user.Users;
-import com.example.ReviewZIP.domain.user.Users;
-import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
-import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
-
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
