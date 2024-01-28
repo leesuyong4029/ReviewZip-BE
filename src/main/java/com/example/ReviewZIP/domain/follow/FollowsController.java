@@ -2,6 +2,12 @@ package com.example.ReviewZIP.domain.follow;
 
 import com.example.ReviewZIP.domain.follow.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +22,14 @@ public class FollowsController {
     private final FollowsService followsService;
 
     @PostMapping("/users/{userId}")
+    @Operation(summary = "유저 팔로우 하기 API",description = "유저의 id를 받아 해당 유저 팔로우, FollowerPreviewDto와 FollowerPreviewListDto 이용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "팔로우 할 유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "팔로우할 유저의 아이디"),
+    })
     public ApiResponse<FollowResponseDto.toCreateFollowDto> follow(@PathVariable(name="userId") Long userId){
         Follows follows = followsService.createFollowing(userId);
 

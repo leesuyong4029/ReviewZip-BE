@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FollowsRepositoy extends JpaRepository<Follows, Long> {
-    boolean existsBySenderAndReceiver(Users sender, Users receiver);
 }
+

@@ -20,14 +20,8 @@ public class FollowsService {
 
     @Transactional
     public Follows createFollowing(Long userId){
-        Users sender = usersRepository.findById(1L).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        Users sender = usersRepository.getById(1L);
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-
-        // 팔로우가 이미 존재하는지 존재확인
-        boolean existsCheck = followsRepositoy.existsBySenderAndReceiver(sender, receiver);
-        if(existsCheck){
-            throw new FollowsHandler(ErrorStatus.FOLLOW_ALREADY_EXISTS);
-        }
 
         Follows newFollow = FollowsConverter.toFollows(sender, receiver);
         return followsRepositoy.save(newFollow);
