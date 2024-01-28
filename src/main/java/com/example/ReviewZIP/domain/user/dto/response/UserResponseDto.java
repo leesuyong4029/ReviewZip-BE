@@ -1,5 +1,7 @@
 package com.example.ReviewZIP.domain.user.dto.response;
 
+
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
