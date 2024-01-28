@@ -4,7 +4,6 @@ package com.example.ReviewZIP.domain.follow;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.handler.FollowsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FollowsService {
-    private final FollowsRepositoy followsRepositoy;
+    private final FollowsRepository followsRepository;
     private final UsersRepository usersRepository;
 
 
@@ -24,7 +23,7 @@ public class FollowsService {
         Users receiver = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         Follows newFollow = FollowsConverter.toFollows(sender, receiver);
-        return followsRepositoy.save(newFollow);
+        return followsRepository.save(newFollow);
     }
 
     @Transactional
@@ -32,7 +31,7 @@ public class FollowsService {
         Users sender = usersRepository.findById(1L).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new  UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Follows unfollow = followsRepository.getBySenderIdAndReceiverId(1L, receiver.getId());
+        Follows unfollow = followsRepository.getBySenderAndReceiver(sender, receiver);
 
         followsRepository.delete(unfollow);
     }

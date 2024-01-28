@@ -12,5 +12,5 @@ public interface FollowsRepository extends JpaRepository<Follows, Long> {
     Page<Follows> findAllBySender(Users sender, PageRequest pageRequest);
     Page<Follows> findAllByReceiver(Users user, PageRequest pageRequest);
 
-    Follows getBySenderIdAndReceiverId(Long senderId, Long receiverId);
+    Follows getBySenderAndReceiver(Users sender, Users receiver);
 }
