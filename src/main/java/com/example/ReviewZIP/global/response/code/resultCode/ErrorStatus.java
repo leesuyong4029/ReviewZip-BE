@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorStatus implements BaseErrorCode {
     // Global
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GLOBAL501", "서버 오류"),
+    KAKAO_TOKEN_ERROR(HttpStatus.BAD_REQUEST, "GLOBAL502", "토큰관련 서버 에러"),
     INPUT_INVALID_VALUE(HttpStatus.BAD_REQUEST, "GLOBAL401", "잘못된 입력"),
 
     // OAuth
@@ -46,6 +47,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // Store
     STORE_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE401", "존재하지 않는 가게입니다."),
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "STORE402", "존재하지 않는 가게 위치입니다."),
+
+    //PostLike
+    POSTLIKE_CREATE_FAIL(HttpStatus.NOT_FOUND,"POSTLIKE401","공감 누르기에 실패하였습니다"),
+    POSTLIKE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "POSTLIKE402","이미 공감한 게시물입니다"),
+    POSTLIKE_NOT_FOUND(HttpStatus.NOT_FOUND,"POSTLIKE403","존재하지 않는 공감입니다."),
 
     // Image
     IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "IMAGE401", "파일이 존재하지 않습니다."),
