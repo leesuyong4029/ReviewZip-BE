@@ -6,6 +6,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UsersService {
-
     private final UsersRepository usersRepository;
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
@@ -89,7 +89,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Posts> getOtherPostList(Long userId, Integer page, Integer size){
+    public Page<Posts> getPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
 
@@ -97,7 +97,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Scrabs> getOtherScrabList(Long userId, Integer page, Integer size){
+    public Page<Scrabs> getScrabList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
 
@@ -106,10 +106,25 @@ public class UsersService {
 
     // 해당 유저가 맞는지에 대한 검증 필요, 원래 1L 필요하나 일단 데이터베이스 확인을 위하여 다음과 같이 진행
     @Transactional
-    public void deleteUser(Long userId){
-        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+    public void deleteUser(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         usersRepository.deleteById(userId);
 
     }
+
+    @Transactional
+    public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
+        // 사용자 임의 처리, 1L 가정
+        Users me = usersRepository.getById(1L);
+        Users other = usersRepository.findById(userId)
+                .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        Integer followingNum = followsRepository.countBySenderId(userId);
+        Integer followerNum = followsRepository.countByReceiverId(userId);
+        boolean isFollowing = followsRepository.existsBySenderAndReceiver(me, other);
+
+        return UsersConverter.toOtherInfoDto(other, followingNum, followerNum, isFollowing);
+    }
+
 }

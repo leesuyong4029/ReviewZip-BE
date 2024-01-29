@@ -7,3 +7,4 @@ public class PostHashtagsHandler extends GeneralException {
     public PostHashtagsHandler(BaseErrorCode errorCode) {super(errorCode);}
 }
 
+

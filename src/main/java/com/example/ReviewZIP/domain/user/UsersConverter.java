@@ -49,6 +49,7 @@ public class UsersConverter {
                 .build();
     }
 
+
     // 팔로잉 목록 converter
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowResponseDto.FollowingPreviewDto.builder()
@@ -129,7 +130,7 @@ public class UsersConverter {
                 .build();
     }
 
-    public static UserResponseDto.PostPreviewListDto toScrabPreviewListDto(Page<Scrabs> scrabList){
+    public static UserResponseDto.PostPreviewListDto toScrabPreviewListDto(Page<Scrabs> scrabList) {
         List<UserResponseDto.PostPreviewDto> scrabPriviewDtoList = scrabList.stream()
                 .map(UsersConverter::toScrabPreviewDto).collect(Collectors.toList());
 
@@ -140,6 +141,21 @@ public class UsersConverter {
                 .totalPage(scrabList.getTotalPages())
                 .listSize(scrabPriviewDtoList.size())
                 .postList(scrabPriviewDtoList)
+                .build();
+    }
+
+    public static UserResponseDto.UserInfoDto toOtherInfoDto(Users user, Integer followingNum, Integer followerNum, boolean isFollowing){
+
+        String imageUrl = (user.getProfileUrl() != null) ? user.getProfileUrl() : null;
+
+        return UserResponseDto.UserInfoDto.builder()
+                .userId(user.getId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .profileUrl(imageUrl)
+                .followingNum(followingNum)
+                .followerNum(followerNum)
+                .isFollowing(isFollowing)
                 .build();
     }
 }
