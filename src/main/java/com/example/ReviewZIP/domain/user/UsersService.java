@@ -89,7 +89,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Posts> getOtherPostList(Long userId, Integer page, Integer size){
+    public Page<Posts> getPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
 
@@ -97,7 +97,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Scrabs> getOtherScrabList(Long userId, Integer page, Integer size){
+    public Page<Scrabs> getScrabList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
 
@@ -106,8 +106,8 @@ public class UsersService {
 
     // 해당 유저가 맞는지에 대한 검증 필요, 원래 1L 필요하나 일단 데이터베이스 확인을 위하여 다음과 같이 진행
     @Transactional
-    public void deleteUser(Long userId){
-        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+    public void deleteUser(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         usersRepository.deleteById(userId);
 
