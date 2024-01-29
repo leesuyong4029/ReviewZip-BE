@@ -1,6 +1,5 @@
 package com.example.ReviewZIP.domain.post;
 
-import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.user.Users;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

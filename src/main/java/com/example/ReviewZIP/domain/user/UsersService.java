@@ -2,20 +2,15 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.follow.FollowsRepository;
-import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.handler.FollowsHandler;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,9 +76,7 @@ public class UsersService {
     public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
-        if(FollowsPage.isEmpty()){
-            throw new FollowsHandler(ErrorStatus.FOLLOWING_LIST_NOT_FOUND);
-        }
+
         return FollowsPage;
     }
 
@@ -91,9 +84,7 @@ public class UsersService {
     public Page<Follows> getOtherFollowerList(Long userId, Integer page, Integer size){
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver, PageRequest.of(page, size));
-        if(FollowsPage.isEmpty()){
-            throw new FollowsHandler(ErrorStatus.FOLLOWER_LIST_NOT_FOUND);
-        }
+
         return FollowsPage;
     }
 
@@ -101,9 +92,7 @@ public class UsersService {
     public Page<Posts> getOtherPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
-        if(UserPage.isEmpty()){
-            throw new PostsHandler(ErrorStatus.POST_LIST_NOT_FOUND);
-        }
+
         return UserPage;
     }
 
@@ -111,9 +100,16 @@ public class UsersService {
     public Page<Scrabs> getOtherScrabList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
-        if(UserPage.isEmpty()){
-            throw new PostsHandler(ErrorStatus.POST_LIST_NOT_FOUND);
-        }
+
         return UserPage;
+    }
+
+    // 해당 유저가 맞는지에 대한 검증 필요, 원래 1L 필요하나 일단 데이터베이스 확인을 위하여 다음과 같이 진행
+    @Transactional
+    public void deleteUser(Long userId){
+        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        usersRepository.deleteById(userId);
+
     }
 }

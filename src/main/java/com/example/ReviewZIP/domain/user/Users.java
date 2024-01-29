@@ -6,7 +6,11 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +18,8 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
+@Where(clause = "status = 'ENABLED'")
+@SQLDelete(sql = "UPDATE reviewzip.users SET status = 'DISABLED' WHERE id = ?")
 @NoArgsConstructor
 @Table(name = "users")
 public class Users extends BaseEntity {
