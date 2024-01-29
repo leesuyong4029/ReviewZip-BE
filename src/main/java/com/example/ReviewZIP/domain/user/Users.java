@@ -30,13 +30,10 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String user_id;
+    private String social;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String phone_num;
 
     @Column(nullable = false)
