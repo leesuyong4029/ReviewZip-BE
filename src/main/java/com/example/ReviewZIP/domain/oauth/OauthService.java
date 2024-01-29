@@ -2,6 +2,7 @@ package com.example.ReviewZIP.domain.oauth;
 
 import com.example.ReviewZIP.domain.jwt.TokenProvider;
 import com.example.ReviewZIP.domain.oauth.dto.request.OauthRequestDto;
+import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
@@ -35,6 +36,7 @@ public class OauthService {
                 .nickname(nickname)
                 .name(nickname)
                 .email(email)
+                .status(Status.ENABLED)
                 .build();
         usersRepository.save(newUser);
 
@@ -44,6 +46,8 @@ public class OauthService {
     @Transactional
     public Map<String, Object> generateAccessToken(String id, String nickname, String email){
         boolean exist = usersRepository.existsBySocial(id);
+
+        System.out.println(exist);
         Long userId;
 
         if(!exist) {

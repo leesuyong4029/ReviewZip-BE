@@ -6,6 +6,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UsersService {
-
     private final UsersRepository usersRepository;
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
@@ -112,4 +112,19 @@ public class UsersService {
         usersRepository.deleteById(userId);
 
     }
+
+    @Transactional
+    public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
+        // 사용자 임의 처리, 1L 가정
+        Users me = usersRepository.getById(1L);
+        Users other = usersRepository.findById(userId)
+                .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        Integer followingNum = followsRepository.countBySenderId(userId);
+        Integer followerNum = followsRepository.countByReceiverId(userId);
+        boolean isFollowing = followsRepository.existsBySenderAndReceiver(me, other);
+
+        return UsersConverter.toOtherInfoDto(other, followingNum, followerNum, isFollowing);
+    }
+
 }
