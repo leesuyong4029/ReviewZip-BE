@@ -55,8 +55,6 @@ public class PostsController {
     })
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 아이디"),
-            @Parameter(name = "page", description = "페이지 번호"),
-            @Parameter(name = "size", description = "페이징 사이즈")
     })
     public ApiResponse<PostResponseDto.PostInfoDto> getPostInfo(@PathVariable(name = "postId") Long postId){
 
@@ -86,5 +84,19 @@ public class PostsController {
         List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getRandomPostInfoDto(userId);
 
         return ApiResponse.onSuccess(randomPostInfoDtos);
+    }
+
+    @DeleteMapping("/{postId}")
+    @Operation(summary = "게시글 삭제 API", description = "게시글의 id를 받아 해당하는 게시글 삭제")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "게시글이 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "postId", description = "게시글의 아이디"),
+    })
+    public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId){
+        postsService.deletePost(postId);
+        return ApiResponse.onSuccess(null);
     }
 }
