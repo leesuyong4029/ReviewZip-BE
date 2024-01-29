@@ -4,6 +4,8 @@ import com.example.ReviewZIP.domain.jwt.TokenProvider;
 import com.example.ReviewZIP.domain.oauth.dto.request.OauthRequestDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.GeneralHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +62,7 @@ public class OauthService {
         return map;
     }
 
-    public List<String> getKakaoUserInfo(OauthRequestDto.kakaoTokenRequest request) throws JsonProcessingException {
+    public List<String> getKakaoUserInfo(OauthRequestDto.kakaoTokenRequestDto request) throws JsonProcessingException {
         String token = request.getToken();
 
         HttpHeaders headers = new HttpHeaders();
@@ -71,12 +73,18 @@ public class OauthService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<String> response = restTemplate.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
+        ResponseEntity<String> response;
+
+        try {
+            response = restTemplate.exchange(
+                    "https://kapi.kakao.com/v2/user/me",
+                    HttpMethod.POST,
+                    kakaoProfileRequest,
+                    String.class
+            );
+        } catch (Exception e){
+            throw new GeneralHandler(ErrorStatus.KAKAO_TOKEN_ERROR);
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseBody = response.getBody();
