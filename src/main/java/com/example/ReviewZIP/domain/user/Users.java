@@ -34,13 +34,10 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String user_id;
+    private String social;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String phone_num;
 
     @Column(nullable = false)
@@ -49,7 +46,6 @@ public class Users extends BaseEntity {
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'ENABLED'")
     private Status status;
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
