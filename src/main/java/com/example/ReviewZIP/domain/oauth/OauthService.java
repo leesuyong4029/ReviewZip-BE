@@ -15,13 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,27 +26,31 @@ public class OauthService {
     private final UsersRepository usersRepository;
     private final TokenProvider tokenProvider;
 
-    public Users createUser(String id, String nickname, String email){
+    @Transactional
+    public Long createUser(String id, String nickname, String email){
         Users newUser = Users.builder()
                 .social(id)
                 .nickname(nickname)
                 .name(nickname)
                 .email(email)
                 .build();
+        usersRepository.save(newUser);
 
-        return usersRepository.save(newUser);
+        return newUser.getId();
     }
 
+    @Transactional
     public Map<String, Object> generateAccessToken(String id, String nickname, String email){
         boolean exist = usersRepository.existsBySocial(id);
+        Long userId;
 
-        // 유저가 존재하지 않을때 -> 유저 생성
         if(!exist) {
-            Users newUser = createUser(id, nickname, email);
+            // 유저가 존재하지 않을때 -> 유저 생성
+            userId = createUser(id, nickname, email);
+        } else {
+            // 존재할 경우 해당 유저의 userId 반환
+            userId = usersRepository.getBySocial(id).getId();
         }
-
-        // 생성된 유저의 id값을 이용하여 token화
-        Long userId = usersRepository.getBySocial(id).getId();
 
         String accessToken = tokenProvider.makeToken(userId);
 
@@ -64,15 +64,15 @@ public class OauthService {
         String token = request.getToken();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-type", " application/x-www-form-urlencoded;charset=utf-8 ");
+        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(null, headers);
 
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseEntity<String> response = restTemplate.exchange(
-                "https://kapi.kako.com/v2/user/me",
+                "https://kapi.kakao.com/v2/user/me",
                 HttpMethod.POST,
                 kakaoProfileRequest,
                 String.class
