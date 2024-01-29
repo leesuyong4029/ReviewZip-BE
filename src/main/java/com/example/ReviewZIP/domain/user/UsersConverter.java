@@ -15,7 +15,6 @@ public class UsersConverter {
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
-                .profileImage(user.getProfileUrl())
                 .profileImages(user.getProfileUrl())
                 .build();
     }
