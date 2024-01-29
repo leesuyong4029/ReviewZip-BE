@@ -20,6 +20,16 @@ public class PostResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class PostPreviewDto {
+        private Long id;
+        private String imageUrl;
+        private Integer likeNum;
+        private Integer scrabNum;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserInfoDto{
         private Long id;
         private String nickname;
@@ -34,6 +44,18 @@ public class PostResponseDto {
         private String url;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostPreviewListDto {
+        private List<PostPreviewDto> postList;
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
+    }
     @Builder
     @Getter
     @NoArgsConstructor
