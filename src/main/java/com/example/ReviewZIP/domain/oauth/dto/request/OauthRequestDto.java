@@ -6,7 +6,7 @@ import lombok.Getter;
 public class OauthRequestDto {
 
     @Getter
-    public static class kakaoTokenRequest{
+    public static class kakaoTokenRequestDto{
         String token;
     }
 }
