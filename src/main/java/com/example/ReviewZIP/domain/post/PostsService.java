@@ -103,4 +103,6 @@ public class PostsService {
 
         return PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab);
     }
+
+
 }
