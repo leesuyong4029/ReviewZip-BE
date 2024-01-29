@@ -7,6 +7,7 @@ import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -34,6 +35,7 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(unique = true)
     private String social;
 
     private String password;
@@ -47,6 +49,7 @@ public class Users extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
     private List<Follows> followingList = new ArrayList<>();

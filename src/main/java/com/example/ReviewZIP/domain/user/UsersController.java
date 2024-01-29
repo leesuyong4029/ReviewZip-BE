@@ -131,7 +131,7 @@ public class UsersController {
 
      // 유저 삭제하기
      @DeleteMapping("/{userId}")
-     @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제")
+     @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제한다.")
      @ApiResponses({
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
      })
@@ -141,6 +141,21 @@ public class UsersController {
      public ApiResponse<Void> deleteUser(@PathVariable(name = "userId")Long userId) {
          usersService.deleteUser(userId);
          return ApiResponse.onSuccess(null);
+     }
+
+     // 특정 유저의 정보 가져오기
+    @GetMapping("/{userId}")
+    @Operation(summary = "특정 유저의 정보(프로필) API",description = "user id를 받아 특정 유저의 정보(프로필) 가져오기, UserInfoDto 이용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "유저의 아이디"),
+    })
+    public ApiResponse<UserResponseDto.UserInfoDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
+
+        return ApiResponse.onSuccess(usersService.getOtherInfo(userId));
      }
 
     @GetMapping("/me/posts")
