@@ -2,13 +2,13 @@ package com.example.ReviewZIP.domain.postHashtag;
 
 import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "post_hashtags")
 public class PostHashtags {
