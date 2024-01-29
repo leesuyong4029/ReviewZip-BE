@@ -1,15 +1,5 @@
 package com.example.ReviewZIP.domain.user;
 
-import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
-import com.example.ReviewZIP.global.response.ApiResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.http.ResponseEntity.ok;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
@@ -141,22 +131,29 @@ public class UsersController {
 
      // 유저 삭제하기
      @DeleteMapping("/{userId}")
-     @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제")
+     @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제한다.")
      @ApiResponses({
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
      })
      @Parameters({
              @Parameter(name = "userId", description = "유저의 아이디"),
-             @Parameter(name = "page", description = "페이지 번호"),
-             @Parameter(name = "size", description = "페이징 사이즈")
      })
      public ApiResponse<Void> deleteUser(@PathVariable(name = "userId")Long userId) {
          usersService.deleteUser(userId);
          return ApiResponse.onSuccess(null);
      }
 
+     // 특정 유저의 정보 가져오기
     @GetMapping("/{userId}")
-    public ApiResponse<UserResponseDto.OtherInfoDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
+    @Operation(summary = "특정 유저의 정보(프로필) API",description = "user id를 받아 특정 유저의 정보(프로필) 가져오기, UserInfoDto 이용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "유저의 아이디"),
+    })
+    public ApiResponse<UserResponseDto.UserInfoDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
 
         return ApiResponse.onSuccess(usersService.getOtherInfo(userId));
     }

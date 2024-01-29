@@ -1,13 +1,13 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
-import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -35,6 +35,7 @@ public class Users extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(unique = true)
     private String social;
 
     private String password;

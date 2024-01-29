@@ -6,6 +6,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
@@ -113,7 +114,7 @@ public class UsersService {
     }
 
     @Transactional
-    public UserResponseDto.OtherInfoDto getOtherInfo(Long userId){
+    public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
         // 사용자 임의 처리, 1L 가정
         Users me = usersRepository.getById(1L);
         Users other = usersRepository.findById(userId)

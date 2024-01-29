@@ -60,7 +60,7 @@ public class UserResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class OtherInfoDto {
+    public static class UserInfoDto {
         private Long userId;
         private String name;
         private String nickname;

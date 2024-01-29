@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.image;
 
+import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import com.example.ReviewZIP.domain.post.Posts;
 import jakarta.persistence.*;
