@@ -5,6 +5,7 @@ import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.store.Stores;
+import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 
@@ -12,6 +13,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.List;
