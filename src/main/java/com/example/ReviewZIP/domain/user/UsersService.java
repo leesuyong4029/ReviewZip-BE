@@ -106,7 +106,6 @@ public class UsersService {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         usersRepository.deleteById(userId);
-
     }
 
     public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
