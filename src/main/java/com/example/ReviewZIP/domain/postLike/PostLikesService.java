@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
-import jakarta.transaction.Transactional;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.postLike.dto.request.PostLikesRequestDto;
@@ -20,11 +19,13 @@ import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostLikesService{
 
     private final PostLikesRepository postLikesRepository;
@@ -46,12 +47,12 @@ public class PostLikesService{
         );
     }
 
-
+    @Transactional
     public void removeLike(Long postId, Long userId) {
         PostLikes postLikes = postLikesRepository.findByPostIdAndUserId(postId, userId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POSTLIKE_NOT_FOUND));
         postLikesRepository.delete(postLikes);
     }
-
+    @Transactional
     public void addLike(PostLikesRequestDto.PostLikesDto postLikesDto) {
         Users user = usersRepository.findById(postLikesDto.getUserId()).orElseThrow(() -> new PostLikesHandler(ErrorStatus.USER_NOT_FOUND));
         Posts post = postsRepository.findById(postLikesDto.getPostId()).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POST_NOT_FOUND));
