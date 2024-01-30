@@ -69,7 +69,7 @@ public class UsersController {
             @Parameter(name = "size", description = "페이징 사이즈")
     })
     public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getUserFollowingList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
-        Page<Follows> FollowsPage = usersService.getFollowingList(1l, page, size); //수정 필요
+        Page<Follows> FollowsPage = usersService.getFollowingList(1L, page, size); //수정 필요
 
         return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
     }
@@ -91,7 +91,7 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}/following")
-    @Operation(summary = "특정 유저의 팔로잉 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로잉 목록 조회, FollowerPreviewDto와 FollowerPreviewListDto 이용")
+    @Operation(summary = "특정 유저의 팔로잉 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로잉 목록 조회, FollowingPreviewDto와 FollowingPreviewListDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
