@@ -72,14 +72,14 @@ public class UsersService {
 
     }
 
-    public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
+    public Page<Follows> getFollowingList(Long userId, Integer page, Integer size){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
 
         return FollowsPage;
     }
 
-    public Page<Follows> getOtherFollowerList(Long userId, Integer page, Integer size){
+    public Page<Follows> getFollowerList(Long userId, Integer page, Integer size){
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver, PageRequest.of(page, size));
 
@@ -106,7 +106,6 @@ public class UsersService {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         usersRepository.deleteById(userId);
-
     }
 
     public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
