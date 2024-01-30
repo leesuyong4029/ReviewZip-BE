@@ -70,7 +70,7 @@ public class UsersController {
             @Parameter(name = "size", description = "페이징 사이즈")
     })
     public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getOtherFollowingList(@PathVariable(name = "userId") Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
-        Page<Follows> FollowsPage = usersService.getOtherFollowingList(userId, page, size);
+        Page<Follows> FollowsPage = usersService.getFollowingList(userId, page, size);
 
         return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
     }
@@ -87,7 +87,7 @@ public class UsersController {
             @Parameter(name = "size", description = "페이징 사이즈")
     })
     public ApiResponse<FollowResponseDto.FollowerPreviewListDto> getOtherFollowerList(@PathVariable(name = "userId")Long userId, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size){
-        Page<Follows> FollowsPage = usersService.getOtherFollowerList(userId, page, size);
+        Page<Follows> FollowsPage = usersService.getFollowerList(userId, page, size);
 
         return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
     }

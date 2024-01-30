@@ -73,7 +73,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
+    public Page<Follows> getFollowingList(Long userId, Integer page, Integer size){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
 
@@ -81,7 +81,7 @@ public class UsersService {
     }
 
     @Transactional
-    public Page<Follows> getOtherFollowerList(Long userId, Integer page, Integer size){
+    public Page<Follows> getFollowerList(Long userId, Integer page, Integer size){
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver, PageRequest.of(page, size));
 
