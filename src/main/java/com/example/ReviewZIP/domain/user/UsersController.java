@@ -58,6 +58,24 @@ public class UsersController {
         return ApiResponse.onSuccess(userListDto);
     }
 
+    @GetMapping("/me/following")
+    @Operation(summary = "나의 팔로잉 목록 가져오기 API",description = "토큰 인증 후 나의 팔로잉 목록 조회, FollowingPreviewDto와 FollowingPreviewListDto 이용, 임시로 user id 1의 팔로잉 목록 반환")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호"),
+            @Parameter(name = "size", description = "페이징 사이즈")
+    })
+    public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getUserFollowingList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
+        Page<Follows> FollowsPage = usersService.getFollowingList(1l, page, size); //수정 필요
+
+        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
+    }
+
+    @GetMapping("/{userId}/following")
+    @Operation(summary = "특정 유저의 팔로잉 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로잉 목록 조회, FollowingPreviewDto와 FollowingPreviewListDto 이용")
     @GetMapping("/me/followers")
     @Operation(summary = "나의 팔로워 목록 가져오기 API",description = "토큰 인증 후 나의 팔로워 목록 조회, FollowerPreviewDto와 FollowerPreviewListDto 이용")
     @ApiResponses({
@@ -109,7 +127,7 @@ public class UsersController {
     }
 
     @GetMapping("/me/posts")
-    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "token을 이용하여 유저정보 받은 후 게시글 목록 가져오기, PostPreviewDto와 PostPreviewListDto 이용")
+    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "토큰 인증 후 게시글 목록 가져오기, PostPreviewDto와 PostPreviewListDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
@@ -179,7 +197,7 @@ public class UsersController {
      }
 
     @DeleteMapping("/{userId}")
-    @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제한다.")
+    @Operation(summary = "유저 삭제하기 API",description = "토큰 인증 후 유저를 삭제한다, 아직 토큰 인증이 이루어지지 않아 임의로 id를 넣어 삭제")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
