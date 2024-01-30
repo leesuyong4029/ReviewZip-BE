@@ -74,7 +74,6 @@ public class PostsService {
         return savedPost;
     }
 
-    @Transactional
     public List<PostResponseDto.PostInfoDto> getRandomPostInfoDto(Long userId) {
         Users user = usersRepository.getById(userId);
 
@@ -110,7 +109,6 @@ public class PostsService {
     }
 
     // 특정 게시물의 정보 가져오기
-    @Transactional
     public PostResponseDto.PostInfoDto getPostInfoDto(Long postId){
         // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
         Users user = usersRepository.getById(1L);

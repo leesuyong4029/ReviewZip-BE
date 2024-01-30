@@ -72,23 +72,20 @@ public class UsersService {
 
     }
 
-    @Transactional
-    public Page<Follows> getFollowingList(Long userId, Integer page, Integer size){
+    public Page<Follows> getOtherFollowingList(Long userId, Integer page, Integer size){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
 
         return FollowsPage;
     }
 
-    @Transactional
-    public Page<Follows> getFollowerList(Long userId, Integer page, Integer size){
+    public Page<Follows> getOtherFollowerList(Long userId, Integer page, Integer size){
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver, PageRequest.of(page, size));
 
         return FollowsPage;
     }
 
-    @Transactional
     public Page<Posts> getPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
@@ -96,7 +93,6 @@ public class UsersService {
         return UserPage;
     }
 
-    @Transactional
     public Page<Scrabs> getScrabList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
@@ -113,7 +109,6 @@ public class UsersService {
 
     }
 
-    @Transactional
     public UserResponseDto.UserInfoDto getOtherInfo(Long userId){
         // 사용자 임의 처리, 1L 가정
         Users me = usersRepository.getById(1L);
