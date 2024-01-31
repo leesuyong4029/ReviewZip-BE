@@ -1,35 +1,23 @@
 package com.example.ReviewZIP.domain.post;
 
-import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
-import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
-import com.example.ReviewZIP.domain.postHashtag.PostHashtagsService;
-import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.handler.PostHashtagsHandler;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
-
-
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.ImagesHandler;
+import com.example.ReviewZIP.global.response.exception.handler.PostHashtagsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +71,6 @@ public class PostsService {
         return savedPost;
     }
 
-    @Transactional
     public List<PostResponseDto.PostInfoDto> getRandomPostInfoDto(Long userId) {
         Users user = usersRepository.getById(userId);
 
@@ -118,7 +106,6 @@ public class PostsService {
     }
 
     // 특정 게시물의 정보 가져오기
-    @Transactional
     public PostResponseDto.PostInfoDto getPostInfoDto(Long postId){
         // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
         Users user = usersRepository.getById(1L);
@@ -129,5 +116,11 @@ public class PostsService {
         return PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab);
     }
 
+    @Transactional
+    public void deletePost(Long postId){
+        Posts post = postsRepository.findById(postId).orElseThrow(()-> new PostsHandler(ErrorStatus.POST_NOT_FOUND));
 
+        postsRepository.deleteById(post.getId());
+
+    }
 }
