@@ -53,9 +53,6 @@ public class PostsService {
     public Page<Posts> searchPostByHashtag (Long id, Integer page, Integer size){
         Page<PostHashtags> postHashtagsList = postHashtagsRepository.findPostHashtagsById(id, PageRequest.of(page,size));
 
-        if (postHashtagsList.isEmpty()) {
-            throw new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND);
-        }
         List<Posts> postsList = postHashtagsList.getContent().stream()
                 .map(PostHashtags::getPost)
                 .collect(Collectors.toList());
