@@ -29,7 +29,7 @@ public class PostsController {
 
     private final PostsService postsService;
 
-    @GetMapping("/{hashtagId}")
+    @GetMapping("/hashtags/{hashtagId}")
     @Operation(summary = "해시태그 아이디로 게시글을 찾는 API",description = "해시태그 아이디로 게시글을 찾는 기능, 반환 시 PostPreviewListDto, PostPreviewDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
