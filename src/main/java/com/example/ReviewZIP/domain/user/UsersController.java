@@ -25,7 +25,6 @@ public class UsersController {
     private final UsersService usersService;
 
     @GetMapping("/search/name")
-    @Operation(summary = "이름으로 유저 검색 API",description = "유저의 이름으로 특정 유저를 검색 (자신이 팔로잉한 대상은 제외)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER408", description = "유저를 찾을 수 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -175,6 +174,7 @@ public class UsersController {
 
     }
 
+     // 특정 유저의 스크랩들 가져오기
      @GetMapping("/{userId}/posts/scrabs")
      @Operation(summary = "특정 유저가 스크랩한 게시물 가져오기 API",description = "특정 유저의 id를 받아 스크랩한 게시글들의 목록(대표 이미지들)을 반환, PostPreviewDto와 PostPreviewListDto 이용")
      @ApiResponses({

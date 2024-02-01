@@ -32,9 +32,6 @@ public class UsersService {
         Page<Users> pageUsers = usersRepository.findByName(name, PageRequest.of(page, 10));
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-     if (pageUsers.isEmpty()) {
-        throw new UsersHandler(ErrorStatus.USER_NOT_FOUND);
-    }
 
     List<Follows> followsList = users.getFollowingList();
 
@@ -53,9 +50,6 @@ public class UsersService {
         Page<Users> pageUsers = usersRepository.findByNickname(nickname, PageRequest.of(page, size));
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        if (pageUsers.isEmpty()) {
-            throw new UsersHandler(ErrorStatus.USER_NOT_FOUND);
-        }
 
         List<Follows> followsList = users.getFollowingList();
 
