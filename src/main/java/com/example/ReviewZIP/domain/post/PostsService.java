@@ -1,18 +1,20 @@
 package com.example.ReviewZIP.domain.post;
 
+import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
+import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.ImagesHandler;
-import com.example.ReviewZIP.global.response.exception.handler.PostHashtagsHandler;
+import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
@@ -123,4 +125,46 @@ public class PostsService {
         postsRepository.deleteById(post.getId());
 
     }
+
+    @Transactional
+    public void removeLike(Long postId, Long userId) {
+        PostLikes postLikes = postLikesRepository.findByPostIdAndUserId(postId, userId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POSTLIKE_NOT_FOUND));
+        postLikesRepository.delete(postLikes);
+    }
+    @Transactional
+    public void addLike(Long postId) {
+        // user 1L로 대체
+        Users user = usersRepository.getById(1L);
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POST_NOT_FOUND));
+
+        PostLikes postLikes = PostLikes.builder()
+                .post(post)
+                .user(user)
+                .build();
+
+        try {
+            PostLikes result = postLikesRepository.save(postLikes);
+        } catch (Exception e) {
+            throw new PostLikesHandler(ErrorStatus.POSTLIKE_CREATE_FAIL);
+        }
+
+    }
+
+
+    public List<Long> getFollowigIdList(){
+        // 일단 1L로 나를 대체
+        Users me = usersRepository.getById(1L);
+        List<Long> followingIdList = new ArrayList<>();
+        List<Follows> followingList = me.getFollowingList();
+        for (Follows following : followingList){
+            Long followingId = following.getId();
+            followingIdList.add(followingId);
+        }
+        return followingIdList;
+    }
+
+    public List<Users> getPostLikeUserList(Long postId){
+        return  postLikesRepository.findUsersByPostId(postId);
+    }
+
 }

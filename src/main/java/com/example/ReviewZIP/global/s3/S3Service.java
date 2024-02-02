@@ -27,8 +27,10 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${cloud.aws.s3.objectUrl}")
+    private String fileUrl;
+
     private final AmazonS3Client amazonS3Client;
-    private final ImagesRepository imagesRepository;
 
     private String getFileExtension(String fileName) {
         try {
@@ -57,6 +59,6 @@ public class S3Service {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
         }
 
-        return new S3Result(bucket + "/ReviewImage/" + fileName);
+        return new S3Result(fileUrl + "/ReviewImage/" + fileName);
     }
 }
