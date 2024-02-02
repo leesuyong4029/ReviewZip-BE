@@ -9,6 +9,7 @@ import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
@@ -167,4 +168,28 @@ public class PostsService {
         return  postLikesRepository.findUsersByPostId(postId);
     }
 
+    @Transactional
+    public void createScrabs(Long postId){
+        // userId는 1로 대체
+        Users me = usersRepository.getById(1L);
+        Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
+
+        Scrabs newScrab = Scrabs.builder()
+                .user(me)
+                .post(post)
+                .build();
+
+        scrabsRepository.save(newScrab);
+    }
+
+    @Transactional
+    public void deleteScrabs(Long postId){
+        // userId는 1로 대체
+        Users me = usersRepository.getById(1L);
+        Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
+
+        Scrabs scrabs = scrabsRepository.findByUserAndPost(me, post);
+
+        scrabsRepository.delete(scrabs);
+    }
 }

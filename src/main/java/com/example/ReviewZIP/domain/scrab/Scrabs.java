@@ -5,13 +5,13 @@ import com.example.ReviewZIP.global.entity.BaseEntity;
 import com.example.ReviewZIP.domain.post.Posts;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "scrabs")
 public class Scrabs extends BaseEntity {
