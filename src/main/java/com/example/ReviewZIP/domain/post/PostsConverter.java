@@ -1,22 +1,31 @@
 package com.example.ReviewZIP.domain.post;
 
-import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.domain.user.UsersRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class PostsConverter {
+
+    public static UsersRepository usersRepository;
+
+    public static FollowsRepository followsRepository;
+
+    public PostsConverter(UsersRepository usersRepository, FollowsRepository followsRepository) {
+        this.usersRepository = usersRepository;
+        this.followsRepository = followsRepository;
+    }
+
 
     public static PostResponseDto.PostPreviewDto toPostPreviewDto(Posts post) {
         return PostResponseDto.PostPreviewDto.builder()
@@ -87,5 +96,20 @@ public class PostsConverter {
                 .postImages(imageListDto)
                 .createdAt(createdAt)
                 .build();
+    }
+
+    public static List<PostResponseDto.PostUserLikeDto> toPostUserLikeListDto(List<Users> userList, List<Long> likeAndFollowingIdList){
+        List<PostResponseDto.PostUserLikeDto> postUserLikeDtoList = new ArrayList<>();
+        for(Users user : userList){
+            boolean isFollowing = likeAndFollowingIdList.contains(user.getId());
+            PostResponseDto.PostUserLikeDto postUserLikeDto = PostResponseDto.PostUserLikeDto.builder()
+                    .userId(user.getId())
+                    .nickname(user.getNickname())
+                    .profileUrl(user.getProfileUrl())
+                    .isFollowing(isFollowing)
+                    .build();
+            postUserLikeDtoList.add(postUserLikeDto);
+        }
+        return postUserLikeDtoList;
     }
 }

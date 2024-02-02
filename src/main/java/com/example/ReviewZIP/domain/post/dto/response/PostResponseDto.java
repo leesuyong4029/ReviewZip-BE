@@ -1,11 +1,5 @@
 package com.example.ReviewZIP.domain.post.dto.response;
 
-import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -84,4 +78,24 @@ public class PostResponseDto {
         private Double point;
         private List<Long> imageIds;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostUserLikeDto{
+        private Long userId;
+        private String nickname;
+        private String profileUrl;
+        private boolean isFollowing;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostUserLikeListDto{
+        List<PostUserLikeDto> userLikeDto;
+    }
+
 }
