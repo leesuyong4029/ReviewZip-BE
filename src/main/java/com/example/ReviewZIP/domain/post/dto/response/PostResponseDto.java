@@ -95,7 +95,7 @@ public class PostResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostUserLikeListDto{
-        List<PostUserLikeDto> userLikeDto;
+        private List<PostUserLikeDto> userLikeDto;
     }
 
 }

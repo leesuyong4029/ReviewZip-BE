@@ -107,9 +107,9 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 아이디"),
     })
-    public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId){
+    public ApiResponse<SuccessStatus> deletePost(@PathVariable(name = "postId") Long postId){
         postsService.deletePost(postId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @PostMapping("/{postId}/like")
@@ -132,8 +132,30 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE403", description = "존재하지 않는 공감",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> postRemoveLike(@PathVariable Long postId) {
+    public ApiResponse<SuccessStatus> removePostLike(@PathVariable Long postId) {
         postsService.removeLike(postId, 1L);
         return ApiResponse.onSuccess(SuccessStatus.POST_CANCEL_LIKE_SUCCESS);
+    }
+
+    @PostMapping("/{postid}/scrabs")
+    @Operation(summary = "게시글 스크랩하기 API",description = "post의 id를 받아 스크랩하는 기능")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<SuccessStatus> createScrabs(@PathVariable(name = "postid")Long postId){
+        postsService.createScrabs(postId);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
+    @DeleteMapping("/{postid}/scrabs")
+    @Operation(summary = "게시글 스크랩 취소 API",description = "post의 id를 받아 기존에 있던 scrab을 취소하는 기능")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<SuccessStatus> deleteScrabs(@PathVariable(name = "postid")Long postId){
+        postsService.deleteScrabs(postId);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }
