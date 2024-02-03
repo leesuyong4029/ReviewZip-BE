@@ -96,10 +96,10 @@ public class PostsConverter {
                 .build();
     }
 
-    public static List<PostResponseDto.PostUserLikeDto> toPostUserLikeListDto(List<Users> userList, List<Long> likeAndFollowingIdList){
+    public static List<PostResponseDto.PostUserLikeDto> toPostUserLikeListDto(List<Users> userList, List<Long> followingIdList){
         List<PostResponseDto.PostUserLikeDto> postUserLikeDtoList = new ArrayList<>();
         for(Users user : userList){
-            boolean isFollowing = likeAndFollowingIdList.contains(user.getId());
+            boolean isFollowing = followingIdList.contains(user.getId());
             PostResponseDto.PostUserLikeDto postUserLikeDto = PostResponseDto.PostUserLikeDto.builder()
                     .userId(user.getId())
                     .nickname(user.getNickname())
