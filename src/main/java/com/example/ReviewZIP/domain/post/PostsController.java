@@ -2,7 +2,6 @@ package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
-import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -145,7 +144,7 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<SuccessStatus> createScrabs(@PathVariable(name = "postid")Long postId){
-        Scrabs newScrab =  postsService.createScrabs(postId);
+        postsService.createScrabs(postId);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
