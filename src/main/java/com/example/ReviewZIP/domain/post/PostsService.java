@@ -19,12 +19,18 @@ import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -101,7 +107,8 @@ public class PostsService {
                 Posts post = postPage.getContent().get(0);
                 boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
                 boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
-                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab));
+                String createdAt = getCreatedAt(post.getCreatedAt());
+                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab, createdAt));
             }
         }
 
@@ -116,7 +123,30 @@ public class PostsService {
         boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
         boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
 
-        return PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab);
+        String createdAt = getCreatedAt(post.getCreatedAt());
+
+        return PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab, createdAt);
+    }
+
+    public String getCreatedAt(LocalDateTime createdAt){
+
+        // 서버시간을 UTC로 설정
+        ZoneId serverZone = ZoneId.of("UTC");
+        LocalDateTime now = ZonedDateTime.now(serverZone).toLocalDateTime();
+
+        Duration duration = Duration.between(createdAt, now);
+
+        long minutes = duration.toMinutes();
+        long hours = duration.toHours();
+
+        if (minutes < 60){
+            return minutes + "분 전";
+        } else if (hours < 24){
+            return hours + "시간 전";
+        } else{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+            return createdAt.format(formatter);
+        }
     }
 
     @Transactional

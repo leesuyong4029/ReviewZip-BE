@@ -76,13 +76,11 @@ public class PostsConverter {
                 .url(image.getUrl())
                 .build();
     }
-    public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, boolean checkLike, boolean checkScrab){
+    public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, boolean checkLike, boolean checkScrab, String createdAt){
         PostResponseDto.UserInfoDto userInfoDto = toUserInfoDto(post.getUser());
 
         List<PostResponseDto.ImageListDto> imageListDto = post.getPostImageList().stream()
                 .map(PostsConverter::toImageListDto).collect(Collectors.toList());
-
-        LocalDateTime createdAt = post.getCreatedAt() != null ? post.getCreatedAt() : null;
 
         return PostResponseDto.PostInfoDto.builder()
                 .postId(post.getId())
@@ -98,10 +96,10 @@ public class PostsConverter {
                 .build();
     }
 
-    public static List<PostResponseDto.PostUserLikeDto> toPostUserLikeListDto(List<Users> userList, List<Long> likeAndFollowingIdList){
+    public static List<PostResponseDto.PostUserLikeDto> toPostUserLikeListDto(List<Users> userList, List<Long> followingIdList){
         List<PostResponseDto.PostUserLikeDto> postUserLikeDtoList = new ArrayList<>();
         for(Users user : userList){
-            boolean isFollowing = likeAndFollowingIdList.contains(user.getId());
+            boolean isFollowing = followingIdList.contains(user.getId());
             PostResponseDto.PostUserLikeDto postUserLikeDto = PostResponseDto.PostUserLikeDto.builder()
                     .userId(user.getId())
                     .nickname(user.getNickname())
