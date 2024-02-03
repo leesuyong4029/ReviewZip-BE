@@ -6,9 +6,7 @@ import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
-import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
-import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -36,8 +34,8 @@ public class UsersController {
             @Parameter(name = "page", description = "페이지 번호"),
             @Parameter(name = "size", description = "페이징 사이즈")
     })
-    public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByName(@RequestParam String name, @RequestParam (defaultValue = "0") Integer page) {
-        Page<Users> userPage = usersService.findUsersByName(name, page);
+    public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByName(@RequestParam String name, @RequestParam (defaultValue = "0") Integer page, @RequestParam (defaultValue = "10") Integer size) {
+        Page<Users> userPage = usersService.findUsersByName(name, page, size);
         UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserPreviewListDto(userPage);
         return ApiResponse.onSuccess(userListDto);
     }
@@ -53,7 +51,7 @@ public class UsersController {
             @Parameter(name = "page", description = "페이지 번호"),
             @Parameter(name = "size", description = "페이징 사이즈")
     })
-    public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByNickname(@RequestParam String nickname, @RequestParam (defaultValue = "0") Integer page, @RequestParam (defaultValue = "0") Integer size) {
+    public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByNickname(@RequestParam String nickname, @RequestParam (defaultValue = "0") Integer page, @RequestParam (defaultValue = "10") Integer size) {
         Page<Users> userPage = usersService.findUsersByNickname(nickname, page, size);
         UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserListDto(userPage);
         return ApiResponse.onSuccess(userListDto);
