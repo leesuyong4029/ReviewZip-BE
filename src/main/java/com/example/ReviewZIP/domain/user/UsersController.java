@@ -76,7 +76,7 @@ public class UsersController {
     }
 
     @GetMapping("/me/followers")
-    @Operation(summary = "나의 팔로워 목록 가져오기 API",description = "토큰 인증 후 나의 팔로잉 목록 조회, FollowerPreviewDto와 FollowerPreviewListDto 이용, 임시로 user id 1의 팔로잉 목록 반환")
+    @Operation(summary = "나의 팔로워 목록 가져오기 API",description = "토큰 인증 후 나의 팔로워 목록 조회, FollowerPreviewDto와 FollowerPreviewListDto 이용, 임시로 user id 1의 팔로잉 목록 반환")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -86,9 +86,9 @@ public class UsersController {
             @Parameter(name = "size", description = "페이징 사이즈")
     })
     public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getUserFollowerList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
-        Page<Follows> FollowsPage = usersService.getFollowingList(1l, page, size); //수정 필요
+        Page<Follows> FollowsPage = usersService.getFollowerList(1L, page, size); //수정 필요
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
     }
 
     @GetMapping("/{userId}/following")
