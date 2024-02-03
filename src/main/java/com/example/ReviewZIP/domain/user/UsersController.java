@@ -83,10 +83,10 @@ public class UsersController {
             @Parameter(name = "page", description = "페이지 번호"),
             @Parameter(name = "size", description = "페이징 사이즈")
     })
-    public ApiResponse<FollowResponseDto.FollowingPreviewListDto> getUserFollowerList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
-        Page<Follows> FollowsPage = usersService.getFollowingList(1l, page, size); //수정 필요
+    public ApiResponse<FollowResponseDto.FollowerPreviewListDto> getUserFollowerList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size")Integer size){
+        Page<Follows> FollowsPage = usersService.getFollowerList(1l, page, size); //수정 필요
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
     }
 
     @GetMapping("/{userId}/following")

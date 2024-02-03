@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
@@ -47,6 +48,7 @@ public class PostsService {
     private final PostLikesRepository postLikesRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostHashtagsRepository postHashtagsRepository;
+    private final FollowsRepository followsRepository;
 
     public Page<Posts> searchPostByHashtag (Long id, Integer page, Integer size){
         Page<PostHashtags> postHashtagsList = postHashtagsRepository.findPostHashtagsById(id, PageRequest.of(page,size));
@@ -185,10 +187,11 @@ public class PostsService {
     public List<Long> getFollowigIdList(){
         // 일단 1L로 나를 대체
         Users me = usersRepository.getById(1L);
+        List<Follows> followingList = followsRepository.findAllBySender(me);
         List<Long> followingIdList = new ArrayList<>();
-        List<Follows> followingList = me.getFollowingList();
+
         for (Follows following : followingList){
-            Long followingId = following.getId();
+            Long followingId = following.getReceiver().getId();
             followingIdList.add(followingId);
         }
         return followingIdList;
