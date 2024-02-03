@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.follow;
 
 import com.example.ReviewZIP.global.response.ApiResponse;
+import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -29,10 +30,10 @@ public class FollowsController {
     @Parameters({
             @Parameter(name = "userId", description = "팔로우할 유저의 아이디"),
     })
-    public ApiResponse<Void> follow(@PathVariable(name="userId") Long userId) {
+    public ApiResponse<SuccessStatus> follow(@PathVariable(name="userId") Long userId) {
         Follows follows = followsService.createFollowing(userId);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @DeleteMapping("/users/{userId}")
@@ -44,9 +45,9 @@ public class FollowsController {
     @Parameters({
             @Parameter(name = "userId", description = "팔로우 취소할 유저의 아이디"),
     })
-    public ApiResponse<Void> unfollowUser(@PathVariable(name="userId")Long userId){
+    public ApiResponse<SuccessStatus> unfollowUser(@PathVariable(name="userId")Long userId){
         followsService.unfollowUser(userId);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }

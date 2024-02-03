@@ -61,7 +61,7 @@ public class PostResponseDto {
         private Integer likeNum;
         private boolean checkLike;
         private boolean checkScrab;
-        private LocalDateTime createdAt;
+        private String createdAt;
         private UserInfoDto userInfo;
         private List<String> hashtags;
         private List<ImageListDto> postImages;
@@ -95,7 +95,7 @@ public class PostResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostUserLikeListDto{
-        List<PostUserLikeDto> userLikeDto;
+        private List<PostUserLikeDto> userLikeDto;
     }
 
 }

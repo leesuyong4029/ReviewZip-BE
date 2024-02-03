@@ -7,6 +7,7 @@ import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -215,8 +216,8 @@ public class UsersController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public ApiResponse<Void> deleteUser(@PathVariable(name = "userId")Long userId) {
+    public ApiResponse<SuccessStatus> deleteUser(@PathVariable(name = "userId")Long userId) {
         usersService.deleteUser(userId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }

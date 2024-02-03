@@ -10,4 +10,6 @@ public interface ScrabsRepository extends JpaRepository<Scrabs, Long> {
     Page<Scrabs> findAllByUser(Users user, PageRequest pageRequest);
 
     boolean existsByUserAndPost(Users user, Posts post);
+
+    Scrabs findByUserAndPost(Users user, Posts post);
 }
