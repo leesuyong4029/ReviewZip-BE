@@ -2,6 +2,7 @@ package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
+import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -107,9 +108,9 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 아이디"),
     })
-    public ApiResponse<Void> deletePost(@PathVariable(name = "postId") Long postId){
+    public ApiResponse<SuccessStatus> deletePost(@PathVariable(name = "postId") Long postId){
         postsService.deletePost(postId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @PostMapping("/{postId}/like")
@@ -143,9 +144,9 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<Void> createScrabs(@PathVariable(name = "postid")Long postId){
-        postsService.createScrabs(postId);
-        return ApiResponse.onSuccess(null);
+    public ApiResponse<SuccessStatus> createScrabs(@PathVariable(name = "postid")Long postId){
+        Scrabs newScrab =  postsService.createScrabs(postId);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @DeleteMapping("/{postid}/scrabs")
@@ -154,8 +155,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<Void> deleteScrabs(@PathVariable(name = "postid")Long postId){
+    public ApiResponse<SuccessStatus> deleteScrabs(@PathVariable(name = "postid")Long postId){
         postsService.deleteScrabs(postId);
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }
