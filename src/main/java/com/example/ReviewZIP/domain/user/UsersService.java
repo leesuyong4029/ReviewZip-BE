@@ -39,15 +39,6 @@ public class UsersService {
         // 임시적으로 유저 아이디를 1L로 지정
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        Optional<SearchHistories> existingRecord = searchHistoriesRepository.findByContentAndUser(name, users);
-        if (existingRecord.isEmpty()) {
-            SearchHistories searchHistories = SearchHistories.builder()
-                    .content(name)
-                    .type(SearchType.NAME)
-                    .user(users)
-                    .build();
-            searchHistoriesRepository.save(searchHistories);
-        }
 
         List<Follows> followsList = users.getFollowingList();
 
@@ -67,16 +58,6 @@ public class UsersService {
 
         // 임시적으로 유저 아이디를 1L로 지정
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-
-        Optional<SearchHistories> existingRecord = searchHistoriesRepository.findByContentAndUser(nickname, users);
-        if (existingRecord.isEmpty()) {
-            SearchHistories searchHistories = SearchHistories.builder()
-                    .content(nickname)
-                    .type(SearchType.NICKNAME)
-                    .user(users)
-                    .build();
-            searchHistoriesRepository.save(searchHistories);
-        }
 
 
         List<Follows> followsList = users.getFollowingList();
