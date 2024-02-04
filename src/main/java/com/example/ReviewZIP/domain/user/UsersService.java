@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UsersService {
     private final UsersRepository usersRepository;
     private final FollowsRepository followsRepository;
