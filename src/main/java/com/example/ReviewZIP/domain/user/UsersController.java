@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/users")
@@ -36,7 +38,8 @@ public class UsersController {
     })
     public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByName(@RequestParam String name, @RequestParam (defaultValue = "0") Integer page, @RequestParam (defaultValue = "10") Integer size) {
         Page<Users> userPage = usersService.findUsersByName(name, page, size);
-        UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserPreviewListDto(userPage);
+        List<Long> followingIdList = usersService.getFollowigIdList(1L);
+        UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserPreviewListDto(userPage, followingIdList);
         return ApiResponse.onSuccess(userListDto);
     }
 
@@ -53,7 +56,9 @@ public class UsersController {
     })
     public ApiResponse<UserResponseDto.UserPreviewListDto> searchUsersByNickname(@RequestParam String nickname, @RequestParam (defaultValue = "0") Integer page, @RequestParam (defaultValue = "10") Integer size) {
         Page<Users> userPage = usersService.findUsersByNickname(nickname, page, size);
-        UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserListDto(userPage);
+        // 유저는 1L로 설정
+        List<Long> followingIdList = usersService.getFollowigIdList(1L);
+        UserResponseDto.UserPreviewListDto userListDto = UsersConverter.toUserPreviewListDto(userPage, followingIdList);
         return ApiResponse.onSuccess(userListDto);
     }
 

@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,43 +37,26 @@ public class UsersService {
     public Page<Users> findUsersByName(String name, Integer page, Integer size) {
         Page<Users> pageUsers = usersRepository.findByName(name, PageRequest.of(page, size));
 
-        // 임시적으로 유저 아이디를 1L로 지정
-        Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-
-
-        List<Follows> followsList = users.getFollowingList();
-
-        List<Users> followingUsersList = followsList.stream()
-                .filter(follow -> follow.getReceiver() != null)
-                .map(Follows::getReceiver)
-                .collect(Collectors.toList());
-
-        List<Users> filteredUsersList = pageUsers.getContent().stream()
-                .filter(user -> !followingUsersList.contains(user))
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(filteredUsersList, pageUsers.getPageable(), pageUsers.getTotalElements());
+        return pageUsers;
 }
     public Page<Users> findUsersByNickname(String nickname, Integer page, Integer size) throws UsersHandler {
         Page<Users> pageUsers = usersRepository.findByNickname(nickname, PageRequest.of(page, size));
 
-        // 임시적으로 유저 아이디를 1L로 지정
-        Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        return pageUsers;
 
+    }
 
-        List<Follows> followsList = users.getFollowingList();
+    public List<Long> getFollowigIdList(Long userId){
+        // 일단 1L로 나를 대체
+        Users me = usersRepository.getById(userId);
+        List<Follows> followingList = followsRepository.findAllBySender(me);
+        List<Long> followingIdList = new ArrayList<>();
 
-        List<Users> followingUsersList = followsList.stream()
-                .filter(follow -> follow.getReceiver() != null)
-                .map(Follows::getReceiver)
-                .collect(Collectors.toList());
-
-        List<Users> filteredUsersList = pageUsers.getContent().stream()
-                .filter(user -> !followingUsersList.contains(user))
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(filteredUsersList, pageUsers.getPageable(), pageUsers.getTotalElements());
-
+        for (Follows following : followingList){
+            Long followingId = following.getReceiver().getId();
+            followingIdList.add(followingId);
+        }
+        return followingIdList;
     }
 
     public Page<Follows> getFollowingList(Long userId, Integer page, Integer size){

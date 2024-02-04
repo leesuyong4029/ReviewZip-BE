@@ -29,7 +29,7 @@ public class UserResponseDto {
         private Long id;
         private String nickname;
         private String profileImages;
-
+        private boolean following;
     }
 
     @Builder

@@ -11,32 +11,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user) {
+    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user, List<Long> followingIdList) {
+        boolean following = followingIdList.contains(user.getId());
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .profileImages(user.getProfileUrl())
+                .following(following)
                 .build();
     }
 
-    public static UserResponseDto.UserPreviewListDto toUserPreviewListDto(Page<Users> userList) {
-        List<UserResponseDto.UserPreviewDto> userDTOList = userList.stream()
-                .map(UsersConverter::toUserPreviewDto)
-                .collect(Collectors.toList());
-
-        return UserResponseDto.UserPreviewListDto.builder()
-                .isLast(userList.isLast())
-                .isFirst(userList.isFirst())
-                .totalPage(userList.getTotalPages())
-                .totalElements(userList.getTotalElements())
-                .listSize(userDTOList.size())
-                .userList(userDTOList)
-                .build();
-    }
-
-    public static UserResponseDto.UserPreviewListDto toUserListDto(Page<Users> userList) {
+    public static UserResponseDto.UserPreviewListDto toUserPreviewListDto(Page<Users> userList, List<Long> followingIdList) {
         List<UserResponseDto.UserPreviewDto> userDtoList = userList.stream()
-                .map(UsersConverter::toUserPreviewDto)
+                .map(user -> toUserPreviewDto(user, followingIdList))
                 .collect(Collectors.toList());
 
         return UserResponseDto.UserPreviewListDto.builder()
@@ -48,7 +35,6 @@ public class UsersConverter {
                 .userList(userDtoList)
                 .build();
     }
-
 
     // 팔로잉 목록 converter
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
