@@ -110,7 +110,8 @@ public class PostsService {
                 boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
                 boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
                 String createdAt = getCreatedAt(post.getCreatedAt());
-                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab, createdAt));
+
+                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt));
             }
         }
 
@@ -127,7 +128,7 @@ public class PostsService {
 
         String createdAt = getCreatedAt(post.getCreatedAt());
 
-        return PostsConverter.toPostInfoResultDto(post, checkLike, checkScrab, createdAt);
+        return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
     }
 
     public String getCreatedAt(LocalDateTime createdAt){
@@ -138,14 +139,17 @@ public class PostsService {
 
         Duration duration = Duration.between(createdAt, now);
 
+        long seconds = duration.getSeconds();
         long minutes = duration.toMinutes();
         long hours = duration.toHours();
 
-        if (minutes < 60){
+        if (minutes < 1){
+            return seconds + "초 전";
+        } else if (minutes < 60){
             return minutes + "분 전";
         } else if (hours < 24){
             return hours + "시간 전";
-        } else{
+        } else {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
             return createdAt.format(formatter);
         }
