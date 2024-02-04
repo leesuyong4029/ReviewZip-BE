@@ -3,14 +3,14 @@ package com.example.ReviewZIP.domain.searchHistory;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.user.Users;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "search_histories")
 public class SearchHistories {
     @Id
@@ -24,5 +24,6 @@ public class SearchHistories {
 
     private String content;
 
+    @Enumerated(EnumType.STRING)
     private SearchType type;
 }

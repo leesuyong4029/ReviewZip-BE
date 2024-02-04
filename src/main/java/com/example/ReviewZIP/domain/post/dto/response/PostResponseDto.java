@@ -61,6 +61,7 @@ public class PostResponseDto {
         private Integer likeNum;
         private boolean checkLike;
         private boolean checkScrab;
+        private boolean checkMine;
         private String createdAt;
         private UserInfoDto userInfo;
         private List<String> hashtags;
@@ -87,7 +88,7 @@ public class PostResponseDto {
         private Long userId;
         private String nickname;
         private String profileUrl;
-        private boolean isFollowing;
+        private boolean following;
     }
 
     @Getter

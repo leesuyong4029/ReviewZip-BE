@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface FollowsRepository extends JpaRepository<Follows, Long> {
@@ -19,4 +21,6 @@ public interface FollowsRepository extends JpaRepository<Follows, Long> {
     Integer countByReceiverId(Long userid);
 
     boolean existsBySenderAndReceiver(Users sender, Users receiver);
+
+    List<Follows> findAllBySender(Users user);
 }

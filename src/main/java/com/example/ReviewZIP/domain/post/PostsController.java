@@ -84,16 +84,15 @@ public class PostsController {
     @Operation(summary = "게시물에 공감을 누른 유저리스트를 검색하는 API",description = "게시물 아이디를 조회하여 게시물에 공감을 누른 유저 리스트를 검색, 반환 시 UserPreviewListDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE403", description = "포스트에 공감을 한 사람이 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "postId", description = "게시물 아이디"),
     })
     public ApiResponse<List<PostResponseDto.PostUserLikeDto>> getPostLikeUserList(@PathVariable Long postId) {
-        List<Users> usersList = postsService.getPostLikeUserList(postId);
+        List<Users> postLikeUserList = postsService.getPostLikeUserList(postId);
         List<Long> userFollowingList = postsService.getFollowigIdList();
 
-        List<PostResponseDto.PostUserLikeDto> likeAndFollowing = PostsConverter.toPostUserLikeListDto(usersList, userFollowingList);
+        List<PostResponseDto.PostUserLikeDto> likeAndFollowing = PostsConverter.toPostUserLikeListDto(postLikeUserList, userFollowingList);
 
         return ApiResponse.onSuccess(likeAndFollowing);
     }

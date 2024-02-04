@@ -6,6 +6,9 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.searchHistory.SearchHistoriesRepository;
+import com.example.ReviewZIP.domain.searchHistory.SearchType;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,28 +31,52 @@ public class UsersService {
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
+    private final SearchHistoriesRepository searchHistoriesRepository;
 
-    public Page<Users> findUsersByName(String name, Integer page) {
-        Page<Users> pageUsers = usersRepository.findByName(name, PageRequest.of(page, 10));
+    public Page<Users> findUsersByName(String name, Integer page, Integer size) {
+        Page<Users> pageUsers = usersRepository.findByName(name, PageRequest.of(page, size));
+
+        // 임시적으로 유저 아이디를 1L로 지정
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
+        Optional<SearchHistories> existingRecord = searchHistoriesRepository.findByContentAndUser(name, users);
+        if (existingRecord.isEmpty()) {
+            SearchHistories searchHistories = SearchHistories.builder()
+                    .content(name)
+                    .type(SearchType.NAME)
+                    .user(users)
+                    .build();
+            searchHistoriesRepository.save(searchHistories);
+        }
 
-    List<Follows> followsList = users.getFollowingList();
+        List<Follows> followsList = users.getFollowingList();
 
-    List<Users> followingUsersList = followsList.stream()
-            .filter(follow -> follow.getReceiver() != null)
-            .map(Follows::getReceiver)
-            .collect(Collectors.toList());
+        List<Users> followingUsersList = followsList.stream()
+                .filter(follow -> follow.getReceiver() != null)
+                .map(Follows::getReceiver)
+                .collect(Collectors.toList());
 
-    List<Users> filteredUsersList = pageUsers.getContent().stream()
-            .filter(user -> !followingUsersList.contains(user))
-            .collect(Collectors.toList());
+        List<Users> filteredUsersList = pageUsers.getContent().stream()
+                .filter(user -> !followingUsersList.contains(user))
+                .collect(Collectors.toList());
 
         return new PageImpl<>(filteredUsersList, pageUsers.getPageable(), pageUsers.getTotalElements());
 }
     public Page<Users> findUsersByNickname(String nickname, Integer page, Integer size) throws UsersHandler {
         Page<Users> pageUsers = usersRepository.findByNickname(nickname, PageRequest.of(page, size));
+
+        // 임시적으로 유저 아이디를 1L로 지정
         Users users = usersRepository.findById(1L).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        Optional<SearchHistories> existingRecord = searchHistoriesRepository.findByContentAndUser(nickname, users);
+        if (existingRecord.isEmpty()) {
+            SearchHistories searchHistories = SearchHistories.builder()
+                    .content(nickname)
+                    .type(SearchType.NICKNAME)
+                    .user(users)
+                    .build();
+            searchHistoriesRepository.save(searchHistories);
+        }
 
 
         List<Follows> followsList = users.getFollowingList();

@@ -17,4 +17,5 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
     Page<Posts> findAllByUserNot(Users user, PageRequest pageRequest);
 
+
 }
