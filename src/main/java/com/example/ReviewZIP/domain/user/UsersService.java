@@ -32,15 +32,14 @@ public class UsersService {
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
-    private final SearchHistoriesRepository searchHistoriesRepository;
 
-    public Page<Users> findUsersByName(String name, Integer page, Integer size) {
-        Page<Users> pageUsers = usersRepository.findByName(name, PageRequest.of(page, size));
+    public List<Users> findUsersByName(String name) {
+        List<Users> pageUsers = usersRepository.findByName(name);
 
         return pageUsers;
 }
-    public Page<Users> findUsersByNickname(String nickname, Integer page, Integer size) throws UsersHandler {
-        Page<Users> pageUsers = usersRepository.findByNickname(nickname, PageRequest.of(page, size));
+    public List<Users> findUsersByNickname(String nickname) throws UsersHandler {
+        List<Users> pageUsers = usersRepository.findByNickname(nickname);
 
         return pageUsers;
 
@@ -59,16 +58,16 @@ public class UsersService {
         return followingIdList;
     }
 
-    public Page<Follows> getFollowingList(Long userId, Integer page, Integer size){
+    public List<Follows> getFollowingList(Long userId){
         Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        Page<Follows> FollowsPage = followsRepository.findAllBySender(sender, PageRequest.of(page, size));
+        List<Follows> FollowsPage = followsRepository.findAllBySender(sender);
 
         return FollowsPage;
     }
 
-    public Page<Follows> getFollowerList(Long userId, Integer page, Integer size){
+    public List<Follows> getFollowerList(Long userId){
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        Page<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver, PageRequest.of(page, size));
+        List<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver);
 
         return FollowsPage;
     }

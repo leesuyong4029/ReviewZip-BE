@@ -45,7 +45,7 @@ public class PostHashtagsController {
     @Parameters({
             @Parameter(name="hashtag", description = "해시태그 이름")
     })
-    public ApiResponse<PostHashtagResponseDto.PostHashtagsPreviewListDto> searchHashtags(@RequestParam String hashtag) {
+    public ApiResponse<List<PostHashtagResponseDto.PostHashtagsPreviewDto>> searchHashtags(@RequestParam String hashtag) {
         List<PostHashtags> postHashtagsList = postHashtagsService.searchHashtagsByName(hashtag);
         return ApiResponse.onSuccess(PostHashtagsConverter.toPostHashtagsPreviewListDto(postHashtagsList));
     }

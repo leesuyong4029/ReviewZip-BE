@@ -12,10 +12,10 @@ import java.util.List;
 public interface UsersRepository extends JpaRepository<Users, Long> {
 
     @Query("SELECT u FROM Users u WHERE u.name LIKE :name%")
-    Page<Users> findByName(String name, Pageable pageable);
+    List<Users> findByName(String name);
 
     @Query("SELECT u FROM Users u WHERE u.name LIKE :nickname%")
-    Page<Users> findByNickname(String nickname, Pageable pageable);
+    List<Users> findByNickname(String nickname);
 
     boolean existsBySocial(String id);
 

@@ -8,18 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class UserResponseDto {
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UserPreviewListDto {
-        List<UserPreviewDto> userList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
 
     @Builder
     @Getter
