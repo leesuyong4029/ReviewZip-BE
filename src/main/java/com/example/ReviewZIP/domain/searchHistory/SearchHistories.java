@@ -22,7 +22,11 @@ public class SearchHistories {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    private String content;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
+    private Users subject;
+
+    private String hashtag;
 
     @Enumerated(EnumType.STRING)
     private SearchType type;

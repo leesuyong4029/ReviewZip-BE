@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SearchType {
-    NAME,
-    NICKNAME,
+    USER,
     HASHTAG
 }

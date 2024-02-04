@@ -8,7 +8,6 @@ import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -69,4 +68,7 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SearchHistories> searchHistoriesList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    private List<SearchHistories> subjectList = new ArrayList<>();
 }
