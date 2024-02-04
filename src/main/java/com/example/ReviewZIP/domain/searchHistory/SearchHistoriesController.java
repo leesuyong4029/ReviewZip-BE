@@ -58,7 +58,7 @@ public class SearchHistoriesController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public  ApiResponse<SuccessStatus> deleteUserSearchHistory(@PathVariable(name = "userId")Long userId){
+    public  ApiResponse<SuccessStatus> deleteUserSearchHistory(@RequestParam(name = "userId")Long userId){
         // 나를 1L로 가정
         searchHistoriesService.deleteUserSearchHistory(1L,userId);
 
