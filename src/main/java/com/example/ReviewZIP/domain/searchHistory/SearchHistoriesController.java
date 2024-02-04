@@ -58,7 +58,7 @@ public class SearchHistoriesController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public  ApiResponse<SuccessStatus> deleteUserSearchHistory(@RequestParam(name = "userId")Long userId){
+    public  ApiResponse<SuccessStatus> deleteUserSearchHistory(@PathVariable(name = "userId")Long userId){
         // 나를 1L로 가정
         searchHistoriesService.deleteUserSearchHistory(1L,userId);
 
@@ -74,7 +74,7 @@ public class SearchHistoriesController {
     @Parameters({
             @Parameter(name = "hashtag", description = "해시태그"),
     })
-    public  ApiResponse<SuccessStatus> deleteHashtagSearchHistory(@PathVariable(name = "hashtag")String hashtag){
+    public  ApiResponse<SuccessStatus> deleteHashtagSearchHistory(@RequestParam(name = "hashtag")String hashtag){
         // 나를 1L로 설정
         searchHistoriesService.deleteHashtagSearchHistory(1L, hashtag);
 
