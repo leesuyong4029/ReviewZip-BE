@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.postHashtag;
 
 
+import com.example.ReviewZIP.domain.postHashtag.dto.response.PostHashtagResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,5 +37,16 @@ public class PostHashtagsController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
-
+    @GetMapping("/search")
+    @Operation(summary = "해시태그 이름으로 해시태그를 검색 API", description = "해시태그 이름으로 검색 시 해시태그 리스트를 반환하고 검색기록에 저장")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    @Parameters({
+            @Parameter(name="hashtag", description = "해시태그 이름")
+    })
+    public ApiResponse<PostHashtagResponseDto.PostHashtagsPreviewListDto> searchHashtags(@RequestParam String hashtag) {
+        List<PostHashtags> postHashtagsList = postHashtagsService.searchHashtagsByName(hashtag);
+        return ApiResponse.onSuccess(PostHashtagsConverter.toPostHashtagsPreviewListDto(postHashtagsList));
+    }
 }
