@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SearchHistoriesRepository extends JpaRepository<SearchHistories, Long> {
-    Optional<SearchHistories> findByContentAndUser(String name, Users users);
+
 }
