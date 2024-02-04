@@ -15,13 +15,10 @@ public class PostHashtagsConverter {
 
     }
 
-    public static PostHashtagResponseDto.PostHashtagsPreviewListDto toPostHashtagsPreviewListDto(List<PostHashtags> postHashtagsList){
+    public static List<PostHashtagResponseDto.PostHashtagsPreviewDto> toPostHashtagsPreviewListDto(List<PostHashtags> postHashtagsList){
 
-        List<PostHashtagResponseDto.PostHashtagsPreviewDto> postHashtagsPreviewDto = postHashtagsList.stream()
+        return postHashtagsList.stream()
                 .map(PostHashtagsConverter::toPostHashtagsPreviewDto)
                 .collect(Collectors.toList());
-        return PostHashtagResponseDto.PostHashtagsPreviewListDto.builder()
-                .hashtagList(postHashtagsPreviewDto)
-                .build();
     }
 }

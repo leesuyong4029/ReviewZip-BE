@@ -17,14 +17,4 @@ public class PostHashtagResponseDto {
         private Long id;
         private String name;
     }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PostHashtagsPreviewListDto {
-        List<PostHashtagsPreviewDto> hashtagList;
-    }
-
-
 }

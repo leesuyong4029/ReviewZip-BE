@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface FollowsRepository extends JpaRepository<Follows, Long> {
-    Page<Follows> findAllBySender(Users sender, PageRequest pageRequest);
-    Page<Follows> findAllByReceiver(Users user, PageRequest pageRequest);
+    List<Follows> findAllBySender(Users sender);
+    List<Follows> findAllByReceiver(Users user);
 
     Follows getBySenderAndReceiver(Users sender, Users receiver);
 
@@ -22,5 +22,4 @@ public interface FollowsRepository extends JpaRepository<Follows, Long> {
 
     boolean existsBySenderAndReceiver(Users sender, Users receiver);
 
-    List<Follows> findAllBySender(Users user);
 }
