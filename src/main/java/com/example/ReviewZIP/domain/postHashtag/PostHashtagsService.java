@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class PostHashtagsService {
 
     private final PostHashtagsRepository postHashtagsRepository;
@@ -42,21 +42,6 @@ public class PostHashtagsService {
 
     public List<PostHashtags> searchHashtagsByName(String hashtag) {
         List<PostHashtags> hashtagsList = postHashtagsRepository.findByNameContaining(hashtag);
-
-        // 임시적으로 유저 아이디 값에 1로 지정
-        Users users = usersRepository.findById(1L).orElseThrow(()-> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        Optional<SearchHistories> existingRecord = searchHistoriesRepository.findByContentAndUser(hashtag, users);
-
-        if(existingRecord.isEmpty()) {
-
-            SearchHistories searchHistories = SearchHistories.builder()
-                    .content(hashtag)
-                    .type(SearchType.HASHTAG)
-                    .user(users)
-                    .build();
-
-            searchHistoriesRepository.save(searchHistories);
-        }
 
         return hashtagsList;
     }
