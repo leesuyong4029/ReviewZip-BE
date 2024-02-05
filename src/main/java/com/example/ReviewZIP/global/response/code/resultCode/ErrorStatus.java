@@ -58,7 +58,10 @@ public enum ErrorStatus implements BaseErrorCode {
     IMAGE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST, "IMAGE402", "이미지 업로드에 실패하였습니다."),
 
     // Follow
-    FOLLOW_ALREADY(HttpStatus.BAD_REQUEST, "FOLLOW401", "이미 팔로우한 상태입니다.");
+    FOLLOW_ALREADY(HttpStatus.BAD_REQUEST, "FOLLOW401", "이미 팔로우한 상태입니다."),
+
+    // SearchHistory
+    HISTORY_NOT_FOUND(HttpStatus.NOT_FOUND, "HISTORY401", "해당하는 검색기록이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
