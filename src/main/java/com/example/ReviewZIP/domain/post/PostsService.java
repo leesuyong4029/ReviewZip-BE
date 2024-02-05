@@ -76,23 +76,54 @@ public class PostsService {
             image.setPost(savedPost);
             image.setUser(user);
             imagesRepository.save(image);
-            savedPost.getPostImageList().add(image); // Post 엔티티가 Images 엔티티의 변경 사항을 반영
+            savedPost.getPostImageList().add(image);
         }
         return savedPost;
     }
 
-    public List<PostResponseDto.PostInfoDto> getRandomPostInfoDto(Long userId) {
-        Users user = usersRepository.getById(userId);
+    public static final int NUM_OF_RANDOM_POST = 1;
 
-        long qty = postsRepository.countByUserNot(user);
+    public PostResponseDto.PostInfoDto getOneRandomPostInfoDto(Long userId) {
+        Users user = usersRepository.getById(1L);
 
-        if (qty < 3) {
-            throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+        long totalPostCount = postsRepository.countByUserNot(user);
+
+        if (totalPostCount < NUM_OF_RANDOM_POST) {
+            throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
+        }
+
+        int randomIndex = (int)(Math.random() * totalPostCount);
+
+        Page<Posts> postPage = postsRepository
+                .findAllByUserNot(
+                        user,
+                        PageRequest.of(randomIndex, 1)
+                );
+
+        if (postPage.hasContent()) {
+            Posts post = postPage.getContent().get(0);
+            boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
+            boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
+            String createdAt = getCreatedAt(post.getCreatedAt());
+
+            return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
+        }
+        throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
+    }
+
+    public static final int NUM_OF_RANDOM_POSTS = 3;
+    public List<PostResponseDto.PostInfoDto> getThreeRandomPostsInfo(Long userId) {
+        Users user = usersRepository.getById(1L);
+
+        long totalPostCount  = postsRepository.countByUserNot(user);
+
+        if (totalPostCount < NUM_OF_RANDOM_POSTS) {
+            throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
         }
 
         Set<Integer> randomIndices = new HashSet<>();
-        while (randomIndices.size() < 3) {
-            int idx = (int)(Math.random() * qty);
+        while (randomIndices.size() < NUM_OF_RANDOM_POSTS) {
+            int idx = (int)(Math.random() * totalPostCount);
             randomIndices.add(idx);
         }
 
