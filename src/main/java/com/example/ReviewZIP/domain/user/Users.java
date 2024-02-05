@@ -69,6 +69,6 @@ public class Users extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<SearchHistories> searchHistoriesList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL)
-    private List<SearchHistories> subjectList = new ArrayList<>();
+    @OneToMany(mappedBy = "object", cascade = CascadeType.ALL)
+    private List<SearchHistories> objectList = new ArrayList<>();
 }
