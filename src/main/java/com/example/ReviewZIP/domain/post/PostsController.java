@@ -75,7 +75,7 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<PostResponseDto.PostInfoDto> getRandomPost() {
-        PostResponseDto.PostInfoDto randomPostInfoDto = postsService.getOneRandomPostInfoDto(userId);
+        PostResponseDto.PostInfoDto randomPostInfoDto = postsService.getOneRandomPostInfoDto(1L);
 
         return ApiResponse.onSuccess(randomPostInfoDto);
     }
@@ -87,7 +87,7 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<List<PostResponseDto.PostInfoDto>> getRandomPosts() {
-        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getThreeRandomPostsInfo(userId);
+        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getThreeRandomPostsInfo(1L);
 
         return ApiResponse.onSuccess(randomPostInfoDtos);
     }
