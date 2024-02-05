@@ -218,10 +218,7 @@ public class UsersController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH402", description = "유효하지않은 검색 타입입니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "userId", description = "유저의 아이디"),
-    })
-    public ApiResponse<List<UserResponseDto.HistoryDto>> getHistory(@PathVariable(name = "userId")Long userId){
+    public ApiResponse<List<UserResponseDto.HistoryDto>> getHistory(){
         // 1L로 설정
         List<SearchHistories> historyList = usersService.getHistoryList(1L);
         List<Long> followingIdList = usersService.getFollowigIdList(1L);

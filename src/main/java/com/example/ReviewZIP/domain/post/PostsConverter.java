@@ -91,6 +91,7 @@ public class PostsConverter {
                 .comment(post.getComment())
                 .point(post.getPoint())
                 .likeNum(post.getPostLikeList().size())
+                .hashtagNum(post.getPostHashtagList().size())
                 .checkLike(checkLike)
                 .checkScrab(checkScrab)
                 .hashtags(post.getPostHashtagList().stream().map(PostHashtags::getHashtag).collect(Collectors.toList()))

@@ -17,6 +17,7 @@ public class FollowResponseDto {
         private Long followingId;
         private String profileUrl;
         private String nickname;
+        private String name;
     }
 
     @Builder
@@ -40,5 +41,6 @@ public class FollowResponseDto {
         private Long followerId;
         private String profileUrl;
         private String nickname;
+        private String name;
     }
 }

@@ -16,7 +16,8 @@ public class UserResponseDto {
     public static class UserPreviewDto {
         private Long id;
         private String nickname;
-        private String profileImages;
+        private String name;
+        private String profileUrl;
         private boolean following;
     }
 

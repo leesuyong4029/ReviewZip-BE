@@ -19,8 +19,9 @@ public class UsersConverter {
         boolean following = followingIdList.contains(user.getId());
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
+                .name(user.getName())
                 .nickname(user.getNickname())
-                .profileImages(user.getProfileUrl())
+                .profileUrl(user.getProfileUrl())
                 .following(following)
                 .build();
     }
@@ -37,6 +38,7 @@ public class UsersConverter {
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowResponseDto.FollowingPreviewDto.builder()
                 .followingId(follows.getReceiver().getId())
+                .name(follows.getReceiver().getName())
                 .profileUrl(follows.getReceiver().getProfileUrl())
                 .nickname(follows.getReceiver().getNickname())
                 .build();
@@ -51,8 +53,9 @@ public class UsersConverter {
     public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowResponseDto.FollowerPreviewDto.builder()
                 .followerId(follows.getSender().getId())
+                .name(follows.getSender().getName())
                 .nickname(follows.getSender().getNickname())
-                .profileUrl(follows.getReceiver().getProfileUrl())
+                .profileUrl(follows.getSender().getProfileUrl())
                 .build();
     }
 
