@@ -52,8 +52,8 @@ public class SearchHistoriesController {
     @Operation(summary = "유저 검색 기록 삭제하기 API",description = "유저의 id를 받아 해당 검색기록을 삭제")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER408", description = "해당한 사람이 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 검색기록이 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER408", description = "유저 검색 삭제할 유저가 이미 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 유저 검색기록이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
@@ -69,7 +69,7 @@ public class SearchHistoriesController {
     @Operation(summary = "해시태그 검색 기록 삭제하기 API",description = "해시태그를 parameter로 받아 검색 기록 삭제")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 검색기록이 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 해시태그 검색기록이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "hashtag", description = "해시태그"),
