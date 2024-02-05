@@ -82,18 +82,49 @@ public class PostsService {
         return savedPost;
     }
 
-    public List<PostResponseDto.PostInfoDto> getRandomPostInfoDto(Long userId) {
-        Users user = usersRepository.getById(userId);
+    public static final int NUM_OF_RANDOM_POST = 1;
 
-        long qty = postsRepository.countByUserNot(user);
+    public PostResponseDto.PostInfoDto getOneRandomPostInfoDto(Long userId) {
+        Users user = usersRepository.getById(1L);
 
-        if (qty < 3) {
+        long totalPostCount = postsRepository.countByUserNot(user);
+
+        if (totalPostCount < NUM_OF_RANDOM_POST) {
+            throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+        }
+
+        int randomIndex = (int)(Math.random() * totalPostCount);
+
+        Page<Posts> postPage = postsRepository
+                .findAllByUserNot(
+                        user,
+                        PageRequest.of(randomIndex, 1)
+                );
+
+        if (postPage.hasContent()) {
+            Posts post = postPage.getContent().get(0);
+            boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
+            boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
+            String createdAt = getCreatedAt(post.getCreatedAt());
+
+            return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
+        }
+        throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+    }
+
+    public static final int NUM_OF_RANDOM_POSTS = 3;
+    public List<PostResponseDto.PostInfoDto> getThreeRandomPostsInfo(Long userId) {
+        Users user = usersRepository.getById(1L);
+
+        long totalPostCount  = postsRepository.countByUserNot(user);
+
+        if (totalPostCount < NUM_OF_RANDOM_POSTS) {
             throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
         }
 
         Set<Integer> randomIndices = new HashSet<>();
-        while (randomIndices.size() < 3) {
-            int idx = (int)(Math.random() * qty);
+        while (randomIndices.size() < NUM_OF_RANDOM_POSTS) {
+            int idx = (int)(Math.random() * totalPostCount);
             randomIndices.add(idx);
         }
 
