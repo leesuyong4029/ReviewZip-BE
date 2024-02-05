@@ -68,14 +68,26 @@ public class PostsController {
         return ApiResponse.onSuccess(PostsConverter.toPostResponseDto(post));
     }
 
-    @GetMapping("/random")
+    @GetMapping("/random-one")
+    @Operation(summary = "랜덤으로 게시글 1개 가져오기 API", description = "PostInfoDto")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<PostResponseDto.PostInfoDto> getRandomPost() {
+        PostResponseDto.PostInfoDto randomPostInfoDto = postsService.getOneRandomPostInfoDto(1L);
+
+        return ApiResponse.onSuccess(randomPostInfoDto);
+    }
+
+    @GetMapping("/random-three")
     @Operation(summary = "랜덤으로 게시글 3개 가져오기 API", description = "PostInfoDto")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "랜덤으로 게시글 3개 가져오기 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<PostResponseDto.PostInfoDto>> getRandomPosts(@RequestParam Long userId) {
-        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getRandomPostInfoDto(userId);
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> getRandomPosts() {
+        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getThreeRandomPostsInfo(1L);
 
         return ApiResponse.onSuccess(randomPostInfoDtos);
     }
