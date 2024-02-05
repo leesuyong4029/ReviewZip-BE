@@ -212,7 +212,7 @@ public class UsersController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
-    @GetMapping("/{userId}/histories")
+    @GetMapping("/histories")
     @Operation(summary = "검색기록 가져오기 API",description = "나의 검색기록을 가져온다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),

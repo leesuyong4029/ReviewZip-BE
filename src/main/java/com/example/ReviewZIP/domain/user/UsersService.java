@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -104,6 +105,8 @@ public class UsersService {
 
     public List<SearchHistories> getHistoryList(Long userId){
         Users me = usersRepository.getById(userId);
-        return me.getSearchHistoriesList();
+        List<SearchHistories> historyList =  me.getSearchHistoriesList();
+        Collections.reverse(historyList);
+        return historyList;
     }
 }
