@@ -48,36 +48,17 @@ public class SearchHistoriesController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
-    @DeleteMapping("/{userId}")
-    @Operation(summary = "유저 검색 기록 삭제하기 API",description = "유저의 id를 받아 해당 검색기록을 삭제")
+    @DeleteMapping("/history/{historyId}")
+    @Operation(summary = "해시태그 삭제하기 API",description = "해시태그의 id를 받아 해당 객체를 삭제")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER408", description = "유저 검색 삭제할 유저가 이미 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 유저 검색기록이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당 검색기록을 찾을 수 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "userId", description = "유저의 아이디"),
-    })
-    public  ApiResponse<SuccessStatus> deleteUserSearchHistory(@PathVariable(name = "userId")Long userId){
-        // 나를 1L로 가정
-        searchHistoriesService.deleteUserSearchHistory(1L,userId);
+    public ApiResponse<SuccessStatus> deleteHistory(@PathVariable(name = "historyId")Long historyId){
+        searchHistoriesService.deleteUserSearchHistory(historyId);
 
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
-    @DeleteMapping("/hashtags")
-    @Operation(summary = "해시태그 검색 기록 삭제하기 API",description = "해시태그를 parameter로 받아 검색 기록 삭제")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당하는 해시태그 검색기록이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    @Parameters({
-            @Parameter(name = "hashtag", description = "해시태그"),
-    })
-    public  ApiResponse<SuccessStatus> deleteHashtagSearchHistory(@RequestParam(name = "hashtag")String hashtag){
-        // 나를 1L로 설정
-        searchHistoriesService.deleteHashtagSearchHistory(1L, hashtag);
 
-        return ApiResponse.onSuccess(SuccessStatus._OK);
-    }
 }

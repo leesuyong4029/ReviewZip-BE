@@ -14,7 +14,7 @@ public class UserResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserPreviewDto {
-        private Long id;
+        private Long userId;
         private String nickname;
         private String name;
         private String profileUrl;
