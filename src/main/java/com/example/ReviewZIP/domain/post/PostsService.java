@@ -77,7 +77,7 @@ public class PostsService {
             image.setPost(savedPost);
             image.setUser(user);
             imagesRepository.save(image);
-            savedPost.getPostImageList().add(image); // Post 엔티티가 Images 엔티티의 변경 사항을 반영
+            savedPost.getPostImageList().add(image);
         }
         return savedPost;
     }
@@ -109,7 +109,7 @@ public class PostsService {
 
             return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
         }
-        throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+        throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
     }
 
     public static final int NUM_OF_RANDOM_POSTS = 3;
@@ -119,7 +119,7 @@ public class PostsService {
         long totalPostCount  = postsRepository.countByUserNot(user);
 
         if (totalPostCount < NUM_OF_RANDOM_POSTS) {
-            throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+            throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
         }
 
         Set<Integer> randomIndices = new HashSet<>();
