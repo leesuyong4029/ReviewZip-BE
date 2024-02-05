@@ -11,44 +11,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UsersConverter {
-    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user) {
+    public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user, List<Long> followingIdList) {
+        boolean following = followingIdList.contains(user.getId());
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
                 .profileImages(user.getProfileUrl())
+                .following(following)
                 .build();
     }
 
-    public static UserResponseDto.UserPreviewListDto toUserPreviewListDto(Page<Users> userList) {
-        List<UserResponseDto.UserPreviewDto> userDTOList = userList.stream()
-                .map(UsersConverter::toUserPreviewDto)
+    public static List<UserResponseDto.UserPreviewDto> toUserPreviewListDto(List<Users> userList, List<Long> followingIdList) {
+        return userList.stream()
+                .map(user -> toUserPreviewDto(user, followingIdList))
                 .collect(Collectors.toList());
 
-        return UserResponseDto.UserPreviewListDto.builder()
-                .isLast(userList.isLast())
-                .isFirst(userList.isFirst())
-                .totalPage(userList.getTotalPages())
-                .totalElements(userList.getTotalElements())
-                .listSize(userDTOList.size())
-                .userList(userDTOList)
-                .build();
+
     }
-
-    public static UserResponseDto.UserPreviewListDto toUserListDto(Page<Users> userList) {
-        List<UserResponseDto.UserPreviewDto> userDtoList = userList.stream()
-                .map(UsersConverter::toUserPreviewDto)
-                .collect(Collectors.toList());
-
-        return UserResponseDto.UserPreviewListDto.builder()
-                .isLast(userList.isLast())
-                .isFirst(userList.isFirst())
-                .totalPage(userList.getTotalPages())
-                .totalElements(userList.getTotalElements())
-                .listSize(userDtoList.size())
-                .userList(userDtoList)
-                .build();
-    }
-
 
     // 팔로잉 목록 converter
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
@@ -59,21 +38,12 @@ public class UsersConverter {
                 .build();
     }
 
-    public static FollowResponseDto.FollowingPreviewListDto toFollowingPreviewListDto(Page<Follows> followsList){
-        List<FollowResponseDto.FollowingPreviewDto> followingPreviewDtoList = followsList.stream()
+    public static List<FollowResponseDto.FollowingPreviewDto> toFollowingPreviewListDto(List<Follows> followsList){
+        return followsList.stream()
                 .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
 
-        return FollowResponseDto.FollowingPreviewListDto.builder()
-                .isLast(followsList.isLast())
-                .isFirst(followsList.isFirst())
-                .totalElements(followsList.getTotalElements())
-                .totalPage(followsList.getTotalPages())
-                .listSize(followingPreviewDtoList.size())
-                .followsList(followingPreviewDtoList)
-                .build();
     }
 
-    // 팔로워 목록 converter
     public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowResponseDto.FollowerPreviewDto.builder()
                 .followerId(follows.getSender().getId())
@@ -82,21 +52,12 @@ public class UsersConverter {
                 .build();
     }
 
-    public static FollowResponseDto.FollowerPreviewListDto toFollowerPreviewListDto(Page<Follows> followsList){
-        List<FollowResponseDto.FollowerPreviewDto> followerPreviewDtoList = followsList.stream()
+    public static List<FollowResponseDto.FollowerPreviewDto> toFollowerPreviewListDto(List<Follows> followsList){
+        return followsList.stream()
                 .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
 
-        return FollowResponseDto.FollowerPreviewListDto.builder()
-                .isLast(followsList.isLast())
-                .isFirst(followsList.isFirst())
-                .totalElements(followsList.getTotalElements())
-                .totalPage(followsList.getTotalPages())
-                .listSize(followerPreviewDtoList.size())
-                .followsList(followerPreviewDtoList)
-                .build();
     }
 
-    // 게시글 미리보기 converter
     public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(post.getId())
@@ -120,7 +81,6 @@ public class UsersConverter {
                 .build();
     }
 
-    // scrab한 게시글 미리보기 converter
     public static UserResponseDto.PostPreviewDto toScrabPreviewDto(Scrabs scrabs){
         return UserResponseDto.PostPreviewDto.builder()
                 .postId(scrabs.getPost().getId())

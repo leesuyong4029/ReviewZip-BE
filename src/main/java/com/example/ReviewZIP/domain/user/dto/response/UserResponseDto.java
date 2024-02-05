@@ -8,18 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 public class UserResponseDto {
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UserPreviewListDto {
-        List<UserPreviewDto> userList;
-        Integer listSize;
-        Integer totalPage;
-        Long totalElements;
-        Boolean isFirst;
-        Boolean isLast;
-    }
 
     @Builder
     @Getter
@@ -29,7 +17,7 @@ public class UserResponseDto {
         private Long id;
         private String nickname;
         private String profileImages;
-
+        private boolean following;
     }
 
     @Builder
