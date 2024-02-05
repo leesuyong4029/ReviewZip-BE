@@ -3,6 +3,7 @@ package com.example.ReviewZIP.domain.user;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
 
 @RestController
 @RequiredArgsConstructor
@@ -208,4 +211,18 @@ public class UsersController {
         usersService.deleteUser(userId);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
+
+    @GetMapping("/{userId}/histories")
+    @Operation(summary = "검색기록 가져오기 API",description = "나의 검색기록을 가져온다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH402", description = "유효하지않은 검색 타입입니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<List<UserResponseDto.HistoryDto>> getHistory(){
+        // 1L로 설정
+        List<SearchHistories> historyList = usersService.getHistoryList(1L);
+        List<Long> followingIdList = usersService.getFollowigIdList(1L);
+        return ApiResponse.onSuccess(toHistoryDtoList(historyList, followingIdList));
+    }
+
 }

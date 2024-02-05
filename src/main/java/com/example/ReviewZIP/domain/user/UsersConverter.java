@@ -1,10 +1,14 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
-import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.searchHistory.SearchType;
+import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -15,8 +19,9 @@ public class UsersConverter {
         boolean following = followingIdList.contains(user.getId());
         return UserResponseDto.UserPreviewDto.builder()
                 .id(user.getId())
+                .name(user.getName())
                 .nickname(user.getNickname())
-                .profileImages(user.getProfileUrl())
+                .profileUrl(user.getProfileUrl())
                 .following(following)
                 .build();
     }
@@ -33,6 +38,7 @@ public class UsersConverter {
     public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
         return FollowResponseDto.FollowingPreviewDto.builder()
                 .followingId(follows.getReceiver().getId())
+                .name(follows.getReceiver().getName())
                 .profileUrl(follows.getReceiver().getProfileUrl())
                 .nickname(follows.getReceiver().getNickname())
                 .build();
@@ -47,8 +53,9 @@ public class UsersConverter {
     public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
         return FollowResponseDto.FollowerPreviewDto.builder()
                 .followerId(follows.getSender().getId())
+                .name(follows.getSender().getName())
                 .nickname(follows.getSender().getNickname())
-                .profileUrl(follows.getReceiver().getProfileUrl())
+                .profileUrl(follows.getSender().getProfileUrl())
                 .build();
     }
 
@@ -117,5 +124,33 @@ public class UsersConverter {
                 .followerNum(followerNum)
                 .isFollowing(isFollowing)
                 .build();
+    }
+
+
+    public static  UserResponseDto.HistoryDto toHistoryDto(SearchHistories history, List<Long> followingIdList){
+        if(history.getType().equals(SearchType.USER)){
+            return UserResponseDto.HistoryDto.builder()
+                    .historyId(history.getId())
+                    .user(toUserPreviewDto(history.getObject(), followingIdList))
+                    .hashtag(null)
+                    .type("USER")
+                    .build();
+
+        } else if (history.getType().equals(SearchType.HASHTAG)){
+            return UserResponseDto.HistoryDto.builder()
+                    .historyId(history.getId())
+                    .user(null)
+                    .hashtag(history.getHashtag())
+                    .type("HASHTAG")
+                    .build();
+        } else{
+            throw new SearchHandler(ErrorStatus.HISTORY_TYPE_NOT_VALID);
+        }
+    }
+
+    public static List<UserResponseDto.HistoryDto> toHistoryDtoList(List<SearchHistories> historyList, List<Long> followingIdList){
+        return historyList.stream()
+                .map(history->toHistoryDto(history, followingIdList))
+                .collect(Collectors.toList());
     }
 }

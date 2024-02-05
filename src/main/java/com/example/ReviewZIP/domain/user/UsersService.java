@@ -7,22 +7,17 @@ import com.example.ReviewZIP.domain.post.PostsRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
-import com.example.ReviewZIP.domain.searchHistory.SearchHistoriesRepository;
-import com.example.ReviewZIP.domain.searchHistory.SearchType;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -107,4 +102,8 @@ public class UsersService {
         return UsersConverter.toOtherInfoDto(other, followingNum, followerNum, isFollowing);
     }
 
+    public List<SearchHistories> getHistoryList(Long userId){
+        Users me = usersRepository.getById(userId);
+        return me.getSearchHistoriesList();
+    }
 }

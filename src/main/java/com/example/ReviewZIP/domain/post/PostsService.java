@@ -20,7 +20,6 @@ import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
