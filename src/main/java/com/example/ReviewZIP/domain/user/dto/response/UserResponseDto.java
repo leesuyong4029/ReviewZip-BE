@@ -57,4 +57,15 @@ public class UserResponseDto {
         private Integer followerNum;
         private boolean isFollowing;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class HistoryDto{
+        private Long historyId;
+        private String type;
+        private UserPreviewDto user;
+        private String hashtag;
+    }
 }

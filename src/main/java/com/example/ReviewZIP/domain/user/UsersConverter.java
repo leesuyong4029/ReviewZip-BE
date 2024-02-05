@@ -1,10 +1,14 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
-import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
+import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.searchHistory.SearchType;
+import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -117,5 +121,33 @@ public class UsersConverter {
                 .followerNum(followerNum)
                 .isFollowing(isFollowing)
                 .build();
+    }
+
+
+    public static  UserResponseDto.HistoryDto toHistoryDto(SearchHistories history, List<Long> followingIdList){
+        if(history.getType().equals(SearchType.USER)){
+            return UserResponseDto.HistoryDto.builder()
+                    .historyId(history.getId())
+                    .user(toUserPreviewDto(history.getObject(), followingIdList))
+                    .hashtag(null)
+                    .type("USER")
+                    .build();
+
+        } else if (history.getType().equals(SearchType.HASHTAG)){
+            return UserResponseDto.HistoryDto.builder()
+                    .historyId(history.getId())
+                    .user(null)
+                    .hashtag(history.getHashtag())
+                    .type("HASHTAG")
+                    .build();
+        } else{
+            throw new SearchHandler(ErrorStatus.HISTORY_TYPE_NOT_VALID);
+        }
+    }
+
+    public static List<UserResponseDto.HistoryDto> toHistoryDtoList(List<SearchHistories> historyList, List<Long> followingIdList){
+        return historyList.stream()
+                .map(history->toHistoryDto(history, followingIdList))
+                .collect(Collectors.toList());
     }
 }

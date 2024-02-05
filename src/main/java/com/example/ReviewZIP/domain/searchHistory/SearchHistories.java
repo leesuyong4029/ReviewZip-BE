@@ -23,8 +23,8 @@ public class SearchHistories {
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    private Users subject;
+    @JoinColumn(name = "object_id")
+    private Users object;
 
     private String hashtag;
 
