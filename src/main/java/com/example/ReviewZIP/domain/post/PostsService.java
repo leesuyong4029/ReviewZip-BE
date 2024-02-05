@@ -90,7 +90,7 @@ public class PostsService {
         long totalPostCount = postsRepository.countByUserNot(user);
 
         if (totalPostCount < NUM_OF_RANDOM_POST) {
-            throw new PostsHandler(ErrorStatus.POST_RANDOM_FAIL);
+            throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
         }
 
         int randomIndex = (int)(Math.random() * totalPostCount);
