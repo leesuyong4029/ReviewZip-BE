@@ -3,6 +3,7 @@ package com.example.ReviewZIP.domain.searchHistory;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,19 +45,8 @@ public class SearchHistoriesService {
     }
 
     @Transactional
-    public void deleteUserSearchHistory(Long userId, Long objectId){
-        Users me = usersRepository.getById(userId);
-        Users object = usersRepository.findById(objectId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        SearchHistories history = searchHistoriesRepository.findByUserAndObjectId(me, object);
-        searchHistoriesRepository.delete(history);
-    }
-
-    @Transactional
-    public void deleteHashtagSearchHistory(Long userId, String hashtag){
-        Users me = usersRepository.getById(userId);
-
-        SearchHistories history = searchHistoriesRepository.findByUserAndHashtag(me, hashtag);
-
+    public void deleteUserSearchHistory(Long historyId) {
+        SearchHistories history = searchHistoriesRepository.findById(historyId).orElseThrow(()-> new SearchHandler(ErrorStatus.HISTORY_NOT_FOUND));
         searchHistoriesRepository.delete(history);
     }
 }
