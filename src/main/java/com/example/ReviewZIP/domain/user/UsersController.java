@@ -213,6 +213,14 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}/histories")
+    @Operation(summary = "검색기록 가져오기 API",description = "나의 검색기록을 가져온다.")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH402", description = "유효하지않은 검색 타입입니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "유저의 아이디"),
+    })
     public ApiResponse<List<UserResponseDto.HistoryDto>> getHistory(@PathVariable(name = "userId")Long userId){
         // 1L로 설정
         List<SearchHistories> historyList = usersService.getHistoryList(1L);
