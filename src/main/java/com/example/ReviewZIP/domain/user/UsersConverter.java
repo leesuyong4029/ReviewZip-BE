@@ -35,33 +35,37 @@ public class UsersConverter {
     }
 
     // 팔로잉 목록 converter
-    public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows){
+    public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows, List<Long> followingIdList){
+        boolean isFollowing = followingIdList.contains(follows.getReceiver().getId());
         return FollowResponseDto.FollowingPreviewDto.builder()
-                .followingId(follows.getReceiver().getId())
+                .userId(follows.getReceiver().getId())
                 .name(follows.getReceiver().getName())
                 .profileUrl(follows.getReceiver().getProfileUrl())
                 .nickname(follows.getReceiver().getNickname())
+                .following(isFollowing)
                 .build();
     }
 
-    public static List<FollowResponseDto.FollowingPreviewDto> toFollowingPreviewListDto(List<Follows> followsList){
+    public static List<FollowResponseDto.FollowingPreviewDto> toFollowingPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
         return followsList.stream()
-                .map(UsersConverter::toFollowingPreviewDto).collect(Collectors.toList());
+                .map(follow -> toFollowingPreviewDto(follow, followingIdList)).collect(Collectors.toList());
 
     }
 
-    public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows){
+    public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows, List<Long> followingIdList){
+        boolean isFollowing = followingIdList.contains(follows.getSender().getId());
         return FollowResponseDto.FollowerPreviewDto.builder()
-                .followerId(follows.getSender().getId())
+                .userId(follows.getSender().getId())
                 .name(follows.getSender().getName())
                 .nickname(follows.getSender().getNickname())
+                .following(isFollowing)
                 .profileUrl(follows.getSender().getProfileUrl())
                 .build();
     }
 
-    public static List<FollowResponseDto.FollowerPreviewDto> toFollowerPreviewListDto(List<Follows> followsList){
+    public static List<FollowResponseDto.FollowerPreviewDto> toFollowerPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
         return followsList.stream()
-                .map(UsersConverter::toFollowerPreviewDto).collect(Collectors.toList());
+                .map(follow->toFollowerPreviewDto(follow, followingIdList)).collect(Collectors.toList());
 
     }
 
@@ -111,18 +115,30 @@ public class UsersConverter {
                 .build();
     }
 
-    public static UserResponseDto.UserInfoDto toOtherInfoDto(Users user, Integer followingNum, Integer followerNum, boolean isFollowing){
-
-        String imageUrl = (user.getProfileUrl() != null) ? user.getProfileUrl() : null;
-
+    public static UserResponseDto.UserInfoDto toUserInfoDto(Users user){
         return UserResponseDto.UserInfoDto.builder()
                 .userId(user.getId())
                 .name(user.getName())
                 .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
+                .postNum(user.getPostList().size())
+                .followingNum(user.getFollowingList().size())
+                .followerNum(user.getFollowerList().size())
+                .build();
+    }
+    public static UserResponseDto.OtherUserInfoDto toOtherInfoDto(Users user, boolean isFollowing){
+
+        String imageUrl = (user.getProfileUrl() != null) ? user.getProfileUrl() : null;
+
+        return UserResponseDto.OtherUserInfoDto.builder()
+                .userId(user.getId())
+                .name(user.getName())
+                .nickname(user.getNickname())
                 .profileUrl(imageUrl)
-                .followingNum(followingNum)
-                .followerNum(followerNum)
-                .isFollowing(isFollowing)
+                .postNum(user.getPostList().size())
+                .followingNum(user.getFollowingList().size())
+                .followerNum(user.getFollowerList().size())
+                .following(isFollowing)
                 .build();
     }
 
