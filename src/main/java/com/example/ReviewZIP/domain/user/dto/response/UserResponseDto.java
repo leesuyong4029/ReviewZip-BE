@@ -49,15 +49,31 @@ public class UserResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserInfoDto {
+    public static class OtherUserInfoDto {
         private Long userId;
         private String name;
         private String nickname;
         private String profileUrl;
+        private Integer postNum;
         private Integer followingNum;
         private Integer followerNum;
-        private boolean isFollowing;
+        private boolean following;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserInfoDto{
+        private Long userId;
+        private String name;
+        private String nickname;
+        private String profileUrl;
+        private Integer postNum;
+        private Integer followingNum;
+        private Integer followerNum;
+    }
+
 
     @Getter
     @Builder

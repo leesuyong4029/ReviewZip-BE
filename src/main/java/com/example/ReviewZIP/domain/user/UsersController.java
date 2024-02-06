@@ -69,8 +69,8 @@ public class UsersController {
     })
     public ApiResponse<List<FollowResponseDto.FollowingPreviewDto>> getUserFollowingList(){
         List<Follows> FollowsPage = usersService.getFollowingList(1L); //수정 필요
-
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
+        List<Long> followingIdList = usersService.getFollowigIdList(1L);
+        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage, followingIdList));
     }
 
     @GetMapping("/me/followers")
@@ -82,8 +82,9 @@ public class UsersController {
     public ApiResponse<List<FollowResponseDto.FollowerPreviewDto>> getUserFollowerList(){
 
         List<Follows> FollowsPage = usersService.getFollowerList(1L); //수정 필요
+        List<Long> followingIdList = usersService.getFollowigIdList(1L);
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage, followingIdList));
     }
 
     @GetMapping("/{userId}/followings")
@@ -97,8 +98,8 @@ public class UsersController {
     })
     public ApiResponse<List<FollowResponseDto.FollowingPreviewDto>> getOtherFollowingList(@PathVariable(name = "userId") Long userId){
         List<Follows> FollowsPage = usersService.getFollowingList(userId);
-
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage));
+        List<Long> followingIdList = usersService.getFollowigIdList(userId);
+        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage, followingIdList));
     }
 
     @GetMapping("/{userId}/followers")
@@ -112,8 +113,8 @@ public class UsersController {
     })
     public ApiResponse<List<FollowResponseDto.FollowerPreviewDto>> getOtherFollowerList(@PathVariable(name = "userId")Long userId){
         List<Follows> FollowsPage = usersService.getFollowerList(userId);
-
-        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage));
+        List<Long> followingIdList = usersService.getFollowigIdList(userId);
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage, followingIdList));
     }
 
     @GetMapping("/me/posts")
@@ -194,10 +195,21 @@ public class UsersController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public ApiResponse<UserResponseDto.UserInfoDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
+    public ApiResponse<UserResponseDto.OtherUserInfoDto> getOtherInfo(@PathVariable(name = "userId") Long userId){
 
         return ApiResponse.onSuccess(usersService.getOtherInfo(userId));
      }
+
+    @GetMapping("/me")
+    @Operation(summary = "나의 정보(프로필) API 가져오기",description = " 나의 정보를 가져오기, UserInfoDto 이용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+
+    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(){
+
+        return ApiResponse.onSuccess(usersService.getUserInfo(1L));
+    }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "유저 삭제하기 API",description = "유저를 삭제한다.")
