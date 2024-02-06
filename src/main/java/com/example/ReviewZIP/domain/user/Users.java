@@ -5,6 +5,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.token.dto.SignUpRequestDto;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -71,4 +72,15 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "object", cascade = CascadeType.ALL)
     private List<SearchHistories> objectList = new ArrayList<>();
+
+    public static Users toEntity(SignUpRequestDto signUpRequestDto) {
+        return Users.builder()
+                .name(signUpRequestDto.getName())
+                .email(signUpRequestDto.getEmail())
+                .password(signUpRequestDto.getPassword())
+                .nickname(signUpRequestDto.getNickname())
+                .phone_num(signUpRequestDto.getPhoneNum())
+                .status(Status.ENABLED)
+                .build();
+    }
 }
