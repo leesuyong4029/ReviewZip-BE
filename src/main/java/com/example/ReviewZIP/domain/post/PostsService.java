@@ -82,7 +82,6 @@ public class PostsService {
     }
 
     public static final int NUM_OF_RANDOM_POST = 1;
-
     public PostResponseDto.PostInfoDto getOneRandomPostInfoDto(Long userId) {
         Users user = usersRepository.getById(1L);
 

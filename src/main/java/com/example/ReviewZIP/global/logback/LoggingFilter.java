@@ -45,48 +45,15 @@ public class LoggingFilter extends OncePerRequestFilter {
     }
 
     private static void logRequest(RequestWrapper request) throws IOException {
-        String queryString = request.getQueryString();
-        log.info("{} {} uri=[{}] content-type=[{}]",
-                LogColor.GREEN + "Request :" + LogColor.RESET,
+        log.info("{} [{}] {}",
+                LogColor.GREEN + "[Request]" + LogColor.RESET,
                 LogColor.BLUE + request.getMethod() + LogColor.RESET,
-                queryString == null ? request.getRequestURI() : request.getRequestURI() + queryString,
-                request.getContentType()
+                LogColor.BLUE + request.getRequestURI() + LogColor.RESET
         );
-
-        logPayload("Request", request.getContentType(), request.getInputStream());
     }
 
     private static void logResponse(ContentCachingResponseWrapper response) throws IOException {
-        log.info("{} Payload: {}", LogColor.PURPLE + "Response" + LogColor.RESET, response.getContentType());
-        logPayload("Response", response.getContentType(), response.getContentInputStream());
-    }
-
-    private static void logPayload(String prefix, String contentType, InputStream inputStream) throws IOException {
-        boolean visible = isVisible(MediaType.valueOf(contentType == null ? "application/json" : contentType));
-        if (visible) {
-            byte[] content = StreamUtils.copyToByteArray(inputStream);
-            if (content.length > 0) {
-                String contentString = new String(content);
-                log.info("{} Payload: {}", prefix, contentString);
-            }
-        } else {
-            log.info("{} Payload: Binary Content", prefix);
-        }
-    }
-
-    private static boolean isVisible(MediaType mediaType) {
-        final List<MediaType> VISIBLE_TYPES = Arrays.asList(
-                MediaType.valueOf("text/*"),
-                MediaType.APPLICATION_FORM_URLENCODED,
-                MediaType.APPLICATION_JSON,
-                MediaType.APPLICATION_XML,
-                MediaType.valueOf("application/*+json"),
-                MediaType.valueOf("application/*+xml"),
-                MediaType.MULTIPART_FORM_DATA
-        );
-
-        return VISIBLE_TYPES.stream()
-                .anyMatch(visibleType -> visibleType.includes(mediaType));
+        log.info("{}", LogColor.PURPLE + "[Response]" + LogColor.RESET);
     }
 
 }
