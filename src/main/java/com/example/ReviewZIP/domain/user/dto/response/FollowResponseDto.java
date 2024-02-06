@@ -14,10 +14,11 @@ public class FollowResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FollowingPreviewDto{
-        private Long followingId;
+        private Long userId;
         private String profileUrl;
         private String nickname;
         private String name;
+        private boolean following;
     }
 
     @Builder
@@ -38,9 +39,10 @@ public class FollowResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FollowerPreviewDto{
-        private Long followerId;
+        private Long userId;
         private String profileUrl;
         private String nickname;
         private String name;
+        private boolean following;
     }
 }
