@@ -81,14 +81,13 @@ public class UsersService {
     }
 
     public UserResponseDto.UserInfoDto getUserInfo(Long userId){
-        // 사용자 임의 처리, 1L 가정
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
 
         return UsersConverter.toUserInfoDto(me);
     }
     public UserResponseDto.OtherUserInfoDto getOtherInfo(Long userId){
         // 사용자 임의 처리, 1L 가정
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         Users other = usersRepository.findById(userId)
                 .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
@@ -129,8 +128,7 @@ public class UsersService {
     }
 
     public PostResponseDto.PostInfoDto getPostInfoDto(Long postId, Long userId){
-        // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
-        Users user = usersRepository.getById(1L);
+        Users user = usersRepository.getById(userId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
         boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
@@ -148,18 +146,18 @@ public class UsersService {
 
     List<PostResponseDto.PostInfoDto> getScrabInfoDtoList(Long userId, List<Scrabs> scrabList){
         return scrabList.stream()
-                .map(scrab -> getPostInfoDto(scrab.getPost().getId(), 1L))
+                .map(scrab -> getPostInfoDto(scrab.getPost().getId(), userId))
                 .collect(Collectors.toList());
     }
 
 
     List<Posts> getPostList(Long userId){
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         return me.getPostList();
     }
 
     List<Scrabs> getScrabList(Long userId){
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         return me.getScrabList();
     }
 }

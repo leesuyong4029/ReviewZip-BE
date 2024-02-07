@@ -31,7 +31,7 @@ public class UsersConverter {
     }
 
     // 팔로잉 목록 converter
-    public static UserResponseDto.UserPreviewDto toFollowPreviewDto(Follows follows, List<Long> followingIdList){
+    public static UserResponseDto.UserPreviewDto toFollowingPreviewDto(Follows follows, List<Long> followingIdList){
         boolean isFollowing = followingIdList.contains(follows.getReceiver().getId());
         return UserResponseDto.UserPreviewDto.builder()
                 .userId(follows.getReceiver().getId())
@@ -42,9 +42,26 @@ public class UsersConverter {
                 .build();
     }
 
-    public static List<UserResponseDto.UserPreviewDto> toFollowPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
+    public static List<UserResponseDto.UserPreviewDto> toFollowingPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
         return followsList.stream()
-                .map(follow -> toFollowPreviewDto(follow, followingIdList)).collect(Collectors.toList());
+                .map(follow -> toFollowingPreviewDto(follow, followingIdList)).collect(Collectors.toList());
+
+    }
+
+    public static UserResponseDto.UserPreviewDto toFollowerPreviewDto(Follows follows, List<Long> followingIdList){
+        boolean isFollowing = followingIdList.contains(follows.getSender().getId());
+        return UserResponseDto.UserPreviewDto.builder()
+                .userId(follows.getSender().getId())
+                .name(follows.getSender().getName())
+                .profileUrl(follows.getSender().getProfileUrl())
+                .nickname(follows.getSender().getNickname())
+                .following(isFollowing)
+                .build();
+    }
+
+    public static List<UserResponseDto.UserPreviewDto> toFollowerPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
+        return followsList.stream()
+                .map(follow -> toFollowerPreviewDto(follow, followingIdList)).collect(Collectors.toList());
 
     }
 

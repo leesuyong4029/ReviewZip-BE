@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +23,21 @@ import java.util.List;
 public class PostsController {
 
     private final PostsService postsService;
+
+    @GetMapping("/{postId}/hashtags")
+    @Operation(summary = "게시물에 해시태그 추가 API", description = "게시물에 해시태그를 추가")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+    })
+    @Parameters({
+            @Parameter(name="postId", description = "작성하는 게시물 ID"),
+            @Parameter(name="query", description = "해시태그 이름")
+    })
+    public ApiResponse<SuccessStatus> addHashtags(@RequestParam String query, @PathVariable Long postId) {
+        postsService.addHashtags(query, postId);
+
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
 
     @GetMapping("/hashtags/{hashtagId}")
     @Operation(summary = "해시태그 아이디로 게시글을 찾는 API",description = "해시태그 아이디로 게시글을 찾는 기능, 반환 시 PostPreviewListDto, PostPreviewDto 사용")
