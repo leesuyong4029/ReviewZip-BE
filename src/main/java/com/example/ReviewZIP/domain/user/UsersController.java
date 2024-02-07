@@ -6,6 +6,8 @@ import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
+import com.example.ReviewZIP.domain.userStores.UserStoresService;
+import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +28,20 @@ import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
 @RequestMapping("/v1/users")
 public class UsersController {
     private final UsersService usersService;
+    private final UserStoresService userStoresService;
 
+    @GetMapping("/{userId}/stores")
+    @Operation(summary = "특정 유저의 관심 장소 목록 API",description = "특정 특정 유저의 관심 장소 목록을 가져온다, 반환 시 StoreInfoListDto 사용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "유저의 아이디"),
+    })
+    public ApiResponse<UserStoresResponseDto.StoreInfoListDto> getStoresByUser(@PathVariable Long userId) {
+        return ApiResponse.onSuccess(userStoresService.getStoreInfo(userId));
+    }
     @GetMapping("/search/name")
     @Operation(summary = "이름으로 유저 검색 API",description = "유저의 이름으로 특정 유저를 검색 (자신이 팔로잉한 대상은 제외), UserPreviewDto 이용")
     @ApiResponses({
