@@ -1,15 +1,11 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
-import com.example.ReviewZIP.domain.post.Posts;
-import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.searchHistory.SearchType;
-import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,9 +31,9 @@ public class UsersConverter {
     }
 
     // 팔로잉 목록 converter
-    public static FollowResponseDto.FollowingPreviewDto toFollowingPreviewDto(Follows follows, List<Long> followingIdList){
+    public static UserResponseDto.UserPreviewDto toFollowPreviewDto(Follows follows, List<Long> followingIdList){
         boolean isFollowing = followingIdList.contains(follows.getReceiver().getId());
-        return FollowResponseDto.FollowingPreviewDto.builder()
+        return UserResponseDto.UserPreviewDto.builder()
                 .userId(follows.getReceiver().getId())
                 .name(follows.getReceiver().getName())
                 .profileUrl(follows.getReceiver().getProfileUrl())
@@ -46,73 +42,10 @@ public class UsersConverter {
                 .build();
     }
 
-    public static List<FollowResponseDto.FollowingPreviewDto> toFollowingPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
+    public static List<UserResponseDto.UserPreviewDto> toFollowPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
         return followsList.stream()
-                .map(follow -> toFollowingPreviewDto(follow, followingIdList)).collect(Collectors.toList());
+                .map(follow -> toFollowPreviewDto(follow, followingIdList)).collect(Collectors.toList());
 
-    }
-
-    public static FollowResponseDto.FollowerPreviewDto toFollowerPreviewDto(Follows follows, List<Long> followingIdList){
-        boolean isFollowing = followingIdList.contains(follows.getSender().getId());
-        return FollowResponseDto.FollowerPreviewDto.builder()
-                .userId(follows.getSender().getId())
-                .name(follows.getSender().getName())
-                .nickname(follows.getSender().getNickname())
-                .following(isFollowing)
-                .profileUrl(follows.getSender().getProfileUrl())
-                .build();
-    }
-
-    public static List<FollowResponseDto.FollowerPreviewDto> toFollowerPreviewListDto(List<Follows> followsList, List<Long> followingIdList){
-        return followsList.stream()
-                .map(follow->toFollowerPreviewDto(follow, followingIdList)).collect(Collectors.toList());
-
-    }
-
-    public static UserResponseDto.PostPreviewDto toPostPreviewDto(Posts post){
-        return UserResponseDto.PostPreviewDto.builder()
-                .postId(post.getId())
-                .likeNum(post.getPostLikeList().size())
-                .scrabNum(post.getScrabList().size())
-                .postImageUrl(post.getPostImageList().get(0).getUrl())
-                .build();
-    }
-
-    public static UserResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Posts> postList){
-        List<UserResponseDto.PostPreviewDto> userPostPriviewDtoList = postList.stream()
-                .map(UsersConverter::toPostPreviewDto).collect(Collectors.toList());
-
-        return UserResponseDto.PostPreviewListDto.builder()
-                .isLast(postList.isLast())
-                .isFirst(postList.isFirst())
-                .totalElements(postList.getTotalElements())
-                .totalPage(postList.getTotalPages())
-                .listSize(userPostPriviewDtoList.size())
-                .postList(userPostPriviewDtoList)
-                .build();
-    }
-
-    public static UserResponseDto.PostPreviewDto toScrabPreviewDto(Scrabs scrabs){
-        return UserResponseDto.PostPreviewDto.builder()
-                .postId(scrabs.getPost().getId())
-                .likeNum(scrabs.getPost().getPostLikeList().size())
-                .scrabNum(scrabs.getPost().getScrabList().size())
-                .postImageUrl(scrabs.getPost().getPostImageList().get(0).getUrl())
-                .build();
-    }
-
-    public static UserResponseDto.PostPreviewListDto toScrabPreviewListDto(Page<Scrabs> scrabList) {
-        List<UserResponseDto.PostPreviewDto> scrabPriviewDtoList = scrabList.stream()
-                .map(UsersConverter::toScrabPreviewDto).collect(Collectors.toList());
-
-        return UserResponseDto.PostPreviewListDto.builder()
-                .isLast(scrabList.isLast())
-                .isFirst(scrabList.isFirst())
-                .totalElements(scrabList.getTotalElements())
-                .totalPage(scrabList.getTotalPages())
-                .listSize(scrabPriviewDtoList.size())
-                .postList(scrabPriviewDtoList)
-                .build();
     }
 
     public static UserResponseDto.UserInfoDto toUserInfoDto(Users user){

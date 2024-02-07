@@ -25,19 +25,6 @@ public class UserResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostPreviewListDto{
-        private List<PostPreviewDto> postList;
-        private Integer listSize;
-        private Integer totalPage;
-        private Long totalElements;
-        private Boolean isFirst;
-        private Boolean isLast;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class PostPreviewDto {
         private Long postId;
         private String postImageUrl;

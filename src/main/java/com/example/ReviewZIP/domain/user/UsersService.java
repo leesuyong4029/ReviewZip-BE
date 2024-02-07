@@ -3,22 +3,30 @@ package com.example.ReviewZIP.domain.user;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.post.PostsConverter;
 import com.example.ReviewZIP.domain.post.PostsRepository;
+import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
+import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +36,7 @@ public class UsersService {
     private final FollowsRepository followsRepository;
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
+    private final PostLikesRepository postLikesRepository;
 
     public List<Users> findUsersByName(String name) {
         List<Users> pageUsers = usersRepository.findByName(name);
@@ -44,7 +53,7 @@ public class UsersService {
     public List<Long> getFollowigIdList(Long userId){
         // 일단 1L로 나를 대체
         Users me = usersRepository.getById(userId);
-        List<Follows> followingList = followsRepository.findAllBySender(me);
+        List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
 
         for (Follows following : followingList){
@@ -55,34 +64,15 @@ public class UsersService {
     }
 
     public List<Follows> getFollowingList(Long userId){
-        Users sender = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        List<Follows> FollowsPage = followsRepository.findAllBySender(sender);
-
-        return FollowsPage;
+        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        return user.getFollowingList();
     }
 
     public List<Follows> getFollowerList(Long userId){
-        Users receiver = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        List<Follows> FollowsPage = followsRepository.findAllByReceiver(receiver);
-
-        return FollowsPage;
-    }
-
-    public Page<Posts> getPostList(Long userId, Integer page, Integer size){
         Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        Page<Posts> UserPage = postsRepository.findAllByUser(user, PageRequest.of(page, size));
-
-        return UserPage;
+        return user.getFollowerList();
     }
 
-    public Page<Scrabs> getScrabList(Long userId, Integer page, Integer size){
-        Users user = usersRepository.findById(userId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        Page<Scrabs> UserPage = scrabsRepository.findAllByUser(user, PageRequest.of(page, size));
-
-        return UserPage;
-    }
-
-    // 해당 유저가 맞는지에 대한 검증 필요, 원래 1L 필요하나 일단 데이터베이스 확인을 위하여 다음과 같이 진행
     @Transactional
     public void deleteUser(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
@@ -112,5 +102,64 @@ public class UsersService {
         List<SearchHistories> historyList =  me.getSearchHistoriesList();
         Collections.reverse(historyList);
         return historyList;
+    }
+
+    public String getCreatedAt(LocalDateTime createdAt){
+
+        // 서버시간을 UTC로 설정
+        ZoneId serverZone = ZoneId.of("UTC");
+        LocalDateTime now = ZonedDateTime.now(serverZone).toLocalDateTime();
+
+        Duration duration = Duration.between(createdAt, now);
+
+        long seconds = duration.getSeconds();
+        long minutes = duration.toMinutes();
+        long hours = duration.toHours();
+
+        if (minutes < 1){
+            return seconds + "초 전";
+        } else if (minutes < 60){
+            return minutes + "분 전";
+        } else if (hours < 24){
+            return hours + "시간 전";
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+            return createdAt.format(formatter);
+        }
+    }
+
+    public PostResponseDto.PostInfoDto getPostInfoDto(Long postId, Long userId){
+        // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
+        Users user = usersRepository.getById(1L);
+        Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
+        boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
+        boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
+
+        String createdAt = getCreatedAt(post.getCreatedAt());
+
+        return PostsConverter.toPostInfoResultDto(post, user, checkLike, checkScrab, createdAt);
+    }
+
+    List<PostResponseDto.PostInfoDto> getPostInfoDtoList(Long userId, List<Posts> postList){
+        return postList.stream()
+                .map(post -> getPostInfoDto(post.getId(), userId))
+                .collect(Collectors.toList());
+    }
+
+    List<PostResponseDto.PostInfoDto> getScrabInfoDtoList(Long userId, List<Scrabs> scrabList){
+        return scrabList.stream()
+                .map(scrab -> getPostInfoDto(scrab.getPost().getId(), 1L))
+                .collect(Collectors.toList());
+    }
+
+
+    List<Posts> getPostList(Long userId){
+        Users me = usersRepository.getById(1L);
+        return me.getPostList();
+    }
+
+    List<Scrabs> getScrabList(Long userId){
+        Users me = usersRepository.getById(1L);
+        return me.getScrabList();
     }
 }

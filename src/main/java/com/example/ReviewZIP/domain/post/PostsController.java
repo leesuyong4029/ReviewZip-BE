@@ -2,6 +2,7 @@ package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -28,16 +29,15 @@ public class PostsController {
     @Operation(summary = "해시태그 아이디로 게시글을 찾는 API",description = "해시태그 아이디로 게시글을 찾는 기능, 반환 시 PostPreviewListDto, PostPreviewDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST403", description = "일치하는 해시태그가 존재하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "hashtagId", description = "해시태그 아이디"),
-            @Parameter(name = "page", description = "페이지 번호"),
-            @Parameter(name = "size", description = "페이징 사이즈")
     })
-    public ApiResponse<PostResponseDto.PostPreviewListDto> searchPostsByHashtagId(@PathVariable Long hashtagId, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-        Page<Posts> postsPage = postsService.searchPostByHashtag(hashtagId, page, size);
-        PostResponseDto.PostPreviewListDto postPreviewListDto = PostsConverter.toPostPreviewListDto(postsPage);
-        return ApiResponse.onSuccess(postPreviewListDto);
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> searchPostsByHashtagId(@PathVariable Long hashtagId) {
+        List<PostHashtags> postList = postsService.searchPostByHashtag(hashtagId);
+        List<PostResponseDto.PostInfoDto> getPostInfoDtoList = postsService.getPostInfoDtoList(postList);
+        return ApiResponse.onSuccess(getPostInfoDtoList);
     }
 
     // 특정 게시글의 정보 가져오기
@@ -104,9 +104,9 @@ public class PostsController {
         List<Users> postLikeUserList = postsService.getPostLikeUserList(postId);
         List<Long> userFollowingList = postsService.getFollowigIdList();
 
-        List<PostResponseDto.PostUserLikeDto> likeAndFollowing = PostsConverter.toPostUserLikeListDto(postLikeUserList, userFollowingList);
+        List<PostResponseDto.PostUserLikeDto> postLikeList = PostsConverter.toPostUserLikeListDto(postLikeUserList, userFollowingList);
 
-        return ApiResponse.onSuccess(likeAndFollowing);
+        return ApiResponse.onSuccess(postLikeList);
     }
 
     @DeleteMapping("/{postId}")

@@ -26,28 +26,6 @@ public class PostsConverter {
     }
 
 
-    public static PostResponseDto.PostPreviewDto toPostPreviewDto(Posts post) {
-        return PostResponseDto.PostPreviewDto.builder()
-                .id(post.getId())
-                .likeNum(post.getPostLikeList().size())
-                .scrabNum(post.getScrabList().size())
-                .imageUrl(post.getPostImageList().get(0).getUrl())
-                .build();
-    }
-
-    public static PostResponseDto.PostPreviewListDto toPostPreviewListDto(Page<Posts> postList) {
-        List<PostResponseDto.PostPreviewDto> postPreviewDtoList = postList.stream()
-                .map(PostsConverter::toPostPreviewDto).collect(Collectors.toList());
-
-        return PostResponseDto.PostPreviewListDto.builder()
-                .isLast(postList.isLast())
-                .isFirst(postList.isFirst())
-                .totalPage(postList.getTotalPages())
-                .totalElements(postList.getTotalElements())
-                .listSize(postPreviewDtoList.size())
-                .postList(postPreviewDtoList)
-                .build();
-    }
     public static PostResponseDto.CreatedPostResponseDto toPostResponseDto(Posts post) {
         List<Long> imageIds = post.getPostImageList().stream()
                 .map(Images::getId)
@@ -63,28 +41,40 @@ public class PostsConverter {
     }
     public static PostResponseDto.UserInfoDto toUserInfoDto(Users user){
         return PostResponseDto.UserInfoDto.builder()
-                .id(user.getId())
+                .userId(user.getId())
+                .name(user.getName())
                 .nickname(user.getNickname())
                 .profileUrl(user.getProfileUrl())
                 .build();
     }
 
-    public static PostResponseDto.ImageListDto toImageListDto(Images image){
-        return PostResponseDto.ImageListDto.builder()
-                .id(image.getId())
-                .url(image.getUrl())
+    public static PostResponseDto.ImageDto toImageDto(Images image){
+        return PostResponseDto.ImageDto.builder()
+                .imageId(image.getId())
+                .imageUrl(image.getUrl())
                 .build();
     }
-    public static PostResponseDto.PostInfoDto toPostInfoResultDto(Users user,Posts post, boolean checkLike, boolean checkScrab, String createdAt){
+
+    public static PostResponseDto.HashtagDto toHashtagDto(PostHashtags postHashtags){
+        return PostResponseDto.HashtagDto.builder()
+                .hashtagId(postHashtags.getId())
+                .tagName(postHashtags.getHashtag())
+                .build();
+    }
+    public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, Users user, boolean checkLike, boolean checkScrab, String createdAt){
         PostResponseDto.UserInfoDto userInfoDto = toUserInfoDto(post.getUser());
 
-        List<PostResponseDto.ImageListDto> imageListDto = post.getPostImageList().stream()
-                .map(PostsConverter::toImageListDto).collect(Collectors.toList());
+        List<PostResponseDto.ImageDto> imageListDto = post.getPostImageList().stream()
+                .map(PostsConverter::toImageDto).collect(Collectors.toList());
+
+        List<PostResponseDto.HashtagDto> hashtagList = post.getPostHashtagList().stream()
+                .map(PostsConverter::toHashtagDto).collect(Collectors.toList());
 
         boolean mine = false;
         if(user.getId().equals(post.getUser().getId())) {
             mine = true;
         }
+
 
         return PostResponseDto.PostInfoDto.builder()
                 .postId(post.getId())
@@ -94,8 +84,8 @@ public class PostsConverter {
                 .hashtagNum(post.getPostHashtagList().size())
                 .checkLike(checkLike)
                 .checkScrab(checkScrab)
-                .hashtags(post.getPostHashtagList().stream().map(PostHashtags::getHashtag).collect(Collectors.toList()))
-                .userInfo(userInfoDto)
+                .hashtags(hashtagList)
+                .user(userInfoDto)
                 .checkMine(mine)
                 .postImages(imageListDto)
                 .createdAt(createdAt)
@@ -108,6 +98,7 @@ public class PostsConverter {
             boolean isFollowing = followingIdList.contains(user.getId());
             PostResponseDto.PostUserLikeDto postUserLikeDto = PostResponseDto.PostUserLikeDto.builder()
                     .userId(user.getId())
+                    .name(user.getName())
                     .nickname(user.getNickname())
                     .profileUrl(user.getProfileUrl())
                     .following(isFollowing)
