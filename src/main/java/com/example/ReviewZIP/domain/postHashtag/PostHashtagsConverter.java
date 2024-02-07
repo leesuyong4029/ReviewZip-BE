@@ -9,8 +9,8 @@ public class PostHashtagsConverter {
 
     public static PostHashtagResponseDto.PostHashtagsPreviewDto toPostHashtagsPreviewDto(PostHashtags postHashtags) {
         return PostHashtagResponseDto.PostHashtagsPreviewDto.builder()
-                .id(postHashtags.getId())
-                .name(postHashtags.getHashtag())
+                .hashtagId(postHashtags.getId())
+                .tagName(postHashtags.getHashtag())
                 .build();
 
     }

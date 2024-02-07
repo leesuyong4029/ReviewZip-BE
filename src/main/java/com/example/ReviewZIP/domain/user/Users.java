@@ -6,6 +6,7 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.token.dto.SignUpRequestDto;
+import com.example.ReviewZIP.domain.userStores.UserStores;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -72,6 +75,9 @@ public class Users extends BaseEntity {
 
     @OneToMany(mappedBy = "object", cascade = CascadeType.ALL)
     private List<SearchHistories> objectList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserStores> userStores = new HashSet<>();
 
     public static Users toEntity(SignUpRequestDto signUpRequestDto) {
         return Users.builder()

@@ -15,10 +15,7 @@ import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.handler.ImagesHandler;
-import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
-import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
-import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
+import com.example.ReviewZIP.global.response.exception.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -49,16 +46,12 @@ public class PostsService {
     private final PostHashtagsRepository postHashtagsRepository;
     private final FollowsRepository followsRepository;
 
-    public Page<Posts> searchPostByHashtag (Long id, Integer page, Integer size){
-        Page<PostHashtags> postHashtagsList = postHashtagsRepository.findPostHashtagsById(id, PageRequest.of(page,size));
-
-        List<Posts> postsList = postHashtagsList.getContent().stream()
-                .map(PostHashtags::getPost)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(postsList, postHashtagsList.getPageable(), postHashtagsList.getTotalElements());
-
+    public List<PostHashtags> searchPostByHashtag (Long hashtagId){
+        PostHashtags postHashtags = postHashtagsRepository.findById(hashtagId).orElseThrow(()->new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND));
+        String tagName = postHashtags.getHashtag();
+        return postHashtagsRepository.findAllByHashtag(tagName);
     }
+
     @Transactional
     public Posts createPost(PostRequestDto postRequestDto) {
         Users user = usersRepository.findById(postRequestDto.getUserId()).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
@@ -105,7 +98,7 @@ public class PostsService {
             boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
             String createdAt = getCreatedAt(post.getCreatedAt());
 
-            return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
+            return PostsConverter.toPostInfoResultDto(post, user, checkLike, checkScrab, createdAt);
         }
         throw new PostsHandler(ErrorStatus.NON_USER_POST_REQUIRED);
     }
@@ -140,7 +133,7 @@ public class PostsService {
                 boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
                 String createdAt = getCreatedAt(post.getCreatedAt());
 
-                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt));
+                randomPostInfoDtos.add(PostsConverter.toPostInfoResultDto(post, user, checkLike, checkScrab, createdAt));
             }
         }
 
@@ -157,7 +150,13 @@ public class PostsService {
 
         String createdAt = getCreatedAt(post.getCreatedAt());
 
-        return PostsConverter.toPostInfoResultDto(user, post, checkLike, checkScrab, createdAt);
+        return PostsConverter.toPostInfoResultDto(post, user, checkLike, checkScrab, createdAt);
+    }
+
+    List<PostResponseDto.PostInfoDto> getPostInfoDtoList(List<PostHashtags> postHashtagList){
+        return postHashtagList.stream()
+                .map(postHashtag -> getPostInfoDto(postHashtag.getPost().getId()))
+                .collect(Collectors.toList());
     }
 
     public String getCreatedAt(LocalDateTime createdAt){
@@ -220,7 +219,7 @@ public class PostsService {
     public List<Long> getFollowigIdList(){
         // 일단 1L로 나를 대체
         Users me = usersRepository.getById(1L);
-        List<Follows> followingList = followsRepository.findAllBySender(me);
+        List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
 
         for (Follows following : followingList){

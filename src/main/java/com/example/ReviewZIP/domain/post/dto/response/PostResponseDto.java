@@ -14,18 +14,9 @@ public class PostResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostPreviewDto {
-        private Long id;
-        private String imageUrl;
-        private Integer likeNum;
-        private Integer scrabNum;
-    }
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
     public static class UserInfoDto{
-        private Long id;
+        private Long userId;
+        private String name;
         private String nickname;
         private String profileUrl;
     }
@@ -33,23 +24,20 @@ public class PostResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class ImageListDto{
-        private Long id;
-        private String url;
+    public static class ImageDto{
+        private Long imageId;
+        private String imageUrl;
     }
 
     @Builder
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostPreviewListDto {
-        private List<PostPreviewDto> postList;
-        private Integer listSize;
-        private Integer totalPage;
-        private Long totalElements;
-        private Boolean isFirst;
-        private Boolean isLast;
+    public static class HashtagDto{
+        private Long hashtagId;
+        private String tagName;
     }
+
     @Builder
     @Getter
     @NoArgsConstructor
@@ -64,9 +52,9 @@ public class PostResponseDto {
         private boolean checkScrab;
         private boolean checkMine;
         private String createdAt;
-        private UserInfoDto userInfo;
-        private List<String> hashtags;
-        private List<ImageListDto> postImages;
+        private UserInfoDto user;
+        private List<HashtagDto> hashtags;
+        private List<ImageDto> postImages;
     }
 
     @Builder
@@ -87,17 +75,9 @@ public class PostResponseDto {
     @AllArgsConstructor
     public static class PostUserLikeDto{
         private Long userId;
+        private String name;
         private String nickname;
         private String profileUrl;
         private boolean following;
     }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PostUserLikeListDto{
-        private List<PostUserLikeDto> userLikeDto;
-    }
-
 }

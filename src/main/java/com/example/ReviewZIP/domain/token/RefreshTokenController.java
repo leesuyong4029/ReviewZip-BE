@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "로컬 로그인/회원가입", description = "로컬 로그인, 회원가입 API")
+@Tag(name = "token-controller", description = "로컬 로그인, 회원가입 API")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
