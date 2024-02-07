@@ -7,8 +7,6 @@ import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,7 @@ public class PostHashtagsController {
     private final PostHashtagsService postHashtagsService;
 
     @GetMapping("/{postId}")
-    @Operation(summary = "게시물에 해시태그 추가 API", description = "DB와 레디스에 해시태그를 추가")
+    @Operation(summary = "게시물에 해시태그 추가 API", description = "게시물에 해시태그를 추가")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
@@ -38,7 +36,7 @@ public class PostHashtagsController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "해시태그 이름으로 해시태그를 검색 API", description = "해시태그 이름으로 검색 시 해시태그 리스트를 반환하고 검색기록에 저장")
+    @Operation(summary = "해시태그 이름으로 해시태그를 검색 API", description = "해시태그 이름으로 검색 시 해시태그 리스트를 반환하고 검색기록에 저장, PostHashtagsPreviewDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })

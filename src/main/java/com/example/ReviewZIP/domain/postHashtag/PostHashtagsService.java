@@ -20,8 +20,6 @@ public class PostHashtagsService {
     private final PostHashtagsRepository postHashtagsRepository;
     private final RedisService redisService;
     private final PostsRepository postsRepository;
-    private final UsersRepository usersRepository;
-    private final SearchHistoriesRepository searchHistoriesRepository;
 
     @Transactional
     public void addHashtags(String query, Long postId) {

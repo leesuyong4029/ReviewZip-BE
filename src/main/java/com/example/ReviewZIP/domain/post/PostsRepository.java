@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface PostsRepository extends JpaRepository<Posts, Long> {
-    Page<Posts> findAllByUser(Users user, PageRequest pageRequest);
 
     @Query("SELECT count(p) FROM Posts p WHERE p.user != :user")
     long countByUserNot(@Param("user") Users user);

@@ -2,9 +2,9 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.post.Posts;
+import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
-import com.example.ReviewZIP.domain.user.dto.response.FollowResponseDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,33 +61,33 @@ public class UsersController {
     }
 
     @GetMapping("/me/followings")
-    @Operation(summary = "나의 팔로잉 목록 가져오기 API",description = "토큰 인증 후 나의 팔로잉 목록 조회, FollowingPreviewDto 이용, 임시로 user id 1의 팔로잉 목록 반환")
+    @Operation(summary = "나의 팔로잉 목록 가져오기 API",description = "토큰 인증 후 나의 팔로잉 목록 조회, UserPreviewDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<FollowResponseDto.FollowingPreviewDto>> getUserFollowingList(){
-        List<Follows> FollowsPage = usersService.getFollowingList(1L); //수정 필요
+    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getUserFollowingList(){
+        List<Follows> FollowingList = usersService.getFollowingList(1L); //수정 필요
         List<Long> followingIdList = usersService.getFollowigIdList(1L);
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowingList, followingIdList));
     }
 
     @GetMapping("/me/followers")
-    @Operation(summary = "나의 팔로워 목록 가져오기 API",description = "토큰 인증 후 나의 팔로워 목록 조회, FollowerPreviewDto 이용, 임시로 user id 1의 팔로잉 목록 반환")
+    @Operation(summary = "나의 팔로워 목록 가져오기 API",description = "토큰 인증 후 나의 팔로워 목록 조회, UserPreviewDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<FollowResponseDto.FollowerPreviewDto>> getUserFollowerList(){
+    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getUserFollowerList(){
 
-        List<Follows> FollowsPage = usersService.getFollowerList(1L); //수정 필요
+        List<Follows> FollowerList = usersService.getFollowerList(1L); //수정 필요
         List<Long> followingIdList = usersService.getFollowigIdList(1L);
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowerList, followingIdList));
     }
 
     @GetMapping("/{userId}/followings")
-    @Operation(summary = "특정 유저의 팔로잉 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로잉 목록 조회, FollowingPreviewDto 이용")
+    @Operation(summary = "특정 유저의 팔로잉 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로잉 목록 조회, UserPreviewDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -96,14 +95,14 @@ public class UsersController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public ApiResponse<List<FollowResponseDto.FollowingPreviewDto>> getOtherFollowingList(@PathVariable(name = "userId") Long userId){
-        List<Follows> FollowsPage = usersService.getFollowingList(userId);
+    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getOtherFollowingList(@PathVariable(name = "userId") Long userId){
+        List<Follows> FollowingList = usersService.getFollowingList(userId);
         List<Long> followingIdList = usersService.getFollowigIdList(userId);
-        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowsPage, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowingList, followingIdList));
     }
 
     @GetMapping("/{userId}/followers")
-    @Operation(summary = "특정 유저의 팔로워 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로워 목록 조회, FollowerPreviewDto 이용")
+    @Operation(summary = "특정 유저의 팔로워 목록 가져오기 API",description = "특정 유저의 id를 이용하여 해당 유저의 팔로워 목록 조회, UserPreviewDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -111,79 +110,65 @@ public class UsersController {
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
     })
-    public ApiResponse<List<FollowResponseDto.FollowerPreviewDto>> getOtherFollowerList(@PathVariable(name = "userId")Long userId){
-        List<Follows> FollowsPage = usersService.getFollowerList(userId);
+    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getOtherFollowerList(@PathVariable(name = "userId")Long userId){
+        List<Follows> FollowerList = usersService.getFollowerList(userId);
         List<Long> followingIdList = usersService.getFollowigIdList(userId);
-        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowsPage, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowerList, followingIdList));
     }
 
     @GetMapping("/me/posts")
-    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "토큰 인증 후 게시글 목록 가져오기, PostPreviewDto와 PostPreviewListDto 이용")
+    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "토큰 인증 후 게시글 목록 가져오기, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
-    @Parameters({
-            @Parameter(name = "page", description = "페이지 번호"),
-            @Parameter(name = "size", description = "페이징 사이즈")
-    })
-    public ApiResponse<UserResponseDto.PostPreviewListDto> getUserPostList(@RequestParam(name = "page")Integer page, @RequestParam(name = "size")Integer size){
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> getUserPostList(){
         // 토큰값 받아서 유저확인 하는 부분, 일단 1L로 대체
-        Page<Posts> UserPage = usersService.getPostList(1L, page, size);
-
-        return ApiResponse.onSuccess(UsersConverter.toPostPreviewListDto(UserPage));
+        List<Posts> postList = usersService.getPostList(1L);
+        List<PostResponseDto.PostInfoDto> postInfoDtoList = usersService.getPostInfoDtoList(1L, postList);
+        return ApiResponse.onSuccess(postInfoDtoList);
     }
 
     @GetMapping("/me/posts/scrabs")
-    @Operation(summary = "내가 스크랩한 게시물 가져오기 API",description = "토큰 인증 후 스크랩한 게시글들의 목록(대표 이미지들)을 반환, PostPreviewDto와 PostPreviewListDto 이용")
+    @Operation(summary = "내가 스크랩한 게시물 가져오기 API",description = "토큰 인증 후 스크랩한 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "page", description = "페이지 번호"),
-            @Parameter(name = "size", description = "페이징 사이즈")
-    })
-    public ApiResponse<UserResponseDto.PostPreviewListDto> getUserScrabList(@RequestParam(name = "page")Integer page, @RequestParam(name = "size") Integer size) {
-        Page<Scrabs> UserPage = usersService.getScrabList(1L, page, size);
-
-        return ApiResponse.onSuccess(UsersConverter.toScrabPreviewListDto(UserPage));
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> getUserScrabList() {
+        List<Scrabs> scrabList = usersService.getScrabList(1L);
+        List<PostResponseDto.PostInfoDto> scrabInfoDtoList = usersService.getScrabInfoDtoList(1L, scrabList);
+        return ApiResponse.onSuccess(scrabInfoDtoList);
     }
 
     @GetMapping("/{userId}/posts")
-    @Operation(summary = "특정 유저의 게시글 목록 가져오기 API",description = "특정 유저의 id를 받아 게시글들의 목록(대표 이미지들)을 반환, PostPreviewDto와 PostPreviewListDto 이용")
+    @Operation(summary = "특정 유저의 게시글 목록 가져오기 API",description = "특정 유저의 id를 받아 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
-            @Parameter(name = "page", description = "페이지 번호"),
-            @Parameter(name = "size", description = "페이징 사이즈")
     })
-    public ApiResponse<UserResponseDto.PostPreviewListDto> getOtherPostList(@PathVariable(name = "userId") Long userId
-            , @RequestParam(name = "page") Integer page , @RequestParam(name = "size") Integer size){
-        Page<Posts> UserPage = usersService.getPostList(userId, page, size);
-
-        return ApiResponse.onSuccess(UsersConverter.toPostPreviewListDto(UserPage));
-
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> getOtherPostList(@PathVariable(name = "userId") Long userId){
+        List<Posts> postList = usersService.getPostList(userId);
+        List<PostResponseDto.PostInfoDto> postInfoDtoList = usersService.getPostInfoDtoList(userId, postList);
+        return ApiResponse.onSuccess(postInfoDtoList);
     }
 
      // 특정 유저의 스크랩들 가져오기
      @GetMapping("/{userId}/posts/scrabs")
-     @Operation(summary = "특정 유저가 스크랩한 게시물 가져오기 API",description = "특정 유저의 id를 받아 스크랩한 게시글들의 목록(대표 이미지들)을 반환, PostPreviewDto와 PostPreviewListDto 이용")
+     @Operation(summary = "특정 유저가 스크랩한 게시물 가져오기 API",description = "특정 유저의 id를 받아 스크랩한 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
      @ApiResponses({
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
      })
      @Parameters({
              @Parameter(name = "userId", description = "유저의 아이디"),
-             @Parameter(name = "page", description = "페이지 번호"),
-             @Parameter(name = "size", description = "페이징 사이즈")
      })
-    public ApiResponse<UserResponseDto.PostPreviewListDto> getOtherScrabList(@PathVariable(name = "userId") Long userId, @RequestParam(name = "page")Integer page, @RequestParam(name = "size") Integer size) {
-         Page<Scrabs> UserPage = usersService.getScrabList(userId, page, size);
-
-         return ApiResponse.onSuccess(UsersConverter.toScrabPreviewListDto(UserPage));
+     public ApiResponse<List<PostResponseDto.PostInfoDto>> getOtherScrabList(@PathVariable(name = "userId") Long userId) {
+         List<Scrabs> scrabList = usersService.getScrabList(userId);
+         List<PostResponseDto.PostInfoDto> scrabInfoDtoList = usersService.getScrabInfoDtoList(userId, scrabList);
+         return ApiResponse.onSuccess(scrabInfoDtoList);
      }
 
     @GetMapping("/{userId}")
@@ -224,7 +209,7 @@ public class UsersController {
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
-    @GetMapping("/histories")
+    @GetMapping("/me/histories")
     @Operation(summary = "검색기록 가져오기 API",description = "나의 검색기록을 가져온다.")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
