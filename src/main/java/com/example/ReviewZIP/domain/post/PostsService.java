@@ -14,6 +14,7 @@ import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
+import com.example.ReviewZIP.global.redis.RedisService;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.*;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class PostsService {
     private final PostLikesRepository postLikesRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostHashtagsRepository postHashtagsRepository;
-    private final FollowsRepository followsRepository;
+    private final RedisService redisService;
 
     public List<PostHashtags> searchPostByHashtag (Long hashtagId){
         PostHashtags postHashtags = postHashtagsRepository.findById(hashtagId).orElseThrow(()->new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND));
@@ -256,5 +257,16 @@ public class PostsService {
         Scrabs scrabs = scrabsRepository.findByUserAndPost(me, post);
 
         scrabsRepository.delete(scrabs);
+    }
+
+    @Transactional
+    public void addHashtags(String query, Long postId) {
+        redisService.addHashtag(query);
+
+        PostHashtags postHashtags = PostHashtags.builder()
+                .hashtag(query)
+                .post(postsRepository.findById(postId).orElseThrow( () -> new PostsHandler(ErrorStatus.POST_NOT_FOUND)))
+                .build();
+        postHashtagsRepository.save(postHashtags);
     }
 }

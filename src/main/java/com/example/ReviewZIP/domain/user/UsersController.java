@@ -84,7 +84,7 @@ public class UsersController {
     public ApiResponse<List<UserResponseDto.UserPreviewDto>> getUserFollowingList(){
         List<Follows> FollowingList = usersService.getFollowingList(1L); //수정 필요
         List<Long> followingIdList = usersService.getFollowigIdList(1L);
-        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowingList, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowingList, followingIdList));
     }
 
     @GetMapping("/me/followers")
@@ -98,7 +98,7 @@ public class UsersController {
         List<Follows> FollowerList = usersService.getFollowerList(1L); //수정 필요
         List<Long> followingIdList = usersService.getFollowigIdList(1L);
 
-        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowerList, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowerList, followingIdList));
     }
 
     @GetMapping("/{userId}/followings")
@@ -113,7 +113,7 @@ public class UsersController {
     public ApiResponse<List<UserResponseDto.UserPreviewDto>> getOtherFollowingList(@PathVariable(name = "userId") Long userId){
         List<Follows> FollowingList = usersService.getFollowingList(userId);
         List<Long> followingIdList = usersService.getFollowigIdList(userId);
-        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowingList, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowingList, followingIdList));
     }
 
     @GetMapping("/{userId}/followers")
@@ -128,7 +128,7 @@ public class UsersController {
     public ApiResponse<List<UserResponseDto.UserPreviewDto>> getOtherFollowerList(@PathVariable(name = "userId")Long userId){
         List<Follows> FollowerList = usersService.getFollowerList(userId);
         List<Long> followingIdList = usersService.getFollowigIdList(userId);
-        return ApiResponse.onSuccess(UsersConverter.toFollowPreviewListDto(FollowerList, followingIdList));
+        return ApiResponse.onSuccess(UsersConverter.toFollowerPreviewListDto(FollowerList, followingIdList));
     }
 
     @GetMapping("/me/posts")
