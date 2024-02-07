@@ -6,6 +6,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
     @Bean
@@ -15,7 +17,7 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowedMethods(List.of("POST", "GET", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.addAllowedOrigin("https://api.egusajo.shop");
 
         source.registerCorsConfiguration("/**", config);

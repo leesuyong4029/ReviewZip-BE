@@ -4,6 +4,7 @@ import com.example.ReviewZIP.global.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +20,7 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig {
 
     private final JwtProvider jwtProvider;
-    private final CorsFilter corsFilter;
+    private final CorsConfig corsConfig;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtRequestFilter jwtRequestFilter;
@@ -28,7 +28,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(corsConfig.corsFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -36,15 +36,16 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/S3/**")).permitAll()
                         .requestMatchers("/swagger-resources/**", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/").permitAll()
+                        .requestMatchers("https://api.egusajo.shop ").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
 
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
 
-                // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스를 적용
-                .apply(new JwtSecurityConfig(jwtProvider));
-
+                // apply가 deprecated 되서 JwtRequestFilter에서 직접 설정한 필터를 추가
+                .addFilterBefore(new JwtRequestFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
     }
