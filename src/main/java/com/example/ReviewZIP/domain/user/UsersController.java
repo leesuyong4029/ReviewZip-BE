@@ -5,6 +5,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.user.dto.request.UserRequestDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.domain.userStores.UserStoresService;
 import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
@@ -209,6 +210,33 @@ public class UsersController {
     public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(){
 
         return ApiResponse.onSuccess(usersService.getUserInfo(1L));
+    }
+
+    @PatchMapping("/me/profileUrl")
+    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "userId", description = "유저의 아이디"),
+    })
+    public ApiResponse<UserRequestDto.UserProfileUrlDto> updateProfileUrl(@RequestBody UserRequestDto.UserProfileUrlDto userProfileUrlDto){
+
+        UserRequestDto.UserProfileUrlDto ProfileUrlDto = usersService.updateProfileUrl(1L, userProfileUrlDto);
+        return ApiResponse.onSuccess(ProfileUrlDto);
+    }
+
+    @PatchMapping("/me/nickname")
+    @Operation(summary = "닉네임 수정하기 API", description = "마이페이지 닉네임 수정하기")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<UserRequestDto.UserNicknameDto> updateUserNickname(@RequestBody UserRequestDto.UserNicknameDto userNicknameDto) {
+
+        UserRequestDto.UserNicknameDto NicknameDto = usersService.updateUserNickname(1L, userNicknameDto);
+        return ApiResponse.onSuccess(NicknameDto);
     }
 
     @DeleteMapping("/{userId}")
