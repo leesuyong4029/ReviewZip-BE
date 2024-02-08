@@ -87,16 +87,18 @@ public class UsersService {
         return UsersConverter.toUserInfoDto(me);
     }
 
-    public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto profileUrlDto){
+    public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto userProfileUrlDto){
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        user.setProfileUrl(user.getProfileUrl());
+        user.setProfileUrl(userProfileUrlDto.getProfileUrl());
+        usersRepository.save(user);
 
-        return profileUrlDto;
+        return userProfileUrlDto;
     }
 
     public UserRequestDto.UserNicknameDto updateUserNickname(Long userId, UserRequestDto.UserNicknameDto userNicknameDto){
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         user.setNickname(userNicknameDto.getNickname());
+        usersRepository.save(user);
 
         return userNicknameDto;
     }

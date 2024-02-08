@@ -213,13 +213,10 @@ public class UsersController {
     }
 
     @PatchMapping("/me/profileUrl")
-    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기")
+    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기, UserProfileDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    @Parameters({
-            @Parameter(name = "userId", description = "유저의 아이디"),
     })
     public ApiResponse<UserRequestDto.UserProfileUrlDto> updateProfileUrl(@RequestBody UserRequestDto.UserProfileUrlDto userProfileUrlDto){
 
@@ -228,7 +225,7 @@ public class UsersController {
     }
 
     @PatchMapping("/me/nickname")
-    @Operation(summary = "닉네임 수정하기 API", description = "마이페이지 닉네임 수정하기")
+    @Operation(summary = "닉네임 수정하기 API", description = "마이페이지 닉네임 수정하기, UserNicknameDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
