@@ -65,10 +65,10 @@ public enum ErrorStatus implements BaseErrorCode {
     HISTORY_TYPE_NOT_VALID(HttpStatus.BAD_REQUEST, "SEARCH402", "존재하지 않는 타입입니다."),
 
     // JWT
-    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH001", "유효하지 않은 ACCESS 토큰입니다."),
-    EXPIRED_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH002", "만료된 JWT 토큰입니다."),
-    UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH003", "지원되지 않는 JWT 토큰입니다."),
-    ILLEGALARGUMENT_TOKEN(HttpStatus.BAD_REQUEST, "AUTH004", "잘못된 JWT 토큰입니다.");
+    INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH401", "유효하지 않은 ACCESS 토큰입니다."),
+    EXPIRED_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH402", "만료된 JWT 토큰입니다."),
+    UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH403", "지원되지 않는 JWT 토큰입니다."),
+    ILLEGALARGUMENT_TOKEN(HttpStatus.BAD_REQUEST, "AUTH404", "잘못된 JWT 토큰입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

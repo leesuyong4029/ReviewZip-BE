@@ -10,6 +10,7 @@ import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
+import com.example.ReviewZIP.domain.user.dto.request.UserRequestDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
@@ -85,6 +86,23 @@ public class UsersService {
 
         return UsersConverter.toUserInfoDto(me);
     }
+
+    public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto userProfileUrlDto){
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        user.setProfileUrl(userProfileUrlDto.getProfileUrl());
+        usersRepository.save(user);
+
+        return userProfileUrlDto;
+    }
+
+    public UserRequestDto.UserNicknameDto updateUserNickname(Long userId, UserRequestDto.UserNicknameDto userNicknameDto){
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        user.setNickname(userNicknameDto.getNickname());
+        usersRepository.save(user);
+
+        return userNicknameDto;
+    }
+
     public UserResponseDto.OtherUserInfoDto getOtherInfo(Long userId){
         // 사용자 임의 처리, 1L 가정
         Users me = usersRepository.getById(userId);
