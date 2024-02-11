@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.domain.image;
 
-import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
+import com.example.ReviewZIP.domain.image.dto.response.UploadImageResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,9 +24,10 @@ public class ImagesController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE402", description = "이미지 업로드 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<ImageResponseDto.ImageDto>> uploadImage(@PathVariable(name="userId") Long userId, @RequestParam("fileList") List<MultipartFile> fileList){
+    public ApiResponse<UploadImageResponseDto> uploadImage(@PathVariable(name="userId") Long userId, @RequestParam("fileList") List<MultipartFile> fileList){
         List<Images> imageList = imageService.uploadImage(fileList, userId);
-        List<ImageResponseDto.ImageDto> imageDtoList = ImageConverter.toUploadImageDto(imageList);
-        return ApiResponse.onSuccess(imageDtoList);
+        UploadImageResponseDto imageResponseDto = ImageConverter.toUploadImageDto(imageList);
+        return ApiResponse.onSuccess(imageResponseDto);
     }
 }
+

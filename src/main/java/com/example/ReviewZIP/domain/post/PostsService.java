@@ -3,7 +3,6 @@ package com.example.ReviewZIP.domain.post;
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
-import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
@@ -64,12 +63,12 @@ public class PostsService {
 
         Posts savedPost = postsRepository.save(newPost);
 
-        for (ImageResponseDto.ImageDto image : postRequestDto.getImageList()) {
-            Images newImage = imagesRepository.findById(image.getImageId()).orElseThrow(() -> new ImagesHandler(ErrorStatus.IMAGE_NOT_FOUND));
-            newImage.setPost(savedPost);
-            newImage.setUser(user);
-            imagesRepository.save(newImage);
-            savedPost.getPostImageList().add(newImage);
+        for (Long imageId : postRequestDto.getImageIds()) {
+            Images image = imagesRepository.findById(imageId).orElseThrow(() -> new ImagesHandler(ErrorStatus.IMAGE_NOT_FOUND));
+            image.setPost(savedPost);
+            image.setUser(user);
+            imagesRepository.save(image);
+            savedPost.getPostImageList().add(image);
         }
         return savedPost;
     }
