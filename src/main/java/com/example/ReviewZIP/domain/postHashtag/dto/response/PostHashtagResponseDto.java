@@ -16,5 +16,7 @@ public class PostHashtagResponseDto {
     public static class PostHashtagsPreviewDto {
         private Long hashtagId;
         private String tagName;
+        private Integer postNum;
     }
+
 }
