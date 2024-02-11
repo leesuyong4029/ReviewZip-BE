@@ -14,4 +14,5 @@ public interface PostHashtagsRepository extends JpaRepository<PostHashtags, Long
     @Query("SELECT ph FROM PostHashtags ph WHERE ph.hashtag LIKE %:name% GROUP BY ph.hashtag"  )
     List<PostHashtags> findByNameContaining(@Param("name") String name);
 
+    Integer countPostByHashtag(String hashtag);
 }

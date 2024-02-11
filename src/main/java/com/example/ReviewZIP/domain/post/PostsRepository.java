@@ -15,6 +15,4 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
     long countByUserNot(@Param("user") Users user);
 
     Page<Posts> findAllByUserNot(Users user, PageRequest pageRequest);
-
-
 }

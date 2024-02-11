@@ -29,4 +29,10 @@ public class PostHashtagsService {
     public PostHashtags getPostHashtag(Long hashtagId){
         return postHashtagsRepository.findById(hashtagId).orElseThrow(()->new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND));
     }
+
+    public Integer getPostNumByHashtag(PostHashtags hashtag){
+        List<PostHashtags> hashtagsList = postHashtagsRepository.findAllByHashtag(hashtag.getHashtag());
+        return hashtagsList.size();
+
+    }
 }
