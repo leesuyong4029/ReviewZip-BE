@@ -18,11 +18,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
+import static com.example.ReviewZIP.domain.user.UsersConverter.toLoginInfoDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -262,4 +265,13 @@ public class UsersController {
         return ApiResponse.onSuccess(toHistoryDtoList(historyList, followingIdList));
     }
 
+    @GetMapping("/detail")
+    @Operation(summary = "로그인 유저 정보 가져오기", description = "현재 로그인 한 유저 정보 받아오기, LoginInfoDto 사용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "존재하지 않는 유저입니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<UserResponseDto.LoginInfoDto> getUserDetail(@AuthenticationPrincipal UserDetails user) {
+        return ApiResponse.onSuccess(usersService.getUserByEmail(user.getUsername()));
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.domain.token.dto;
+package com.example.ReviewZIP.domain.token.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

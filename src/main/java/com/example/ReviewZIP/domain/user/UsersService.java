@@ -178,4 +178,8 @@ public class UsersService {
         Users me = usersRepository.getById(userId);
         return me.getScrabList();
     }
+
+    public UserResponseDto.LoginInfoDto getUserByEmail(String email) {
+        return UsersConverter.toLoginInfoDto(usersRepository.findByEmail(email).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND)));
+    }
 }

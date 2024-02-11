@@ -72,4 +72,16 @@ public class UserResponseDto {
         private UserPreviewDto user;
         private String hashtag;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LoginInfoDto {
+        private Long userId;
+        private String email;
+        private String name;
+        private String nickname;
+        private String phoneNum;
+    }
 }

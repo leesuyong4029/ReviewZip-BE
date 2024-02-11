@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.domain.token.dto;
+package com.example.ReviewZIP.domain.token.dto.request;
 
 import lombok.*;
 
