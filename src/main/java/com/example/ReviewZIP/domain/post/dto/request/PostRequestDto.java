@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.post.dto.request;
 
+import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -10,5 +11,5 @@ public class PostRequestDto {
     private Long userId;
     private String comment;
     private Double point;
-    private List<Long> imageIds = new ArrayList<>();
+    private List<ImageResponseDto.ImageDto> imageList = new ArrayList<>();
 }
