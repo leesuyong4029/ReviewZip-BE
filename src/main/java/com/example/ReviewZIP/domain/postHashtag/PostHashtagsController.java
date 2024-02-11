@@ -3,7 +3,6 @@ package com.example.ReviewZIP.domain.postHashtag;
 
 import com.example.ReviewZIP.domain.postHashtag.dto.response.PostHashtagResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
-import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -13,10 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
