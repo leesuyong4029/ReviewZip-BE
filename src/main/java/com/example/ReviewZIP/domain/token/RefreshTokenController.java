@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "token-controller", description = "로컬 로그인, 회원가입 API")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class RefreshTokenController {
     private final RefreshTokenService refreshTokenService;
