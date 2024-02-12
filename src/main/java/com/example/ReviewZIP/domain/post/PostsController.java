@@ -147,8 +147,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE402", description = "이미 공감한 게시물",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<SuccessStatus> addPostLike(@PathVariable(name = "postId") Long postId ) {
-        postsService.addLike(postId);
-        return ApiResponse.onSuccess(SuccessStatus.POST_CHOOSE_LIKE_SUCCESS);
+
+        return postsService.addLike(postId);
     }
 
     @DeleteMapping("/{postId}/like")
@@ -169,8 +169,7 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<SuccessStatus> createScrabs(@PathVariable(name = "postid")Long postId){
-        postsService.createScrabs(postId);
-        return ApiResponse.onSuccess(SuccessStatus._OK);
+        return postsService.createScrabs(postId);
     }
 
     @DeleteMapping("/{postid}/scrabs")

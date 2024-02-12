@@ -14,7 +14,9 @@ import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.redis.RedisService;
+import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import com.example.ReviewZIP.global.response.exception.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -196,18 +198,22 @@ public class PostsService {
         postLikesRepository.delete(postLikes);
     }
     @Transactional
-    public void addLike(Long postId) {
+    public ApiResponse<SuccessStatus> addLike(Long postId) {
         // user 1L로 대체
         Users user = usersRepository.getById(1L);
         Posts post = postsRepository.findById(postId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POST_NOT_FOUND));
-
+        boolean alreadyLike = postLikesRepository.existsByUserAndPost(user, post);
+        if(alreadyLike){
+            return ApiResponse.onSuccess(SuccessStatus._OK);
+        }
         PostLikes postLikes = PostLikes.builder()
                 .post(post)
                 .user(user)
                 .build();
 
+        postLikesRepository.save(postLikes);
         try {
-            PostLikes result = postLikesRepository.save(postLikes);
+            return ApiResponse.onSuccess(SuccessStatus._OK);
         } catch (Exception e) {
             throw new PostLikesHandler(ErrorStatus.POSTLIKE_CREATE_FAIL);
         }
@@ -233,17 +239,21 @@ public class PostsService {
     }
 
     @Transactional
-    public void createScrabs(Long postId){
+    public ApiResponse<SuccessStatus> createScrabs(Long postId){
         // userId는 1로 대체
         Users me = usersRepository.getById(1L);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
-
+        boolean alreadyScrab = scrabsRepository.existsByUserAndPost(me, post);
+        if(alreadyScrab){
+            return ApiResponse.onSuccess(SuccessStatus._OK);
+        }
         Scrabs newScrab = Scrabs.builder()
                 .user(me)
                 .post(post)
                 .build();
 
         scrabsRepository.save(newScrab);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @Transactional
