@@ -119,14 +119,4 @@ public class UsersConverter {
                 .map(history->toHistoryDto(history, followingIdList))
                 .collect(Collectors.toList());
     }
-
-    public static UserResponseDto.LoginInfoDto toLoginInfoDto(Users user) {
-        return UserResponseDto.LoginInfoDto.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .userId(user.getId())
-                .phoneNum(user.getPhone_num())
-                .build();
-    }
 }

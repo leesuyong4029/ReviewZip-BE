@@ -11,6 +11,7 @@ import com.example.ReviewZIP.domain.userStores.UserStoresService;
 import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
+import com.example.ReviewZIP.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
-import static com.example.ReviewZIP.domain.user.UsersConverter.toLoginInfoDto;
 
 @RestController
 @RequiredArgsConstructor
@@ -210,9 +210,9 @@ public class UsersController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
 
-    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(){
+    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(@AuthenticationPrincipal UserDetails user){
 
-        return ApiResponse.onSuccess(usersService.getUserInfo(1L));
+        return ApiResponse.onSuccess(usersService.getUserInfo(user.getUsername()));
     }
 
     @PatchMapping("/me/profileUrl")
@@ -265,13 +265,4 @@ public class UsersController {
         return ApiResponse.onSuccess(toHistoryDtoList(historyList, followingIdList));
     }
 
-    @GetMapping("/detail")
-    @Operation(summary = "로그인 유저 정보 가져오기", description = "현재 로그인 한 유저 정보 받아오기, LoginInfoDto 사용")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "존재하지 않는 유저입니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-    })
-    public ApiResponse<UserResponseDto.LoginInfoDto> getUserDetail(@AuthenticationPrincipal UserDetails user) {
-        return ApiResponse.onSuccess(usersService.getUserByEmail(user.getUsername()));
-    }
 }
