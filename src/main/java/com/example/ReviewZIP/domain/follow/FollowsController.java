@@ -31,9 +31,8 @@ public class FollowsController {
             @Parameter(name = "userId", description = "팔로우할 유저의 아이디"),
     })
     public ApiResponse<SuccessStatus> follow(@PathVariable(name="userId") Long userId) {
-        Follows follows = followsService.createFollowing(userId);
 
-        return ApiResponse.onSuccess(SuccessStatus._OK);
+        return followsService.createFollowing(userId);
     }
 
     @DeleteMapping("/users/{userId}")
@@ -46,8 +45,7 @@ public class FollowsController {
             @Parameter(name = "userId", description = "팔로우 취소할 유저의 아이디"),
     })
     public ApiResponse<SuccessStatus> unfollowUser(@PathVariable(name="userId")Long userId){
-        followsService.unfollowUser(userId);
 
-        return ApiResponse.onSuccess(SuccessStatus._OK);
+        return followsService.unfollowUser(userId);
     }
 }
