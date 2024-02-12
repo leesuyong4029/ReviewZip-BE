@@ -47,6 +47,7 @@ public class PostResponseDto {
         private String comment;
         private Double point;
         private Integer likeNum;
+        private Integer scrabNum;
         private Integer hashtagNum;
         private boolean checkLike;
         private boolean checkScrab;

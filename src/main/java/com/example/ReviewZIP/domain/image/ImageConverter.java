@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.domain.image;
 
-import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
+import com.example.ReviewZIP.domain.image.dto.response.UploadImageResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,13 +9,8 @@ import java.util.stream.Collectors;
 @Component
 public class ImageConverter {
 
-    public static ImageResponseDto.ImageDto toImageDto(Images image){
-        return ImageResponseDto.ImageDto.builder()
-                .imageId(image.getId())
-                .imageUrl(image.getUrl())
-                .build();
-    }
-    public static List<ImageResponseDto.ImageDto> toUploadImageDto(List<Images> imagesList) {
-        return imagesList.stream().map(ImageConverter::toImageDto).collect(Collectors.toList());
+    public static UploadImageResponseDto toUploadImageDto(List<Images> imagesList) {
+        List<Long> imageIds = imagesList.stream().map(Images::getId).collect(Collectors.toList());
+        return new UploadImageResponseDto(imageIds);
     }
 }

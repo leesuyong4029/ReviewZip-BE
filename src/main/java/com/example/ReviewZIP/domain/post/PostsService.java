@@ -1,7 +1,6 @@
 package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.follow.Follows;
-import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.image.Images;
 import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
@@ -19,7 +18,6 @@ import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
