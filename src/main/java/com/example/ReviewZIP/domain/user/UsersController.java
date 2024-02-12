@@ -11,6 +11,7 @@ import com.example.ReviewZIP.domain.userStores.UserStoresService;
 import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
+import com.example.ReviewZIP.global.security.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -18,6 +19,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -207,9 +210,9 @@ public class UsersController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
 
-    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(){
+    public ApiResponse<UserResponseDto.UserInfoDto> getUserInfo(@AuthenticationPrincipal UserDetails user){
 
-        return ApiResponse.onSuccess(usersService.getUserInfo(1L));
+        return ApiResponse.onSuccess(usersService.getUserInfo(user.getUsername()));
     }
 
     @PatchMapping("/me/profileUrl")
