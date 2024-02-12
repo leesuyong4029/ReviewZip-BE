@@ -5,7 +5,7 @@ import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
-import com.example.ReviewZIP.domain.token.dto.SignUpRequestDto;
+import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
 import com.example.ReviewZIP.domain.userStores.UserStores;
 import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;

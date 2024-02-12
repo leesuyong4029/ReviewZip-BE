@@ -1,6 +1,6 @@
 package com.example.ReviewZIP.global.jwt;
 
-import com.example.ReviewZIP.domain.token.dto.TokenDto;
+import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.GeneralException;
 import io.jsonwebtoken.*;

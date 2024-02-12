@@ -15,9 +15,12 @@ import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
+import com.example.ReviewZIP.global.s3.S3Service;
+import com.example.ReviewZIP.global.s3.dto.S3Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -38,6 +41,7 @@ public class UsersService {
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostLikesRepository postLikesRepository;
+    private final S3Service s3Service;
 
     public List<Users> findUsersByName(String name) {
         List<Users> pageUsers = usersRepository.findByName(name);
@@ -81,10 +85,9 @@ public class UsersService {
         usersRepository.deleteById(userId);
     }
 
-    public UserResponseDto.UserInfoDto getUserInfo(Long userId){
-        Users me = usersRepository.getById(userId);
+    public UserResponseDto.UserInfoDto getUserInfo(String email){
 
-        return UsersConverter.toUserInfoDto(me);
+        return UsersConverter.toUserInfoDto(usersRepository.findByEmail(email).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND)));
     }
 
     public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto userProfileUrlDto){

@@ -1,9 +1,9 @@
 package com.example.ReviewZIP.domain.token;
 
-import com.example.ReviewZIP.domain.token.dto.LoginRequestDto;
-import com.example.ReviewZIP.domain.token.dto.SignUpRequestDto;
-import com.example.ReviewZIP.domain.token.dto.SignUpResponseDto;
-import com.example.ReviewZIP.domain.token.dto.TokenDto;
+import com.example.ReviewZIP.domain.token.dto.request.LoginRequestDto;
+import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
+import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
+import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
