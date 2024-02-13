@@ -49,7 +49,7 @@ public class SearchHistoriesController {
     }
 
     @DeleteMapping("/{historyId}")
-    @Operation(summary = "해시태그 삭제하기 API",description = "해시태그의 id를 받아 해당 객체를 삭제")
+    @Operation(summary = "검색기록 삭제하기 API",description = "검색기록의 id를 받아 해당 객체를 삭제")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "HISTORY401", description = "해당 검색기록을 찾을 수 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),

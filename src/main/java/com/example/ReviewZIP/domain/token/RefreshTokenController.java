@@ -49,7 +49,7 @@ public class RefreshTokenController {
     }
 
     @PostMapping("/kakao/login")
-    @Operation(summary = "카카오 로그인", description = "카카오유저 정보가 답긴 token을 KakaoRequestDto로 받아 유저 확인 후 TokenDto반환")
+    @Operation(summary = "카카오 로그인", description = "카카오유저 정보가 담긴 token을 KakaoRequestDto로 받아 유저 확인 후 TokenDto반환")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
     })
