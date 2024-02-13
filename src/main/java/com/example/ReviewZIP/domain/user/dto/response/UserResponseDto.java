@@ -61,6 +61,15 @@ public class UserResponseDto {
         private Integer followerNum;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostHashtagsPreviewDto {
+        private Long hashtagId;
+        private String tagName;
+        private Integer postNum;
+    }
 
     @Getter
     @Builder
@@ -70,6 +79,6 @@ public class UserResponseDto {
         private Long historyId;
         private String type;
         private UserPreviewDto user;
-        private String hashtag;
+        private PostHashtagsPreviewDto hashtag;
     }
 }
