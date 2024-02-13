@@ -8,7 +8,7 @@ import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.GeneralException;
+import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import com.example.ReviewZIP.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +30,7 @@ public class RefreshTokenService {
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         if(usersRepository.existsByEmail(signUpRequestDto.getEmail())) {
-            throw new GeneralException(ErrorStatus.USER_EXISTS_EMAIL);
+            throw new UsersHandler(ErrorStatus.USER_EXISTS_EMAIL);
         }
 
         signUpRequestDto.setPassword(encodePassword(signUpRequestDto.getPassword()));
