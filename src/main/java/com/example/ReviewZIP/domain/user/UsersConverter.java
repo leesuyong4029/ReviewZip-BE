@@ -1,6 +1,8 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
+import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.searchHistory.SearchType;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
@@ -10,7 +12,11 @@ import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.ReviewZIP.domain.postHashtag.PostHashtagsConverter.postHashtagsRepository;
+
 public class UsersConverter {
+
+
     public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user, List<Long> followingIdList) {
         boolean following = followingIdList.contains(user.getId());
         return UserResponseDto.UserPreviewDto.builder()
@@ -92,6 +98,19 @@ public class UsersConverter {
                 .build();
     }
 
+    public static UserResponseDto.PostHashtagsPreviewDto toHashtagPreviewDto(String hashtag){
+        List<PostHashtags> postHashtagsRepositoryList = postHashtagsRepository.findAllByHashtag(hashtag);
+        int lastIndex = postHashtagsRepositoryList.size() - 1;
+        PostHashtags latestHashtag = postHashtagsRepositoryList.get(lastIndex);
+        return UserResponseDto.PostHashtagsPreviewDto.builder()
+                .hashtagId(latestHashtag.getId())
+                .tagName(hashtag)
+                .postNum(postHashtagsRepositoryList.size())
+                .build();
+
+
+
+    }
 
     public static  UserResponseDto.HistoryDto toHistoryDto(SearchHistories history, List<Long> followingIdList){
         if(history.getType().equals(SearchType.USER)){
@@ -106,7 +125,7 @@ public class UsersConverter {
             return UserResponseDto.HistoryDto.builder()
                     .historyId(history.getId())
                     .user(null)
-                    .hashtag(history.getHashtag())
+                    .hashtag(toHashtagPreviewDto(history.getHashtag()))
                     .type("HASHTAG")
                     .build();
         } else{
