@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/posts")
+@RequestMapping("/v1/posts")
 public class PostsController {
 
     private final PostsService postsService;

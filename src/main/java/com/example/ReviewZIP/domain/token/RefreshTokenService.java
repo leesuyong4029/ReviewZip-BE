@@ -1,22 +1,37 @@
 package com.example.ReviewZIP.domain.token;
 
+import com.example.ReviewZIP.domain.token.dto.request.KakaoRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.LoginRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
 import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
+import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import com.example.ReviewZIP.global.security.UserDetailsImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,4 +82,75 @@ public class RefreshTokenService {
         return tokenDto;
     }
 
+    @Transactional
+    public Long createUser(String id, String nickname, String email){
+        Users newUser = Users.builder()
+                .social(id)
+                .nickname(nickname)
+                .name(nickname)
+                .email(email)
+                .status(Status.ENABLED)
+                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
+                .build();
+        usersRepository.save(newUser);
+
+        return newUser.getId();
+    }
+
+    public List<String> getKakaoUserInfo(KakaoRequestDto request) throws JsonProcessingException {
+        String token = request.getToken();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(null, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileRequest,
+                String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String responseBody = response.getBody();
+        JsonNode jsonNode = objectMapper.readTree(responseBody);
+        String id = jsonNode.get("id").asText();
+        String nickname = jsonNode.get("properties").get("nickname").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
+
+        List<String> kakaoUserInfoList = Arrays.asList(id, nickname, email);
+
+        return kakaoUserInfoList;
+    }
+
+    @Transactional
+    public TokenDto kakaoLogin(List<String> kakaoUserInfo) {
+        Long userIdd = null;
+
+        boolean exists = usersRepository.existsBySocial(kakaoUserInfo.get(0));
+        Optional<Users> user = null;
+        if(!exists){
+            userIdd = createUser(kakaoUserInfo.get(0), kakaoUserInfo.get(1), kakaoUserInfo.get(2));
+            user = usersRepository.findById(userIdd);
+        } else{
+            user = usersRepository.findBySocial(kakaoUserInfo.get(0));
+            userIdd = user.get().getId();
+        }
+
+        //UserDetailsImpl userDetail = new UserDetailsImpl(user.get());
+
+        TokenDto tokenDto = jwtProvider.generateKakaoToken(userIdd.toString(), user.get().getEmail());
+
+        RefreshToken refreshToken = RefreshToken.builder()
+                .key(user.get().getEmail())
+                .value(tokenDto.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save(refreshToken);
+        return tokenDto;
+    }
 }

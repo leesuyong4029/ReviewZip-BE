@@ -160,15 +160,19 @@ public class UsersService {
     }
 
     List<PostResponseDto.PostInfoDto> getPostInfoDtoList(Long userId, List<Posts> postList){
-        return postList.stream()
+        List<PostResponseDto.PostInfoDto> postInfoDtoList = postList.stream()
                 .map(post -> getPostInfoDto(post.getId(), userId))
                 .collect(Collectors.toList());
+        Collections.reverse(postInfoDtoList);
+        return postInfoDtoList;
     }
 
     List<PostResponseDto.PostInfoDto> getScrabInfoDtoList(Long userId, List<Scrabs> scrabList){
-        return scrabList.stream()
+        List<PostResponseDto.PostInfoDto> scrabInfoDtoList = scrabList.stream()
                 .map(scrab -> getPostInfoDto(scrab.getPost().getId(), userId))
                 .collect(Collectors.toList());
+        Collections.reverse(scrabInfoDtoList);
+        return scrabInfoDtoList;
     }
 
 
