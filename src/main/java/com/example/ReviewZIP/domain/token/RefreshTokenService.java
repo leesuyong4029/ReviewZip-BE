@@ -5,6 +5,7 @@ import com.example.ReviewZIP.domain.token.dto.request.LoginRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
 import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
+import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
@@ -82,13 +83,14 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public Long createUser(String id, String nickname, String email, String password){
+    public Long createUser(String id, String nickname, String email){
         Users newUser = Users.builder()
                 .social(id)
                 .nickname(nickname)
                 .name(nickname)
                 .email(email)
-                .password(password)
+                .status(Status.ENABLED)
+                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
                 .build();
         usersRepository.save(newUser);
 
@@ -125,32 +127,26 @@ public class RefreshTokenService {
         return kakaoUserInfoList;
     }
 
+    @Transactional
     public TokenDto kakaoLogin(List<String> kakaoUserInfo) {
-        // 1. Login ID/PW를 기반으로 AuthenticationToken 생성
-        Long userIdd;
-        Optional<Users> user = usersRepository.findByEmail(kakaoUserInfo.get(2));
+        Long userIdd = null;
 
-        String ppassword = "dfjdfaejfkdasjfo2324akdjfiejf";
-        String password = encodePassword(ppassword);
-
-
-        if(!user.isPresent()){
-            userIdd = createUser(kakaoUserInfo.get(0), kakaoUserInfo.get(1), kakaoUserInfo.get(2), password);
+        boolean exists = usersRepository.existsBySocial(kakaoUserInfo.get(0));
+        Optional<Users> user = null;
+        if(!exists){
+            userIdd = createUser(kakaoUserInfo.get(0), kakaoUserInfo.get(1), kakaoUserInfo.get(2));
+            user = usersRepository.findById(userIdd);
+        } else{
+            user = usersRepository.findBySocial(kakaoUserInfo.get(0));
+            userIdd = user.get().getId();
         }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(kakaoUserInfo.get(2), ppassword);
 
-        // 2. authentication이 실행이 될 때, UserDetailsServiceImpl 에서 만들었던 loadUserByUsername 메서드가 실행됨
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        //UserDetailsImpl userDetail = new UserDetailsImpl(user.get());
 
-        // 3. UserDetailsImpl에서 직접 userId 가져오기
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
+        TokenDto tokenDto = jwtProvider.generateKakaoToken(userIdd.toString(), user.get().getEmail());
 
-        // 4. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = jwtProvider.generateToken(authentication, userId.toString());
-        // 5. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
+                .key(user.get().getEmail())
                 .value(tokenDto.getRefreshToken())
                 .build();
 
