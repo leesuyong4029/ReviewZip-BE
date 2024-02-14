@@ -12,6 +12,7 @@ import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDt
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import com.example.ReviewZIP.global.security.UserDetailsImpl;
+import com.example.ReviewZIP.global.security.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -33,6 +34,7 @@ import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
 public class UsersController {
     private final UsersService usersService;
     private final UserStoresService userStoresService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @GetMapping("/{userId}/stores")
     @Operation(summary = "특정 유저의 관심 장소 목록 API",description = "특정 특정 유저의 관심 장소 목록을 가져온다, 반환 시 StoreInfoListDto 사용")
@@ -85,9 +87,9 @@ public class UsersController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getUserFollowingList(){
-        List<Follows> FollowingList = usersService.getFollowingList(1L); //수정 필요
-        List<Long> followingIdList = usersService.getFollowigIdList(1L);
+    public ApiResponse<List<UserResponseDto.UserPreviewDto>> getUserFollowingList(@AuthenticationPrincipal UserDetails user){
+        List<Follows> FollowingList = usersService.getFollowingList(usersService.getUserId(user)); //수정 필요
+        List<Long> followingIdList = usersService.getFollowigIdList(usersService.getUserId(user));
         return ApiResponse.onSuccess(UsersConverter.toFollowingPreviewListDto(FollowingList, followingIdList));
     }
 
