@@ -7,6 +7,7 @@ import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.domain.userStores.dto.request.UserStoresRequestDto;
 import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.UserStoresHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,11 @@ public class UserStoresService {
         UserStores userStores = UserStoresConverter.toEntity(dto);
         userStores.setUser(user);
 
-        userStoresRepository.save(userStores);
+        try {
+            userStoresRepository.save(userStores);
+        } catch (Exception e) {
+            throw new UserStoresHandler(ErrorStatus.USER_STORES_CREATE_FAIL);
+        }
 
     }
 
@@ -51,7 +56,11 @@ public class UserStoresService {
     @Transactional
     public void deleteUserStores(Long userStoreId) {
         Users user = usersRepository.findById(1L).orElseThrow(()-> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        userStoresRepository.deleteByIdAndUser(userStoreId, user);
+        try {
+            userStoresRepository.deleteByIdAndUser(userStoreId, user);
+        } catch (Exception e) {
+            throw new UserStoresHandler(ErrorStatus.USER_STORES_DELETE_FAIL);
+        }
     }
 
 
