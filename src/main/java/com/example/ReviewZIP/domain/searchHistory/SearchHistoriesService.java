@@ -18,7 +18,7 @@ public class SearchHistoriesService {
 
     @Transactional
     public void saveUserSearchHistory(Long userId, Long objectId){
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         Users object = usersRepository.findById(objectId).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
         SearchHistories userHistory = SearchHistories.builder()
@@ -33,7 +33,7 @@ public class SearchHistoriesService {
 
     @Transactional
     public void saveHashtagSearchHistory(Long userId, String hashtag){
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         SearchHistories hashtagHistory = SearchHistories.builder()
                 .type(SearchType.HASHTAG)
                 .user(me)
@@ -45,8 +45,8 @@ public class SearchHistoriesService {
     }
 
     @Transactional
-    public void deleteUserSearchHistory(Long historyId) {
-        SearchHistories history = searchHistoriesRepository.findById(historyId).orElseThrow(()-> new SearchHandler(ErrorStatus.HISTORY_NOT_FOUND));
+    public void deleteUserSearchHistory(Long userId, Long historyId) {
+        SearchHistories history = searchHistoriesRepository.findByIdAndUserId(historyId, userId).orElseThrow(()-> new SearchHandler(ErrorStatus.HISTORY_NOT_FOUND));
         searchHistoriesRepository.delete(history);
     }
 }

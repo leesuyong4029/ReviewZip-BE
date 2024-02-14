@@ -115,9 +115,9 @@ public class UsersService {
         return userNicknameDto;
     }
 
-    public UserResponseDto.OtherUserInfoDto getOtherInfo(Long userId){
+    public UserResponseDto.OtherUserInfoDto getOtherInfo(Long myId, Long userId){
         // 사용자 임의 처리, 1L 가정
-        Users me = usersRepository.getById(userId);
+        Users me = usersRepository.getById(myId);
         Users other = usersRepository.findById(userId)
                 .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 

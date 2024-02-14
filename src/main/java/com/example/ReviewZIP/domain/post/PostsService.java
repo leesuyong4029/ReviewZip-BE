@@ -77,7 +77,7 @@ public class PostsService {
 
     public static final int NUM_OF_RANDOM_POST = 1;
     public PostResponseDto.PostInfoDto getOneRandomPostInfoDto(Long userId) {
-        Users user = usersRepository.getById(1L);
+        Users user = usersRepository.getById(userId);
 
         long totalPostCount = postsRepository.countByUserNot(user);
 
@@ -106,7 +106,7 @@ public class PostsService {
 
     public static final int NUM_OF_RANDOM_POSTS = 3;
     public List<PostResponseDto.PostInfoDto> getThreeRandomPostsInfo(Long userId) {
-        Users user = usersRepository.getById(1L);
+        Users user = usersRepository.getById(userId);
 
         long totalPostCount  = postsRepository.countByUserNot(user);
 
@@ -142,9 +142,9 @@ public class PostsService {
     }
 
     // 특정 게시물의 정보 가져오기
-    public PostResponseDto.PostInfoDto getPostInfoDto(Long postId){
+    public PostResponseDto.PostInfoDto getPostInfoDto(Long myId, Long postId){
         // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
-        Users user = usersRepository.getById(1L);
+        Users user = usersRepository.getById(myId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
         boolean checkScrab = scrabsRepository.existsByUserAndPost(user, post);
@@ -154,9 +154,9 @@ public class PostsService {
         return PostsConverter.toPostInfoResultDto(post, user, checkLike, checkScrab, createdAt);
     }
 
-    List<PostResponseDto.PostInfoDto> getPostInfoDtoList(List<PostHashtags> postHashtagList){
+    List<PostResponseDto.PostInfoDto> getPostInfoDtoList(Long userId, List<PostHashtags> postHashtagList){
         return postHashtagList.stream()
-                .map(postHashtag -> getPostInfoDto(postHashtag.getPost().getId()))
+                .map(postHashtag -> getPostInfoDto(userId, postHashtag.getPost().getId()))
                 .collect(Collectors.toList());
     }
 
@@ -185,8 +185,8 @@ public class PostsService {
     }
 
     @Transactional
-    public void deletePost(Long postId){
-        Posts post = postsRepository.findById(postId).orElseThrow(()-> new PostsHandler(ErrorStatus.POST_NOT_FOUND));
+    public void deletePost(Long userId, Long postId){
+        Posts post = postsRepository.findByUserIdAndId(userId, postId).orElseThrow(()-> new PostsHandler(ErrorStatus.POST_NOT_FOUND));
 
         postsRepository.deleteById(post.getId());
 
@@ -221,9 +221,9 @@ public class PostsService {
     }
 
 
-    public List<Long> getFollowigIdList(){
+    public List<Long> getFollowigIdList(Long userId){
         // 일단 1L로 나를 대체
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
 
@@ -239,9 +239,9 @@ public class PostsService {
     }
 
     @Transactional
-    public ApiResponse<SuccessStatus> createScrabs(Long postId){
+    public ApiResponse<SuccessStatus> createScrabs(Long userId, Long postId){
         // userId는 1로 대체
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean alreadyScrab = scrabsRepository.existsByUserAndPost(me, post);
         if(alreadyScrab){
@@ -257,9 +257,9 @@ public class PostsService {
     }
 
     @Transactional
-    public void deleteScrabs(Long postId){
+    public void deleteScrabs(Long userId, Long postId){
         // userId는 1로 대체
-        Users me = usersRepository.getById(1L);
+        Users me = usersRepository.getById(userId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
 
         Scrabs scrabs = scrabsRepository.findByUserAndPost(me, post);
