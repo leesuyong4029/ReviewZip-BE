@@ -65,7 +65,6 @@ public class UsersService {
     }
 
     public List<Long> getFollowigIdList(Long userId){
-        // 일단 1L로 나를 대체
         Users me = usersRepository.getById(userId);
         List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
@@ -116,7 +115,6 @@ public class UsersService {
     }
 
     public UserResponseDto.OtherUserInfoDto getOtherInfo(Long myId, Long userId){
-        // 사용자 임의 처리, 1L 가정
         Users me = usersRepository.getById(myId);
         Users other = usersRepository.findById(userId)
                 .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));

@@ -135,7 +135,7 @@ public class UsersController {
     }
 
     @GetMapping("/me/posts")
-    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "토큰 인증 후 게시글 목록 가져오기, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
+    @Operation(summary = "나의 게시물 목록 가져오기 API",description = "나의 게시글들을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
@@ -146,7 +146,7 @@ public class UsersController {
     }
 
     @GetMapping("/me/posts/scrabs")
-    @Operation(summary = "내가 스크랩한 게시물 가져오기 API",description = "토큰 인증 후 스크랩한 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
+    @Operation(summary = "내가 스크랩한 게시물 가져오기 API",description = "내가 스크랩한 게시글들을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -158,7 +158,7 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}/posts")
-    @Operation(summary = "특정 유저의 게시글 목록 가져오기 API",description = "특정 유저의 id를 받아 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
+    @Operation(summary = "특정 유저의 게시글 목록 가져오기 API",description = "특정 유저의 게시글들을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
@@ -174,7 +174,7 @@ public class UsersController {
 
      // 특정 유저의 스크랩들 가져오기
      @GetMapping("/{userId}/posts/scrabs")
-     @Operation(summary = "특정 유저가 스크랩한 게시물 가져오기 API",description = "특정 유저의 id를 받아 스크랩한 게시글들의 목록(대표 이미지들)을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
+     @Operation(summary = "특정 유저가 스크랩한 게시물 가져오기 API",description = "특정 유저가 스크랩한 게시물들을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
      @ApiResponses({
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),

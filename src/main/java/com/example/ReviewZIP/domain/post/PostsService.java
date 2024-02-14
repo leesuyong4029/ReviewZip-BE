@@ -143,7 +143,6 @@ public class PostsService {
 
     // 특정 게시물의 정보 가져오기
     public PostResponseDto.PostInfoDto getPostInfoDto(Long myId, Long postId){
-        // 좋아요와 스크랩 표시를 위하여 1L로 해당 유저를 대체
         Users user = usersRepository.getById(myId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean checkLike = postLikesRepository.existsByUserAndPost(user, post);
@@ -222,7 +221,6 @@ public class PostsService {
 
 
     public List<Long> getFollowigIdList(Long userId){
-        // 일단 1L로 나를 대체
         Users me = usersRepository.getById(userId);
         List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
@@ -240,7 +238,6 @@ public class PostsService {
 
     @Transactional
     public ApiResponse<SuccessStatus> createScrabs(Long userId, Long postId){
-        // userId는 1로 대체
         Users me = usersRepository.getById(userId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
         boolean alreadyScrab = scrabsRepository.existsByUserAndPost(me, post);
@@ -258,7 +255,6 @@ public class PostsService {
 
     @Transactional
     public void deleteScrabs(Long userId, Long postId){
-        // userId는 1로 대체
         Users me = usersRepository.getById(userId);
         Posts post = postsRepository.findById(postId).orElseThrow(()->new PostsHandler(ErrorStatus.POST_NOT_FOUND));
 
