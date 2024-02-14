@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // 이메일은 고유하다고 간주하고, 사용자 이름이 존재하지 않으면
     // 해당 메서드가 관련 에러를 발생시킨다.
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetailsImpl loadUserByUsername(String email) throws UsernameNotFoundException {
         Users user = usersRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserDetailsImpl(user);
     }

@@ -17,7 +17,10 @@ import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import com.example.ReviewZIP.global.s3.S3Service;
 import com.example.ReviewZIP.global.s3.dto.S3Result;
+import com.example.ReviewZIP.global.security.UserDetailsImpl;
+import com.example.ReviewZIP.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +44,13 @@ public class UsersService {
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostLikesRepository postLikesRepository;
-    private final S3Service s3Service;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    public Long getUserId(UserDetails user){
+        String username = user.getUsername();
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(username);
+        return userDetails.getUserId();
+    }
 
     public List<Users> findUsersByName(String name) {
         List<Users> pageUsers = usersRepository.findByName(name);
