@@ -48,6 +48,12 @@ public class UserStoresService {
         return userStoresRepository.existsUserStoresByLatitudeAndLongitude(lat,lon);
     }
 
+    @Transactional
+    public void deleteUserStores(Long userStoreId) {
+        Users user = usersRepository.findById(1L).orElseThrow(()-> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        userStoresRepository.deleteByIdAndUser(userStoreId, user);
+    }
+
 
 
 

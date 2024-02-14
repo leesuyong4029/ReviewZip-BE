@@ -11,4 +11,6 @@ public interface UserStoresRepository extends JpaRepository<UserStores, Long> {
     List<UserStores> findAllByUser (Users user);
 
     Boolean existsUserStoresByLatitudeAndLongitude (Double latitude, Double longitude);
+
+    void deleteByIdAndUser(Long id, Users user);
 }

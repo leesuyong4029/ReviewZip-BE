@@ -47,4 +47,19 @@ public class UserStoresController {
         return ApiResponse.onSuccess(userStoresService.isInterestPlace(lat,lon));
     }
 
+    @DeleteMapping("/{storeId}/")
+    @Operation(summary = "기존의 관심장소를 해제하는 API",description = "관심장소의 아이디를 입력받아 관심장소를 해제하는 기능")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "storeId", description = "장소의 아이디"),
+
+    })
+    public ApiResponse<SuccessStatus> deleteUserStores(@PathVariable Long storeId) {
+        userStoresService.deleteUserStores(storeId);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
+    }
+
 }
