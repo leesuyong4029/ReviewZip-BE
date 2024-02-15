@@ -76,7 +76,7 @@ public class PostsController {
     }
 
     @PostMapping
-    @Operation(summary = "게시글 생성 API", description = "지도 위치 정보를 store table에 저장하고 게시글을 생성한다. CreatedPostRequestDto, storeInfoDto 사용")
+    @Operation(summary = "게시글 생성 API", description = "지도 위치 정보를 저장하고 게시글을 생성한다. CreatedPostRequestDto, storeInfoDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST403", description = "게시글 작성 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
