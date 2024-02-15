@@ -10,6 +10,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UploadImageResponseDto {
+public class ImageResponseDto {
     public List<Long> imageIds;
 }
