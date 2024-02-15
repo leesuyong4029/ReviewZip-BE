@@ -8,4 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SearchHistoriesRepository extends JpaRepository<SearchHistories, Long> {
+    Optional<SearchHistories> findByIdAndUserId(Long hashtagId, Long userId);
 }
