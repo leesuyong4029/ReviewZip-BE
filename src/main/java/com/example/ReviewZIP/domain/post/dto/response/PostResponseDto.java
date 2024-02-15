@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostResponseDto {
@@ -56,18 +55,6 @@ public class PostResponseDto {
         private UserInfoDto user;
         private List<HashtagDto> hashtags;
         private List<ImageDto> postImages;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CreatedPostResponseDto {
-        private Long postId;
-        private Long userId;
-        private String comment;
-        private Double point;
-        private List<Long> imageIds;
     }
 
     @Getter
