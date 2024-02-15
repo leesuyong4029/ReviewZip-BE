@@ -4,6 +4,7 @@ import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.domain.user.UsersService;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,7 @@ import java.util.List;
 public class PostsController {
 
     private final PostsService postsService;
+    private final UsersService usersService;
 
     @GetMapping("/{postId}/hashtags")
     @Operation(summary = "게시물에 해시태그 추가 API", description = "게시물에 해시태그를 추가")
@@ -48,9 +52,9 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "hashtagId", description = "해시태그 아이디"),
     })
-    public ApiResponse<List<PostResponseDto.PostInfoDto>> searchPostsByHashtagId(@PathVariable Long hashtagId) {
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> searchPostsByHashtagId(@AuthenticationPrincipal UserDetails user, @PathVariable Long hashtagId) {
         List<PostHashtags> postList = postsService.searchPostByHashtag(hashtagId);
-        List<PostResponseDto.PostInfoDto> getPostInfoDtoList = postsService.getPostInfoDtoList(postList);
+        List<PostResponseDto.PostInfoDto> getPostInfoDtoList = postsService.getPostInfoDtoList(usersService.getUserId(user), postList);
         return ApiResponse.onSuccess(getPostInfoDtoList);
     }
 
@@ -64,9 +68,9 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 아이디"),
     })
-    public ApiResponse<PostResponseDto.PostInfoDto> getPostInfo(@PathVariable(name = "postId") Long postId){
+    public ApiResponse<PostResponseDto.PostInfoDto> getPostInfo(@AuthenticationPrincipal UserDetails user, @PathVariable(name = "postId") Long postId){
 
-        PostResponseDto.PostInfoDto postInfoDto = postsService.getPostInfoDto(postId);
+        PostResponseDto.PostInfoDto postInfoDto = postsService.getPostInfoDto(usersService.getUserId(user), postId);
 
         return ApiResponse.onSuccess(postInfoDto);
     }
@@ -88,8 +92,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<PostResponseDto.PostInfoDto> getRandomPost() {
-        PostResponseDto.PostInfoDto randomPostInfoDto = postsService.getOneRandomPostInfoDto(1L);
+    public ApiResponse<PostResponseDto.PostInfoDto> getRandomPost(@AuthenticationPrincipal UserDetails user) {
+        PostResponseDto.PostInfoDto randomPostInfoDto = postsService.getOneRandomPostInfoDto(usersService.getUserId(user));
 
         return ApiResponse.onSuccess(randomPostInfoDto);
     }
@@ -100,8 +104,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST405", description = "사용자가 작성하지 않은 게시글이 필요함.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<List<PostResponseDto.PostInfoDto>> getRandomPosts() {
-        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getThreeRandomPostsInfo(1L);
+    public ApiResponse<List<PostResponseDto.PostInfoDto>> getRandomPosts(@AuthenticationPrincipal UserDetails user) {
+        List<PostResponseDto.PostInfoDto> randomPostInfoDtos = postsService.getThreeRandomPostsInfo(usersService.getUserId(user));
 
         return ApiResponse.onSuccess(randomPostInfoDtos);
     }
@@ -114,9 +118,9 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "postId", description = "게시물 아이디"),
     })
-    public ApiResponse<List<PostResponseDto.PostUserLikeDto>> getPostLikeUserList(@PathVariable Long postId) {
+    public ApiResponse<List<PostResponseDto.PostUserLikeDto>> getPostLikeUserList(@AuthenticationPrincipal UserDetails user, @PathVariable Long postId) {
         List<Users> postLikeUserList = postsService.getPostLikeUserList(postId);
-        List<Long> userFollowingList = postsService.getFollowigIdList();
+        List<Long> userFollowingList = postsService.getFollowigIdList(usersService.getUserId(user));
 
         List<PostResponseDto.PostUserLikeDto> postLikeList = PostsConverter.toPostUserLikeListDto(postLikeUserList, userFollowingList);
 
@@ -132,8 +136,8 @@ public class PostsController {
     @Parameters({
             @Parameter(name = "postId", description = "게시글의 아이디"),
     })
-    public ApiResponse<SuccessStatus> deletePost(@PathVariable(name = "postId") Long postId){
-        postsService.deletePost(postId);
+    public ApiResponse<SuccessStatus> deletePost(@AuthenticationPrincipal UserDetails user, @PathVariable(name = "postId") Long postId){
+        postsService.deletePost(usersService.getUserId(user),postId);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
@@ -168,8 +172,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> createScrabs(@PathVariable(name = "postid")Long postId){
-        return postsService.createScrabs(postId);
+    public ApiResponse<SuccessStatus> createScrabs(@AuthenticationPrincipal UserDetails user, @PathVariable(name = "postid")Long postId){
+        return postsService.createScrabs(usersService.getUserId(user),postId);
     }
 
     @DeleteMapping("/{postid}/scrabs")
@@ -178,8 +182,8 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POST401", description = "해당하는 게시글이 존재하지 않음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> deleteScrabs(@PathVariable(name = "postid")Long postId){
-        postsService.deleteScrabs(postId);
+    public ApiResponse<SuccessStatus> deleteScrabs(@AuthenticationPrincipal UserDetails user, @PathVariable(name = "postid")Long postId){
+        postsService.deleteScrabs(usersService.getUserId(user), postId);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }

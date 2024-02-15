@@ -17,7 +17,10 @@ import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import com.example.ReviewZIP.global.s3.S3Service;
 import com.example.ReviewZIP.global.s3.dto.S3Result;
+import com.example.ReviewZIP.global.security.UserDetailsImpl;
+import com.example.ReviewZIP.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +44,13 @@ public class UsersService {
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostLikesRepository postLikesRepository;
-    private final S3Service s3Service;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    public Long getUserId(UserDetails user){
+        String username = user.getUsername();
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(username);
+        return userDetails.getUserId();
+    }
 
     public List<Users> findUsersByName(String name) {
         List<Users> pageUsers = usersRepository.findByName(name);
@@ -56,7 +65,6 @@ public class UsersService {
     }
 
     public List<Long> getFollowigIdList(Long userId){
-        // 일단 1L로 나를 대체
         Users me = usersRepository.getById(userId);
         List<Follows> followingList = me.getFollowingList();
         List<Long> followingIdList = new ArrayList<>();
@@ -106,9 +114,8 @@ public class UsersService {
         return userNicknameDto;
     }
 
-    public UserResponseDto.OtherUserInfoDto getOtherInfo(Long userId){
-        // 사용자 임의 처리, 1L 가정
-        Users me = usersRepository.getById(userId);
+    public UserResponseDto.OtherUserInfoDto getOtherInfo(Long myId, Long userId){
+        Users me = usersRepository.getById(myId);
         Users other = usersRepository.findById(userId)
                 .orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 

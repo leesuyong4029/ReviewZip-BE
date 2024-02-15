@@ -70,7 +70,13 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH401", "유효하지 않은 ACCESS 토큰입니다."),
     EXPIRED_MEMBER_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH402", "만료된 JWT 토큰입니다."),
     UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH403", "지원되지 않는 JWT 토큰입니다."),
-    ILLEGALARGUMENT_TOKEN(HttpStatus.BAD_REQUEST, "AUTH404", "잘못된 JWT 토큰입니다.");
+    ILLEGALARGUMENT_TOKEN(HttpStatus.BAD_REQUEST, "AUTH404", "잘못된 JWT 토큰입니다."),
+
+    // UserStores
+    USER_STORES_CREATE_FAIL(HttpStatus.BAD_REQUEST,"USERSTORE401", "유저 관심장소 생성에 실패하였습니다."),
+    USER_STORES_DELETE_FAIL(HttpStatus.BAD_REQUEST,"USERSTORE402", "유저 관심장소 삭제에 실패하였습니다."),
+    USER_STORES_NOT_FOUND(HttpStatus.NOT_FOUND, "USERSTORE403", "존재하지 않는 유저 관심장소 입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

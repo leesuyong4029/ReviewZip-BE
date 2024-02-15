@@ -20,8 +20,8 @@ public class FollowsService {
 
 
     @Transactional
-    public ApiResponse<SuccessStatus> createFollowing(Long userId) {
-        Users sender = usersRepository.getById(1L);
+    public ApiResponse<SuccessStatus> createFollowing(Long myId, Long userId) {
+        Users sender = usersRepository.getById(myId);
         Users receiver = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         boolean alreadyFollow = followsRepository.existsBySenderAndReceiver(sender, receiver);
         if(alreadyFollow)
@@ -32,8 +32,8 @@ public class FollowsService {
     }
 
     @Transactional
-    public ApiResponse<SuccessStatus> unfollowUser(Long userId){
-        Users sender = usersRepository.findById(1L).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+    public ApiResponse<SuccessStatus> unfollowUser(Long myId, Long userId){
+        Users sender = usersRepository.getById(myId);
         Users receiver = usersRepository.findById(userId).orElseThrow(()->new  UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Follows unfollow = followsRepository.getBySenderAndReceiver(sender, receiver);
         followsRepository.delete(unfollow);
