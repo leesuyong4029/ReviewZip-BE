@@ -11,6 +11,9 @@ import com.example.ReviewZIP.domain.postLike.PostLikes;
 import com.example.ReviewZIP.domain.postLike.PostLikesRepository;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
 import com.example.ReviewZIP.domain.scrab.ScrabsRepository;
+import com.example.ReviewZIP.domain.store.Stores;
+import com.example.ReviewZIP.domain.store.StoresRepository;
+import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.redis.RedisService;
@@ -46,33 +49,33 @@ public class PostsService {
     private final ScrabsRepository scrabsRepository;
     private final PostHashtagsRepository postHashtagsRepository;
     private final RedisService redisService;
+    private final StoresRepository storesRepository;
+
+    @Transactional
+    public PostResponseDto.PostInfoDto createPost(Long userId, PostRequestDto.CreatedPostRequestDto request) {
+        Users currentUser = usersRepository.findById(userId)
+                .orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+
+        List<Images> images = imagesRepository.findAllById(request.getImageIds());
+
+        Posts newPost = PostsConverter.toPostDto(request, currentUser, images);
+        postsRepository.save(newPost);
+
+        // StoreInfoDto를 Stores 엔티티로 변환하고 저장
+        StoreRequestDto.StoreInfoDto storeInfoDto = request.getStoreInfo();
+        Stores newStore = PostsConverter.toStoreEntity(storeInfoDto);
+        newStore.setPost(newPost); // 연관관계 설정
+        storesRepository.save(newStore);
+
+        newPost.getStoreList().add(newStore); // 양방향 연관관계 설정
+
+        return PostsConverter.toPostInfoResultDto(newPost, currentUser, false, false, newPost.getCreatedAt().toString());
+    }
 
     public List<PostHashtags> searchPostByHashtag (Long hashtagId){
         PostHashtags postHashtags = postHashtagsRepository.findById(hashtagId).orElseThrow(()->new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND));
         String tagName = postHashtags.getHashtag();
         return postHashtagsRepository.findAllByHashtag(tagName);
-    }
-
-    @Transactional
-    public Posts createPost(PostRequestDto postRequestDto) {
-        Users user = usersRepository.findById(postRequestDto.getUserId()).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-
-        Posts newPost = new Posts();
-        newPost.setUser(user);
-        newPost.setComment(postRequestDto.getComment());
-        newPost.setPoint(postRequestDto.getPoint());
-        newPost.setIs_read(false);
-
-        Posts savedPost = postsRepository.save(newPost);
-
-        for (Long imageId : postRequestDto.getImageIds()) {
-            Images image = imagesRepository.findById(imageId).orElseThrow(() -> new ImagesHandler(ErrorStatus.IMAGE_NOT_FOUND));
-            image.setPost(savedPost);
-            image.setUser(user);
-            imagesRepository.save(image);
-            savedPost.getPostImageList().add(image);
-        }
-        return savedPost;
     }
 
     public static final int NUM_OF_RANDOM_POST = 1;

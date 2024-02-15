@@ -2,11 +2,13 @@ package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.image.Images;
+import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
+import com.example.ReviewZIP.domain.store.Stores;
+import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,20 +27,25 @@ public class PostsConverter {
         this.followsRepository = followsRepository;
     }
 
-
-    public static PostResponseDto.CreatedPostResponseDto toPostResponseDto(Posts post) {
-        List<Long> imageIds = post.getPostImageList().stream()
-                .map(Images::getId)
-                .collect(Collectors.toList());
-
-        return PostResponseDto.CreatedPostResponseDto.builder()
-                .postId(post.getId())
-                .comment(post.getComment())
-                .point(post.getPoint())
-                .userId(post.getUser().getId())
-                .imageIds(imageIds)
+    public static Posts toPostDto(PostRequestDto.CreatedPostRequestDto PostDto, Users user, List<Images> images) {
+        return Posts.builder()
+                .comment(PostDto.getComment())
+                .point(PostDto.getPoint())
+                .user(user)
+                .postImageList(images)
                 .build();
     }
+
+    public static Stores toStoreEntity(StoreRequestDto.StoreInfoDto storeInfoDto) {
+        return Stores.builder()
+                .name(storeInfoDto.getName())
+                .address_name(storeInfoDto.getAddressName())
+                .road_address_name(storeInfoDto.getRoadAddressName())
+                .longitude(storeInfoDto.getLongitude())
+                .latitude(storeInfoDto.getLatitude())
+                .build();
+    }
+
     public static PostResponseDto.UserInfoDto toUserInfoDto(Users user){
         return PostResponseDto.UserInfoDto.builder()
                 .userId(user.getId())
