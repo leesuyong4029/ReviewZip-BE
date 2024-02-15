@@ -33,6 +33,10 @@ public class PostsConverter {
                 .point(PostDto.getPoint())
                 .user(user)
                 .postImageList(images)
+                .storeList(new ArrayList<>())
+                .postHashtagList(new ArrayList<>())
+                .postLikeList(new ArrayList<>())
+                .scrabList(new ArrayList<>())
                 .build();
     }
 
