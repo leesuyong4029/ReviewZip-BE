@@ -26,7 +26,7 @@ public class ImagesController {
     @PostMapping(path = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "파일 업로드 API", description = "UploadImageResponseDto 사용")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SEARCH203",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE402", description = "이미지 업로드 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<ImageResponseDto> uploadImage(@AuthenticationPrincipal UserDetails user, @RequestParam("fileList") List<MultipartFile> fileList){
