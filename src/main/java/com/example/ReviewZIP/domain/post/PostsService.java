@@ -56,9 +56,7 @@ public class PostsService {
         Users currentUser = usersRepository.findById(userId)
                 .orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
 
-        List<Images> images = imagesRepository.findAllById(request.getImageIds());
-
-        Posts newPost = PostsConverter.toPostDto(request, currentUser, images);
+        Posts newPost = PostsConverter.toPostDto(request, currentUser);
         postsRepository.save(newPost);
 
         // StoreInfoDto를 Stores 엔티티로 변환하고 저장
@@ -68,6 +66,15 @@ public class PostsService {
         storesRepository.save(newStore);
 
         newPost.getStoreList().add(newStore); // 양방향 연관관계 설정
+
+        // Image 엔티티의 post 필드 설정
+        List<Images> images = imagesRepository.findAllById(request.getImageIds());
+        for (Images image : images) {
+            image.setPost(newPost);
+            imagesRepository.save(image);
+        }
+
+        newPost.getPostImageList().addAll(images); // 양방향 연관관계 설정
 
         return PostsConverter.toPostInfoResultDto(newPost, currentUser, false, false, newPost.getCreatedAt().toString());
     }

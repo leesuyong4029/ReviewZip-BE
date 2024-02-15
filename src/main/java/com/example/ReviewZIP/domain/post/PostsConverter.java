@@ -27,12 +27,13 @@ public class PostsConverter {
         this.followsRepository = followsRepository;
     }
 
-    public static Posts toPostDto(PostRequestDto.CreatedPostRequestDto PostDto, Users user, List<Images> images) {
+    public static Posts toPostDto(PostRequestDto.CreatedPostRequestDto PostDto, Users user) {
         return Posts.builder()
                 .comment(PostDto.getComment())
                 .point(PostDto.getPoint())
+                .is_read(false)
                 .user(user)
-                .postImageList(images)
+                .postImageList(new ArrayList<>())
                 .storeList(new ArrayList<>())
                 .postHashtagList(new ArrayList<>())
                 .postLikeList(new ArrayList<>())
