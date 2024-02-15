@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserStoresRepository extends JpaRepository<UserStores, Long> {
     List<UserStores> findAllByUser (Users user);
 
-    Boolean existsUserStoresByLatitudeAndLongitude (Double latitude, Double longitude);
+    Boolean existsUserStoresByLatitudeAndLongitudeAndUser (Double latitude, Double longitude, Users user);
 
     void deleteByIdAndUser(Long id, Users user);
 }

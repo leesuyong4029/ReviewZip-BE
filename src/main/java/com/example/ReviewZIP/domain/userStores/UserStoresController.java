@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.userStores;
 
 
+import com.example.ReviewZIP.domain.user.UsersService;
 import com.example.ReviewZIP.domain.userStores.dto.request.UserStoresRequestDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserStoresController {
 
     private final UserStoresService userStoresService;
+    private final UsersService usersService;
 
     @PostMapping("/")
     @Operation(summary = "특정 장소를 관심 장소로 등록 API",description = "특정 장소를 유저의 관심 장소로 등록한다, 입력 시 CreateUserStoresDto 사용")
@@ -28,8 +32,8 @@ public class UserStoresController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USERSTORE401", description = "유저 관심장소 저장에 실패했습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
 
     })
-    public ApiResponse<SuccessStatus> createUserStores(@RequestBody UserStoresRequestDto.CreateUserStoresDto dto) {
-        userStoresService.createUserStores(dto);
+    public ApiResponse<SuccessStatus> createUserStores(@AuthenticationPrincipal UserDetails user, @RequestBody UserStoresRequestDto.CreateUserStoresDto dto) {
+        userStoresService.createUserStores(usersService.getUserId(user), dto);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
@@ -45,8 +49,8 @@ public class UserStoresController {
             @Parameter(name = "lon", description = "장소의 경도"),
 
     })
-    public ApiResponse<Boolean> isInterestPlace(@RequestParam Double lat, @RequestParam Double lon) {
-        return ApiResponse.onSuccess(userStoresService.isInterestPlace(lat,lon));
+    public ApiResponse<Boolean> isInterestPlace(@AuthenticationPrincipal UserDetails user, @RequestParam Double lat, @RequestParam Double lon) {
+        return ApiResponse.onSuccess(userStoresService.isInterestPlace(usersService.getUserId(user),lat,lon));
     }
 
     @DeleteMapping("/{storeId}")
@@ -61,8 +65,8 @@ public class UserStoresController {
             @Parameter(name = "storeId", description = "장소의 아이디"),
 
     })
-    public ApiResponse<SuccessStatus> deleteUserStores(@PathVariable Long storeId) {
-        userStoresService.deleteUserStores(storeId);
+    public ApiResponse<SuccessStatus> deleteUserStores(@AuthenticationPrincipal UserDetails user, @PathVariable Long storeId) {
+        userStoresService.deleteUserStores(usersService.getUserId(user), storeId);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 

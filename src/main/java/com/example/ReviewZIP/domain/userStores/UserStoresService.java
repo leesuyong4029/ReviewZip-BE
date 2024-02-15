@@ -23,11 +23,8 @@ public class UserStoresService {
     private final UsersRepository usersRepository;
     private final UserStoresRepository userStoresRepository;
     @Transactional
-    public void createUserStores(UserStoresRequestDto.CreateUserStoresDto dto) {
-
-        // 임의로 유저 아이디 값에 1L을 지정
-        Users user = usersRepository.findById(1L).orElseThrow(()->new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-
+    public void createUserStores(Long myId, UserStoresRequestDto.CreateUserStoresDto dto) {
+        Users user = usersRepository.getById(myId);
         UserStores userStores = UserStoresConverter.toEntity(dto);
         userStores.setUser(user);
 
@@ -49,13 +46,24 @@ public class UserStoresService {
         return UserStoresConverter.toStoreInfoListDto(userStoresList,storeSavedNum,nickname);
     }
 
-    public Boolean isInterestPlace (Double lat, Double lon) {
-        return userStoresRepository.existsUserStoresByLatitudeAndLongitude(lat,lon);
+    public UserStoresResponseDto.StoreInfoListDto getMyStoreInfo(Long myId) {
+        Users user = usersRepository.getById(myId);
+        List<UserStores> userStoresList = userStoresRepository.findAllByUser(user);
+
+        Integer storeSavedNum = userStoresList.size();
+        String nickname = user.getNickname();
+
+        return UserStoresConverter.toStoreInfoListDto(userStoresList,storeSavedNum,nickname);
+    }
+
+    public Boolean isInterestPlace (Long myId, Double lat, Double lon) {
+        Users user = usersRepository.getById(myId);
+        return userStoresRepository.existsUserStoresByLatitudeAndLongitudeAndUser(lat,lon,user);
     }
 
     @Transactional
-    public void deleteUserStores(Long userStoreId) {
-        Users user = usersRepository.findById(1L).orElseThrow(()-> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+    public void deleteUserStores(Long myId, Long userStoreId) {
+        Users user = usersRepository.getById(myId);
         try {
             userStoresRepository.deleteByIdAndUser(userStoreId, user);
         } catch (Exception e) {
