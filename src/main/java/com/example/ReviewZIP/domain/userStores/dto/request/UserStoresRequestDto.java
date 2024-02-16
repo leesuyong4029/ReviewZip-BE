@@ -8,7 +8,7 @@ public class UserStoresRequestDto {
     public static class CreateUserStoresDto {
         private String name;
         private String address;
-        private Double latitude;
-        private Double longitude;
+        private String latitude;
+        private String longitude;
     }
 }

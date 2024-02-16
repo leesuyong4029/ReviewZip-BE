@@ -49,7 +49,7 @@ public class UserStoresController {
             @Parameter(name = "lon", description = "장소의 경도"),
 
     })
-    public ApiResponse<Boolean> isInterestPlace(@AuthenticationPrincipal UserDetails user, @RequestParam Double lat, @RequestParam Double lon) {
+    public ApiResponse<Boolean> isInterestPlace(@AuthenticationPrincipal UserDetails user, @RequestParam String lat, @RequestParam String lon) {
         return ApiResponse.onSuccess(userStoresService.isInterestPlace(usersService.getUserId(user),lat,lon));
     }
 

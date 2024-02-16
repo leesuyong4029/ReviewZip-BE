@@ -56,7 +56,7 @@ public class UserStoresService {
         return UserStoresConverter.toStoreInfoListDto(userStoresList,storeSavedNum,nickname);
     }
 
-    public Boolean isInterestPlace (Long myId, Double lat, Double lon) {
+    public Boolean isInterestPlace (Long myId, String lat, String lon) {
         Users user = usersRepository.getById(myId);
         return userStoresRepository.existsUserStoresByLatitudeAndLongitudeAndUser(lat,lon,user);
     }

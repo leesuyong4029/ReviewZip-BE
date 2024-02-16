@@ -15,8 +15,8 @@ public class UserStoresResponseDto {
     @AllArgsConstructor
     public static class StoreInfoDto {
         private Long storeId;
-        private Double latitude;
-        private Double longitude;
+        private String latitude;
+        private String longitude;
         private String place;
         private String address;
 
