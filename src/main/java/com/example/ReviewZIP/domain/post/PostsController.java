@@ -150,19 +150,19 @@ public class PostsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE401", description = "공감 누르기에 실패",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE402", description = "이미 공감한 게시물",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> addPostLike(@PathVariable(name = "postId") Long postId ) {
+    public ApiResponse<SuccessStatus> addPostLike(@AuthenticationPrincipal UserDetails user, @PathVariable(name = "postId") Long postId ) {
 
-        return postsService.addLike(postId);
+        return postsService.addLike(usersService.getUserId(user), postId);
     }
 
     @DeleteMapping("/{postId}/like")
-    @Operation(summary = "포스트에 공감 해제API",description = "포스트에 공감을 해제하는 기능")
+    @Operation(summary = "포스트에 공감 해제 API",description = "포스트에 공감을 해제하는 기능")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "POSTLIKE403", description = "존재하지 않는 공감",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> removePostLike(@PathVariable Long postId) {
-        postsService.removeLike(postId, 1L);
+    public ApiResponse<SuccessStatus> removePostLike(@AuthenticationPrincipal UserDetails user, @PathVariable Long postId) {
+        postsService.removeLike(postId, usersService.getUserId(user) );
         return ApiResponse.onSuccess(SuccessStatus.POST_CANCEL_LIKE_SUCCESS);
     }
 
