@@ -2,7 +2,7 @@ package com.example.ReviewZIP.global.jwt;
 
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
-import com.example.ReviewZIP.global.response.exception.GeneralException;
+import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -81,6 +82,11 @@ public class JwtProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
+        String username = claims.getSubject();
+        if(!StringUtils.hasText(username)) {
+            throw new IllegalArgumentException("토큰의 subject(username)이 비어 있습니다.");
+        }
+
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -102,13 +108,13 @@ public class JwtProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new GeneralException(ErrorStatus.INVALID_ACCESS_TOKEN);
+            throw new UsersHandler(ErrorStatus.INVALID_ACCESS_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new GeneralException(ErrorStatus.EXPIRED_MEMBER_TOKEN);
+            throw new UsersHandler(ErrorStatus.EXPIRED_MEMBER_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new GeneralException(ErrorStatus.UNSUPPORTED_TOKEN);
+            throw new UsersHandler(ErrorStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new GeneralException(ErrorStatus.ILLEGALARGUMENT_TOKEN);
+            throw new UsersHandler(ErrorStatus.ILLEGALARGUMENT_TOKEN);
         }
     }
 
