@@ -94,7 +94,7 @@ public class JwtProvider {
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        UserDetails principal = new User(username, "", authorities);
 
         // 추출된 userId를 SecurityContextHolder에 저장
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(principal, "", authorities));
