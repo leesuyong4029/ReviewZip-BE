@@ -79,12 +79,12 @@ public class JwtProvider {
         Claims claims = parseClaims(accessToken);
 
         if (claims.get(AUTHORITIES_KEY) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            throw new UsersHandler(ErrorStatus.JWT_NO_AUTH_INFO);
         }
 
         String username = claims.getSubject();
         if(!StringUtils.hasText(username)) {
-            throw new IllegalArgumentException("토큰의 subject(username)이 비어 있습니다.");
+            throw new UsersHandler(ErrorStatus.JWT_NO_USER_INFO);
         }
 
         // 클레임에서 권한 정보 가져오기
@@ -114,7 +114,7 @@ public class JwtProvider {
         } catch (UnsupportedJwtException e) {
             throw new UsersHandler(ErrorStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new UsersHandler(ErrorStatus.ILLEGALARGUMENT_TOKEN);
+            throw new UsersHandler(ErrorStatus.ILLEGAL_ARGUMENT_TOKEN);
         }
     }
 
