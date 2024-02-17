@@ -29,10 +29,10 @@ public class UserStores {
     private String address;
 
     @Column(nullable = false)
-    private Double longitude;
+    private String longitude;
 
     @Column(nullable = false)
-    private Double latitude;
+    private String latitude;
 
 
 }

@@ -202,14 +202,15 @@ public class PostsService {
     }
 
     @Transactional
-    public void removeLike(Long postId, Long userId) {
-        PostLikes postLikes = postLikesRepository.findByPostIdAndUserId(postId, userId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POSTLIKE_NOT_FOUND));
+    public void removeLike(Long postId, Long myId) {
+
+        PostLikes postLikes = postLikesRepository.findByPostIdAndUserId(postId, myId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POSTLIKE_NOT_FOUND));
         postLikesRepository.delete(postLikes);
     }
     @Transactional
-    public ApiResponse<SuccessStatus> addLike(Long postId) {
-        // user 1L로 대체
-        Users user = usersRepository.getById(1L);
+    public ApiResponse<SuccessStatus> addLike(Long myId, Long postId) {
+
+        Users user = usersRepository.getById(myId);
         Posts post = postsRepository.findById(postId).orElseThrow(() -> new PostLikesHandler(ErrorStatus.POST_NOT_FOUND));
         boolean alreadyLike = postLikesRepository.existsByUserAndPost(user, post);
         if(alreadyLike){
