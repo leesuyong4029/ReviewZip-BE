@@ -32,6 +32,9 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_CREATE_FAIL(HttpStatus.BAD_REQUEST,"USER409", "유저 생성에 실패하였습니다."),
     USER_DELETE_FAIL(HttpStatus.BAD_REQUEST,"USER410", "유저 삭제에 실패하였습니다."),
     USER_EXISTS_NICKNAME(HttpStatus.BAD_REQUEST, "USER411", "중복된 닉네임입니다."),
+    USER_PHONE_NUM_NOT_FOUND(HttpStatus.NOT_FOUND, "USER412", "존재하지 않는 전화번호입니다."),
+    USER_EXISTS_NO_INPUT_EMAIL(HttpStatus.BAD_REQUEST, "USER413", "이메일을 입력하지 않았습니다."),
+
 
 
     // Post
@@ -78,8 +81,10 @@ public enum ErrorStatus implements BaseErrorCode {
     // UserStores
     USER_STORES_CREATE_FAIL(HttpStatus.BAD_REQUEST,"USERSTORE401", "유저 관심장소 생성에 실패하였습니다."),
     USER_STORES_DELETE_FAIL(HttpStatus.BAD_REQUEST,"USERSTORE402", "유저 관심장소 삭제에 실패하였습니다."),
-    USER_STORES_NOT_FOUND(HttpStatus.NOT_FOUND, "USERSTORE403", "존재하지 않는 유저 관심장소 입니다.");
+    USER_STORES_NOT_FOUND(HttpStatus.NOT_FOUND, "USERSTORE403", "존재하지 않는 유저 관심장소 입니다."),
 
+    // SMS
+    SMS_VERIFICATION_NUMBER_MISMATCH(HttpStatus.NOT_FOUND, "SMS401", "인증번호가 일치하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
