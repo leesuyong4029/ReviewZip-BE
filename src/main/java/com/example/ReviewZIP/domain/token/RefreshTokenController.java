@@ -42,7 +42,8 @@ public class RefreshTokenController {
     @Operation(summary = "로컬 로그인", description = "JWT 이용해 로컬 로그인 진행")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER403", description = "비밀번호가 잘못되었습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER403", description = "비밀번호가 잘못되었습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER413", description = "이메일을 입력하지 않았습니다."),
     })
     public ApiResponse<TokenDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         return ApiResponse.onSuccess(refreshTokenService.login(loginRequestDto));
