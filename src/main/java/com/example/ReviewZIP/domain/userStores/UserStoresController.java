@@ -24,7 +24,7 @@ public class UserStoresController {
     private final UserStoresService userStoresService;
     private final UsersService usersService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "특정 장소를 관심 장소로 등록 API",description = "특정 장소를 유저의 관심 장소로 등록한다, 입력 시 CreateUserStoresDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),

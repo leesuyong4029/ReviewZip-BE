@@ -70,8 +70,4 @@ public class UserStoresService {
             throw new UserStoresHandler(ErrorStatus.USER_STORES_DELETE_FAIL);
         }
     }
-
-
-
-
 }
