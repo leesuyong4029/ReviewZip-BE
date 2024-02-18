@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.userStores;
 
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,21 +13,20 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_stores")
-public class UserStores {
+public class UserStores extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
-
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String address;
+    private String address_name;
+
+    @Column(nullable = false)
+    private String road_address_name;
 
     @Column(nullable = false)
     private String longitude;
@@ -34,5 +34,7 @@ public class UserStores {
     @Column(nullable = false)
     private String latitude;
 
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 }
