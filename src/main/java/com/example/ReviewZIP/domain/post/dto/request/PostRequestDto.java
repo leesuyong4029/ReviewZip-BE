@@ -17,6 +17,7 @@ public class PostRequestDto {
     public static class CreatedPostRequestDto {
         private String comment;
         private Double point;
+        private List<String> hashtags = new ArrayList<>();
         private List<Long> imageIds = new ArrayList<>();
         private StoreRequestDto.StoreInfoDto storeInfo;
     }
