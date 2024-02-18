@@ -20,7 +20,10 @@ import com.example.ReviewZIP.global.redis.RedisService;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
-import com.example.ReviewZIP.global.response.exception.handler.*;
+import com.example.ReviewZIP.global.response.exception.handler.PostHashtagsHandler;
+import com.example.ReviewZIP.global.response.exception.handler.PostLikesHandler;
+import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
+import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +40,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.example.ReviewZIP.domain.post.PostsConverter.toPostHashtags;
 
 @Service
 @RequiredArgsConstructor
@@ -76,8 +81,21 @@ public class PostsService {
 
         newPost.getPostImageList().addAll(images); // 양방향 연관관계 설정
 
+
+        // PostHashtags 객체 변환
+        List<String> hashtagList = request.getHashtags();
+        List<PostHashtags> postHashtagList = hashtagList.stream()
+                .map(hashtag -> toPostHashtags(hashtag, newPost))
+                .collect(Collectors.toList());
+
+        List<PostHashtags> hashtag = postHashtagList.stream()
+                .map(postHashtag -> postHashtagsRepository.save(postHashtag))
+                .collect(Collectors.toList());
+
         return PostsConverter.toPostInfoResultDto(newPost, currentUser, false, false, newPost.getCreatedAt().toString());
     }
+
+
 
     public List<PostHashtags> searchPostByHashtag (Long hashtagId){
         PostHashtags postHashtags = postHashtagsRepository.findById(hashtagId).orElseThrow(()->new PostHashtagsHandler(ErrorStatus.HASHTAG_NOT_FOUND));

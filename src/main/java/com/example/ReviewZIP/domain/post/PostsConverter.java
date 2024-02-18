@@ -22,6 +22,7 @@ public class PostsConverter {
 
     public static FollowsRepository followsRepository;
 
+
     public PostsConverter(UsersRepository usersRepository, FollowsRepository followsRepository) {
         this.usersRepository = usersRepository;
         this.followsRepository = followsRepository;
@@ -73,6 +74,7 @@ public class PostsConverter {
                 .tagName(postHashtags.getHashtag())
                 .build();
     }
+
     public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, Users user, boolean checkLike, boolean checkScrab, String createdAt){
         PostResponseDto.UserInfoDto userInfoDto = toUserInfoDto(post.getUser());
 
@@ -121,4 +123,12 @@ public class PostsConverter {
         
         return postUserLikeDtoList;
     }
+
+    public static PostHashtags toPostHashtags(String hashtag, Posts posts){
+        return PostHashtags.builder()
+                .hashtag(hashtag)
+                .post(posts)
+                .build();
+    }
+
 }
