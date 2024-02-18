@@ -18,8 +18,8 @@ public class UserStoresResponseDto {
         private String latitude;
         private String longitude;
         private String place;
-        private String address;
-
+        private String addressName;
+        private String roadAddressName;
     }
 
     @Builder

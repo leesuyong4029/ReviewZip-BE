@@ -11,7 +11,8 @@ public class UserStoresConverter {
     public static UserStores toEntity(UserStoresRequestDto.CreateUserStoresDto request) {
         return UserStores.builder()
                 .name(request.getName())
-                .address(request.getAddress())
+                .road_address_name(request.getRoadAddressName())
+                .address_name(request.getAddressName())
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
                 .build();
@@ -23,7 +24,8 @@ public class UserStoresConverter {
                 .latitude(userStores.getLatitude())
                 .longitude(userStores.getLongitude())
                 .place(userStores.getName())
-                .address(userStores.getAddress())
+                .roadAddressName(userStores.getRoad_address_name())
+                .addressName(userStores.getAddress_name())
                 .build();
     }
 

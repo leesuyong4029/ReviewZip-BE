@@ -7,7 +7,8 @@ public class UserStoresRequestDto {
     @Getter
     public static class CreateUserStoresDto {
         private String name;
-        private String address;
+        private String addressName;
+        private String roadAddressName;
         private String latitude;
         private String longitude;
     }
