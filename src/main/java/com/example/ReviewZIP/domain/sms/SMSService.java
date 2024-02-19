@@ -26,11 +26,11 @@ public class SMSService {
     private static final int RANDOM_NUM_BASE = 1000;
 
     public void sendSms(SmsDto.PasswordResetRequestDto requestDto) {
-        String receiverNumber = requestDto.getPhoneNum();
+        String receiverPhoneNum = requestDto.getPhoneNum();
         int randomNum = (int) (Math.random() * RANDOM_NUM_MULTIPLIER) + RANDOM_NUM_BASE;
         String certificationNum = String.valueOf(randomNum);
-        smsCertificationConfig.sendSms(receiverNumber, certificationNum);
-        smsRepository.createSmsCertification(receiverNumber, certificationNum);
+        smsCertificationConfig.sendSms(receiverPhoneNum, certificationNum);
+        smsRepository.createSmsCertification(receiverPhoneNum, certificationNum);
     }
 
     public void verifySms(SmsDto.PasswordResetRequestDto requestDto) {
