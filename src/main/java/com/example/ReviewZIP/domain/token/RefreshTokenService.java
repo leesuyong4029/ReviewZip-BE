@@ -8,6 +8,7 @@ import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.domain.user.UsersConverter;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
@@ -47,6 +48,8 @@ public class RefreshTokenService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private static final String DEFAULT_PROFILE_URL = "https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png";
+
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         if(usersRepository.existsByEmail(signUpRequestDto.getEmail())) {
@@ -55,7 +58,7 @@ public class RefreshTokenService {
 
         signUpRequestDto.setPassword(encodePassword(signUpRequestDto.getPassword()));
 
-        return SignUpResponseDto.signUpResponseDto(usersRepository.save(Users.toEntity(signUpRequestDto)));
+        return SignUpResponseDto.signUpResponseDto(usersRepository.save(UsersConverter.toSignUpDto(signUpRequestDto)));
     }
 
     public String encodePassword(String password) {
@@ -105,7 +108,7 @@ public class RefreshTokenService {
                 .name(nickname)
                 .email(email)
                 .status(Status.ENABLED)
-                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
+                .profileUrl(DEFAULT_PROFILE_URL)
                 .build();
         usersRepository.save(newUser);
 

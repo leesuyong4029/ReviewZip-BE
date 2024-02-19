@@ -2,6 +2,8 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.follow.FollowsRepository;
+import com.example.ReviewZIP.domain.image.Images;
+import com.example.ReviewZIP.domain.image.ImagesRepository;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.PostsConverter;
 import com.example.ReviewZIP.domain.post.PostsRepository;
@@ -13,17 +15,15 @@ import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.user.dto.request.UserRequestDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.ImagesHandler;
 import com.example.ReviewZIP.global.response.exception.handler.PostsHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
-import com.example.ReviewZIP.global.s3.S3Service;
-import com.example.ReviewZIP.global.s3.dto.S3Result;
 import com.example.ReviewZIP.global.security.UserDetailsImpl;
 import com.example.ReviewZIP.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -44,6 +44,7 @@ public class UsersService {
     private final PostsRepository postsRepository;
     private final ScrabsRepository scrabsRepository;
     private final PostLikesRepository postLikesRepository;
+    private final ImagesRepository imagesRepository;
     private final UserDetailsServiceImpl userDetailsService;
 
     public Long getUserId(UserDetails user){
@@ -98,14 +99,18 @@ public class UsersService {
         return UsersConverter.toUserInfoDto(usersRepository.findByEmail(email).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND)));
     }
 
-    public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto userProfileUrlDto){
+    @Transactional
+    public UserRequestDto.UserProfileImageDto updateProfileImage(Long userId, UserRequestDto.UserProfileImageDto userProfileUrlDto){
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
-        user.setProfileUrl(userProfileUrlDto.getProfileUrl());
+        Images image = imagesRepository.findById(userProfileUrlDto.getImageId()).orElseThrow(() -> new ImagesHandler(ErrorStatus.IMAGE_NOT_PROVIDED));
+
+        user.setProfileUrl(image.getUrl());
         usersRepository.save(user);
 
         return userProfileUrlDto;
     }
 
+    @Transactional
     public UserRequestDto.UserNicknameDto updateUserNickname(Long userId, UserRequestDto.UserNicknameDto userNicknameDto){
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         user.setNickname(userNicknameDto.getNickname());
