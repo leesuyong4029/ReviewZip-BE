@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
+import com.example.ReviewZIP.domain.image.ImagesService;
 import com.example.ReviewZIP.domain.post.Posts;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.scrab.Scrabs;
@@ -11,7 +12,6 @@ import com.example.ReviewZIP.domain.userStores.UserStoresService;
 import com.example.ReviewZIP.domain.userStores.dto.response.UserStoresResponseDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
-import com.example.ReviewZIP.global.security.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -33,6 +33,7 @@ import static com.example.ReviewZIP.domain.user.UsersConverter.toHistoryDtoList;
 public class UsersController {
     private final UsersService usersService;
     private final UserStoresService userStoresService;
+    private final ImagesService imagesService;
 
     @GetMapping("/{userId}/stores")
     @Operation(summary = "특정 유저의 관심 장소 목록 API",description = "특정 유저의 관심 장소 목록을 가져온다, 반환 시 StoreInfoListDto 사용")
@@ -228,15 +229,15 @@ public class UsersController {
     }
 
     @PatchMapping("/me/profileUrl")
-    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기, UserProfileDto 사용")
+    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기, UserProfileUrlDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE403", description = "프로필 이미지가 존재하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<UserRequestDto.UserProfileUrlDto> updateProfileUrl(@RequestBody UserRequestDto.UserProfileUrlDto userProfileUrlDto){
-
-        UserRequestDto.UserProfileUrlDto ProfileUrlDto = usersService.updateProfileUrl(1L, userProfileUrlDto);
-        return ApiResponse.onSuccess(ProfileUrlDto);
+    public ApiResponse<SuccessStatus> updateProfileUrl(@AuthenticationPrincipal UserDetails user, @RequestBody UserRequestDto.UserProfileUrlDto userProfileUrlDto){
+        usersService.updateProfileUrl(usersService.getUserId(user), userProfileUrlDto);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @PatchMapping("/me/nickname")
@@ -245,10 +246,9 @@ public class UsersController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<UserRequestDto.UserNicknameDto> updateUserNickname(@RequestBody UserRequestDto.UserNicknameDto userNicknameDto) {
-
-        UserRequestDto.UserNicknameDto NicknameDto = usersService.updateUserNickname(1L, userNicknameDto);
-        return ApiResponse.onSuccess(NicknameDto);
+    public ApiResponse<SuccessStatus> updateUserNickname(@AuthenticationPrincipal UserDetails user, @RequestBody UserRequestDto.UserNicknameDto userNicknameDto) {
+        usersService.updateUserNickname(usersService.getUserId(user), userNicknameDto);
+        return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 
     @DeleteMapping("/{userId}")
