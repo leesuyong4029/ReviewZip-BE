@@ -28,10 +28,10 @@ public class SmsCertificationConfig {
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecret, "https://api.coolsms.co.kr");
     }
 
-    public SingleMessageSentResponse sendSms(String to, String verificaitonCode) {
+    public SingleMessageSentResponse sendSms(String receiverNumber, String verificaitonCode) {
         Message message = new Message();
         message.setFrom(senderNumber);
-        message.setTo(to);
+        message.setTo(receiverNumber);
         message.setText("[ReviewZIP] 인증번호는 " + verificaitonCode + "입니다.");
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));

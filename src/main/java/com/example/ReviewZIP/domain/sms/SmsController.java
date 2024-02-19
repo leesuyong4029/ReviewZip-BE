@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.sms;
 
+import com.example.ReviewZIP.domain.sms.dto.request.SmsDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,7 +47,7 @@ public class SmsController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SMS401", description = "인증번호가 일치하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USERS401", description = "해당 유저가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USERS414", description = "존재하지 않는 계정입니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<SuccessStatus> resetPassword(@RequestBody SmsDto.PasswordResetRequestDto requestDto) {
         smsService.resetPassword(requestDto);

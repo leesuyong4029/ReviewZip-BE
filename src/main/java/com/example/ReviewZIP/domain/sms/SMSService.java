@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.sms;
 
+import com.example.ReviewZIP.domain.sms.dto.request.SmsDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.config.SmsCertificationConfig;
@@ -21,12 +22,15 @@ public class SMSService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private static final int RANDOM_NUM_MULTIPLIER = 9000;
+    private static final int RANDOM_NUM_BASE = 1000;
+
     public void sendSms(SmsDto.PasswordResetRequestDto requestDto) {
-        String to = requestDto.getPhoneNum();
-        int randomNum = (int) (Math.random() * 9000) + 1000;
+        String receiverNumber = requestDto.getPhoneNum();
+        int randomNum = (int) (Math.random() * RANDOM_NUM_MULTIPLIER) + RANDOM_NUM_BASE;
         String certificationNum = String.valueOf(randomNum);
-        smsCertificationConfig.sendSms(to, certificationNum);
-        smsRepository.createSmsCertification(to, certificationNum);
+        smsCertificationConfig.sendSms(receiverNumber, certificationNum);
+        smsRepository.createSmsCertification(receiverNumber, certificationNum);
     }
 
     public void verifySms(SmsDto.PasswordResetRequestDto requestDto) {
