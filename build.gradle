@@ -61,6 +61,11 @@ dependencies {
 	// Servlet API 의존성
 	compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
 
+	// Nurigo 의존성 추가
+	implementation 'net.nurigo:sdk:4.3.0'
+
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
 	tasks.named('test') {
 		useJUnitPlatform()
 	}

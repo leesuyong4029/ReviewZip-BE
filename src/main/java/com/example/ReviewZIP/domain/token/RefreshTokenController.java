@@ -2,7 +2,9 @@ package com.example.ReviewZIP.domain.token;
 
 import com.example.ReviewZIP.domain.token.dto.request.KakaoRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.LoginRequestDto;
+import com.example.ReviewZIP.domain.token.dto.request.RefreshTokenRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
+import com.example.ReviewZIP.domain.token.dto.response.RegenerateTokenResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
@@ -42,10 +44,23 @@ public class RefreshTokenController {
     @Operation(summary = "로컬 로그인", description = "JWT 이용해 로컬 로그인 진행")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER403", description = "비밀번호가 잘못되었습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER403", description = "비밀번호가 잘못되었습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER415", description = "이메일 또는 비밀번호를 입력하지 않았습니다."),
     })
     public ApiResponse<TokenDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         return ApiResponse.onSuccess(refreshTokenService.login(loginRequestDto));
+    }
+
+    @PostMapping("/refresh")
+    @Operation(summary = "토큰 만료시 AccessToken 재발급", description = "RefreshToken을 받아 AccessToken 재발급, RefreshTokenRequestDto & RegenerateTokenResponseDto 이용")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH407", description = "리프레시 토큰이 유효하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH405", description = "토큰 속 유저 정보가 유효하지 않습니다."),
+    })
+    public ApiResponse<RegenerateTokenResponseDto> refresh(@RequestBody RefreshTokenRequestDto request){
+        String accessToken = refreshTokenService.regenerateAccessToken(request);
+        return ApiResponse.onSuccess(RefreshTokenConverter.toRegenerateTokenDto(accessToken));
     }
 
     @PostMapping("/kakao/login")
