@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SMSService {
+public class SmsService {
 
     private final SmsCertificationConfig smsCertificationConfig;
     private final SmsRepository smsRepository;

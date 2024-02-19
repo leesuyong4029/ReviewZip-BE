@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/v1/sms-certification")
 public class SmsController {
-    private final SMSService smsService;
+    private final SmsService smsService;
 
     @PostMapping("/send")
     @Operation(summary = "SMS 인증번호 전송 API", description = "SMS 인증번호 전송하기, PasswordResetRequestDto 사용")
