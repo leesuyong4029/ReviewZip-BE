@@ -23,7 +23,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // User
     USER_EXISTS_EMAIL(HttpStatus.BAD_REQUEST, "USER401", "중복된 이메일입니다."),
     USER_EXISTS_NAME(HttpStatus.BAD_REQUEST, "USER402", "중복된 이름입니다."),
-    FAILED_TO_PASSWORD(HttpStatus.BAD_REQUEST, "USER403", "비밀번호가 잘못되었습니다."),
+    USER_FAILED_TO_PASSWORD(HttpStatus.BAD_REQUEST, "USER403", "비밀번호가 잘못되었습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "유저를 찾을 수 없습니다."),
     FOLLOWER_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "USER405", "팔로워 목록을 찾을 수 없습니다."),
     FOLLOWING_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "USER406", "팔로잉 목록을 찾을 수 없습니다."),
@@ -34,6 +34,8 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_EXISTS_NICKNAME(HttpStatus.BAD_REQUEST, "USER411", "중복된 닉네임입니다."),
     USER_PHONE_NUM_NOT_FOUND(HttpStatus.NOT_FOUND, "USER412", "존재하지 않는 전화번호입니다."),
     USER_EXISTS_NO_INPUT_EMAIL(HttpStatus.BAD_REQUEST, "USER413", "이메일을 입력하지 않았습니다."),
+    USER_ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER414", "존재하지 않는 계정입니다."),
+    USER_EMAIL_PASSWORD_NOT_EMPTY(HttpStatus.BAD_REQUEST, "USER415", "이메일 또는 비밀번호를 입력하지 않았습니다."),
 
 
 
