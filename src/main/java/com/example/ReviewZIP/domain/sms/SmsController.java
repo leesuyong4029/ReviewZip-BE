@@ -24,7 +24,7 @@ public class SmsController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER412", description = "해당 전화번호가 존재하지 않습니다.", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> sendSMS(@RequestBody SmsDto.PasswordResetRequestDto requestDto){
+    public ApiResponse<SuccessStatus> sendSms(@RequestBody SmsDto.PasswordResetRequestDto requestDto){
 
         smsService.sendSms(requestDto);
         return ApiResponse.onSuccess(SuccessStatus._OK);
