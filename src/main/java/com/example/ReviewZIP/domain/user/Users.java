@@ -79,14 +79,4 @@ public class Users extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private Set<UserStores> userStores = new HashSet<>();
 
-    public static Users toEntity(SignUpRequestDto signUpRequestDto) {
-        return Users.builder()
-                .name(signUpRequestDto.getName())
-                .email(signUpRequestDto.getEmail())
-                .password(signUpRequestDto.getPassword())
-                .nickname(signUpRequestDto.getNickname())
-                .phoneNum(signUpRequestDto.getPhoneNum())
-                .status(Status.ENABLED)
-                .build();
-    }
 }

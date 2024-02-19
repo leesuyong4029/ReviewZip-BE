@@ -2,9 +2,9 @@ package com.example.ReviewZIP.domain.user;
 
 import com.example.ReviewZIP.domain.follow.Follows;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
-import com.example.ReviewZIP.domain.postHashtag.PostHashtagsRepository;
 import com.example.ReviewZIP.domain.searchHistory.SearchHistories;
 import com.example.ReviewZIP.domain.searchHistory.SearchType;
+import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
 import com.example.ReviewZIP.domain.user.dto.response.UserResponseDto;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.SearchHandler;
@@ -107,9 +107,6 @@ public class UsersConverter {
                 .tagName(hashtag)
                 .postNum(postHashtagsRepositoryList.size())
                 .build();
-
-
-
     }
 
     public static  UserResponseDto.HistoryDto toHistoryDto(SearchHistories history, List<Long> followingIdList){
@@ -137,5 +134,17 @@ public class UsersConverter {
         return historyList.stream()
                 .map(history->toHistoryDto(history, followingIdList))
                 .collect(Collectors.toList());
+    }
+
+    public static Users toSignUpDto(SignUpRequestDto signUpRequestDto) {
+        return Users.builder()
+                .name(signUpRequestDto.getName())
+                .email(signUpRequestDto.getEmail())
+                .password(signUpRequestDto.getPassword())
+                .nickname(signUpRequestDto.getNickname())
+                .phoneNum(signUpRequestDto.getPhoneNum())
+                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
+                .status(Status.ENABLED)
+                .build();
     }
 }

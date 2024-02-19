@@ -8,6 +8,7 @@ import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.domain.user.Status;
 import com.example.ReviewZIP.domain.user.Users;
+import com.example.ReviewZIP.domain.user.UsersConverter;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
@@ -55,7 +56,7 @@ public class RefreshTokenService {
 
         signUpRequestDto.setPassword(encodePassword(signUpRequestDto.getPassword()));
 
-        return SignUpResponseDto.signUpResponseDto(usersRepository.save(Users.toEntity(signUpRequestDto)));
+        return SignUpResponseDto.signUpResponseDto(usersRepository.save(UsersConverter.toSignUpDto(signUpRequestDto)));
     }
 
     public String encodePassword(String password) {
