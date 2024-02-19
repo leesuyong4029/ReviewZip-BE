@@ -20,13 +20,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -60,26 +63,36 @@ public class RefreshTokenService {
 
     @Transactional
     public TokenDto login(LoginRequestDto loginRequestDto) {
-        // 1. Login ID/PW를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+        if (!StringUtils.hasText(loginRequestDto.getEmail()) || !StringUtils.hasText(loginRequestDto.getPassword())) {
+            throw new UsersHandler(ErrorStatus.USER_EMAIL_PASSWORD_NOT_EMPTY);
+        }
 
-        // 2. authentication이 실행이 될 때, UserDetailsServiceImpl 에서 만들었던 loadUserByUsername 메서드가 실행됨
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        try {
+            // 1. Login ID/PW를 기반으로 AuthenticationToken 생성
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
 
-        // 3. UserDetailsImpl에서 직접 userId 가져오기
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long userId = userDetails.getUserId();
+            // 2. authentication이 실행이 될 때, UserDetailsServiceImpl 에서 만들었던 loadUserByUsername 메서드가 실행됨
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // 4. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = jwtProvider.generateToken(authentication, userId.toString());
-        // 5. RefreshToken 저장
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
-                .value(tokenDto.getRefreshToken())
-                .build();
+            // 3. UserDetailsImpl에서 직접 userId 가져오기
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long userId = userDetails.getUserId();
 
-        refreshTokenRepository.save(refreshToken);
-        return tokenDto;
+            // 4. 인증 정보를 기반으로 JWT 토큰 생성
+            TokenDto tokenDto = jwtProvider.generateToken(authentication, userId.toString());
+            // 5. RefreshToken 저장
+            RefreshToken refreshToken = RefreshToken.builder()
+                    .key(authentication.getName())
+                    .value(tokenDto.getRefreshToken())
+                    .build();
+
+            refreshTokenRepository.save(refreshToken);
+            return tokenDto;
+        } catch (BadCredentialsException e) {
+            throw new UsersHandler(ErrorStatus.USER_FAILED_TO_PASSWORD);
+        } catch (AuthenticationException e) {
+            throw new UsersHandler(ErrorStatus.USER_NOT_FOUND);
+        }
     }
 
     @Transactional
