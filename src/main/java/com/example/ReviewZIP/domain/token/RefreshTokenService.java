@@ -2,6 +2,7 @@ package com.example.ReviewZIP.domain.token;
 
 import com.example.ReviewZIP.domain.token.dto.request.KakaoRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.LoginRequestDto;
+import com.example.ReviewZIP.domain.token.dto.request.RefreshTokenRequestDto;
 import com.example.ReviewZIP.domain.token.dto.request.SignUpRequestDto;
 import com.example.ReviewZIP.domain.token.dto.response.SignUpResponseDto;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
@@ -10,6 +11,7 @@ import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.jwt.JwtProvider;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.GeneralHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import com.example.ReviewZIP.global.security.UserDetailsImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -165,5 +167,12 @@ public class RefreshTokenService {
 
         refreshTokenRepository.save(refreshToken);
         return tokenDto;
+    }
+
+    public String regenerateAccessToken(RefreshTokenRequestDto request){
+        RefreshToken refreshToken = refreshTokenRepository.findByValue(request.getRefreshToken()).orElseThrow(()-> new GeneralHandler(ErrorStatus.INVALID_REFRESH_TOKEN));
+        Users user = usersRepository.findByEmail(refreshToken.getKey()).orElseThrow(()-> new UsersHandler(ErrorStatus.JWT_NO_USER_INFO));
+
+        return jwtProvider.regenerateAccessToken(user);
     }
 }
