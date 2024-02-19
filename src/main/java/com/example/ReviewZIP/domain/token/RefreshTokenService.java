@@ -171,7 +171,7 @@ public class RefreshTokenService {
 
     public String regenerateAccessToken(RefreshTokenRequestDto request){
         RefreshToken refreshToken = refreshTokenRepository.findByValue(request.getRefreshToken()).orElseThrow(()-> new GeneralHandler(ErrorStatus.INVALID_REFRESH_TOKEN));
-        Users user = usersRepository.findByEmail(refreshToken.getKey()).orElseThrow(()-> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
+        Users user = usersRepository.findByEmail(refreshToken.getKey()).orElseThrow(()-> new UsersHandler(ErrorStatus.JWT_NO_USER_INFO));
 
         return jwtProvider.regenerateAccessToken(user);
     }

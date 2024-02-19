@@ -56,7 +56,7 @@ public class RefreshTokenController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH407", description = "리프레시 토큰이 유효하지 않습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰 속 유저 정보가 유효하지 않습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH405", description = "토큰 속 유저 정보가 유효하지 않습니다."),
     })
     public ApiResponse<RegenerateTokenResponseDto> refresh(@RequestBody RefreshTokenRequestDto request){
         String accessToken = refreshTokenService.regenerateAccessToken(request);
