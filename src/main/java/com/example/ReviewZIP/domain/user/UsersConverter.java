@@ -16,6 +16,7 @@ import static com.example.ReviewZIP.domain.postHashtag.PostHashtagsConverter.pos
 
 public class UsersConverter {
 
+    private static final String DEFAULT_PROFILE_URL = "https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png";
 
     public static UserResponseDto.UserPreviewDto toUserPreviewDto(Users user, List<Long> followingIdList) {
         boolean following = followingIdList.contains(user.getId());
@@ -143,7 +144,7 @@ public class UsersConverter {
                 .password(signUpRequestDto.getPassword())
                 .nickname(signUpRequestDto.getNickname())
                 .phoneNum(signUpRequestDto.getPhoneNum())
-                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
+                .profileUrl(DEFAULT_PROFILE_URL)
                 .status(Status.ENABLED)
                 .build();
     }

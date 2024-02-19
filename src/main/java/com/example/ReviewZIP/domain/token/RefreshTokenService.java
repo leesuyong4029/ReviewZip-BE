@@ -48,6 +48,8 @@ public class RefreshTokenService {
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private static final String DEFAULT_PROFILE_URL = "https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png";
+
     @Transactional
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         if(usersRepository.existsByEmail(signUpRequestDto.getEmail())) {
@@ -106,7 +108,7 @@ public class RefreshTokenService {
                 .name(nickname)
                 .email(email)
                 .status(Status.ENABLED)
-                .profileUrl("https://reviewzipbucket.s3.ap-northeast-2.amazonaws.com/ReviewImage/911a02f0-206c-4fb0-b287-f49b58429526.png")
+                .profileUrl(DEFAULT_PROFILE_URL)
                 .build();
         usersRepository.save(newUser);
 
