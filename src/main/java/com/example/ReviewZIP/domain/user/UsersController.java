@@ -229,14 +229,14 @@ public class UsersController {
     }
 
     @PatchMapping("/me/profileUrl")
-    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기, UserProfileUrlDto 사용")
+    @Operation(summary = "프로필 이미지 수정하기 API", description = "프로필 이미지 수정하기, UserProfileImageDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "IMAGE403", description = "프로필 이미지가 존재하지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<SuccessStatus> updateProfileUrl(@AuthenticationPrincipal UserDetails user, @RequestBody UserRequestDto.UserProfileUrlDto userProfileUrlDto){
-        usersService.updateProfileUrl(usersService.getUserId(user), userProfileUrlDto);
+    public ApiResponse<SuccessStatus> updateProfileImage(@AuthenticationPrincipal UserDetails user, @RequestBody UserRequestDto.UserProfileImageDto userProfileImageDto){
+        usersService.updateProfileImage(usersService.getUserId(user), userProfileImageDto);
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 

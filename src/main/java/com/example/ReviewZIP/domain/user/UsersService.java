@@ -100,7 +100,7 @@ public class UsersService {
     }
 
     @Transactional
-    public UserRequestDto.UserProfileUrlDto updateProfileUrl(Long userId, UserRequestDto.UserProfileUrlDto userProfileUrlDto){
+    public UserRequestDto.UserProfileImageDto updateProfileImage(Long userId, UserRequestDto.UserProfileImageDto userProfileUrlDto){
         Users user = usersRepository.findById(userId).orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         Images image = imagesRepository.findById(userProfileUrlDto.getImageId()).orElseThrow(() -> new ImagesHandler(ErrorStatus.IMAGE_NOT_PROVIDED));
 
