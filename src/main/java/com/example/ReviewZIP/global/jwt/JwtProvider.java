@@ -1,6 +1,7 @@
 package com.example.ReviewZIP.global.jwt;
 
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
+import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import io.jsonwebtoken.*;
@@ -151,6 +152,21 @@ public class JwtProvider {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    public String regenerateAccessToken(Users user){
+        long now = (new Date()).getTime();
+
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRATION_TIME);
+        String accessToken  = Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim(AUTHORITIES_KEY, "ROLE_USER")
+                .claim("userId", user.getId())
+                .setExpiration(accessTokenExpiresIn)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        return accessToken;
     }
 }
 
