@@ -1,6 +1,6 @@
-package com.example.ReviewZIP.domain.sms;
+package com.example.ReviewZIP.global.sms;
 
-import com.example.ReviewZIP.domain.sms.dto.request.SmsDto;
+import com.example.ReviewZIP.global.sms.dto.request.SmsDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
 import com.example.ReviewZIP.global.config.SmsCertificationConfig;

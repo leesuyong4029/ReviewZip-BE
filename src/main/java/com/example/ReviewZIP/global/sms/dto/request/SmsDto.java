@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.domain.sms.dto.request;
+package com.example.ReviewZIP.global.sms.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

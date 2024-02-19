@@ -1,4 +1,4 @@
-package com.example.ReviewZIP.domain.sms;
+package com.example.ReviewZIP.global.sms;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

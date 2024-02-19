@@ -1,6 +1,6 @@
-package com.example.ReviewZIP.domain.sms;
+package com.example.ReviewZIP.global.sms;
 
-import com.example.ReviewZIP.domain.sms.dto.request.SmsDto;
+import com.example.ReviewZIP.global.sms.dto.request.SmsDto;
 import com.example.ReviewZIP.global.response.ApiResponse;
 import com.example.ReviewZIP.global.response.code.resultCode.SuccessStatus;
 import io.swagger.v3.oas.annotations.Operation;
