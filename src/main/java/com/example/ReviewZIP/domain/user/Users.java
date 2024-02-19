@@ -44,7 +44,7 @@ public class Users extends BaseEntity {
 
     private String password;
 
-    private String phone_num;
+    private String phoneNum;
 
     @Column(nullable = false)
     private String nickname;
@@ -85,7 +85,7 @@ public class Users extends BaseEntity {
                 .email(signUpRequestDto.getEmail())
                 .password(signUpRequestDto.getPassword())
                 .nickname(signUpRequestDto.getNickname())
-                .phone_num(signUpRequestDto.getPhoneNum())
+                .phoneNum(signUpRequestDto.getPhoneNum())
                 .status(Status.ENABLED)
                 .build();
     }
