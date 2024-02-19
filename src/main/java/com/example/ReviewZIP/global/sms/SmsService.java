@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SmsService {
 
@@ -24,7 +24,7 @@ public class SmsService {
 
     private static final int RANDOM_NUM_MULTIPLIER = 9000;
     private static final int RANDOM_NUM_BASE = 1000;
-
+    @Transactional
     public void sendSms(SmsDto.PasswordResetRequestDto requestDto) {
         String receiverPhoneNum = requestDto.getPhoneNum();
         int randomNum = (int) (Math.random() * RANDOM_NUM_MULTIPLIER) + RANDOM_NUM_BASE;
@@ -32,7 +32,7 @@ public class SmsService {
         smsCertificationConfig.sendSms(receiverPhoneNum, certificationNum);
         smsRepository.createSmsCertification(receiverPhoneNum, certificationNum);
     }
-
+    @Transactional
     public void verifySms(SmsDto.PasswordResetRequestDto requestDto) {
         if (isVerify(requestDto)) {
             throw new SmsHandler(ErrorStatus.SMS_VERIFICATION_NUMBER_MISMATCH);
@@ -45,7 +45,7 @@ public class SmsService {
                 smsRepository.getSmsCertification(requestDto.getPhoneNum())
                 .equals(requestDto.getCertificationNum()));
     }
-
+    @Transactional
     public void resetPassword(SmsDto.PasswordResetRequestDto requestDto) {
         if(!isVerify(requestDto)) {
             throw new SmsHandler(ErrorStatus.SMS_VERIFICATION_NUMBER_MISMATCH);
