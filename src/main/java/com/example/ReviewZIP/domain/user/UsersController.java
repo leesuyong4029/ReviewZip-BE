@@ -241,7 +241,7 @@ public class UsersController {
     }
 
     @PatchMapping("/me/nickname")
-    @Operation(summary = "닉네임 수정하기 API", description = "마이페이지 닉네임 수정하기, UserNicknameDto 사용")
+    @Operation(summary = "프로필 닉네임 수정하기 API", description = "프로필 닉네임 수정하기, UserNicknameDto 사용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다", content = @Content(schema = @Schema(implementation = ApiResponse.class))),
