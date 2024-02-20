@@ -11,8 +11,8 @@ public class UserRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserProfileUrlDto {
-        private String profileUrl;
+    public static class UserProfileImageDto {
+        private Long imageId;
     }
 
     @Builder
@@ -22,5 +22,4 @@ public class UserRequestDto {
     public static class UserNicknameDto {
         private String nickname;
     }
-
 }
