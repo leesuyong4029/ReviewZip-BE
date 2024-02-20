@@ -1,5 +1,6 @@
 package com.example.ReviewZIP.domain.post.dto.response;
 
+import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,6 +56,7 @@ public class PostResponseDto {
         private UserInfoDto user;
         private List<HashtagDto> hashtags;
         private List<ImageDto> postImages;
+        private StoreRequestDto.StoreInfoDto store;
     }
 
     @Getter
