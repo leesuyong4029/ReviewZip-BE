@@ -3,6 +3,7 @@ package com.example.ReviewZIP.global.jwt;
 import com.example.ReviewZIP.domain.token.dto.response.TokenDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.GeneralHandler;
 import com.example.ReviewZIP.global.response.exception.handler.UsersHandler;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @ConfigurationProperties("jwt")
 public class JwtProvider {
-    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60;
+    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24;
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 24 * 60 * 60 * 7;
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -108,14 +109,14 @@ public class JwtProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            throw new UsersHandler(ErrorStatus.INVALID_ACCESS_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new UsersHandler(ErrorStatus.EXPIRED_MEMBER_TOKEN);
+            throw new GeneralHandler(ErrorStatus.EXPIRED_JWT_EXCEPTION);
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            throw new GeneralHandler(ErrorStatus.INVALID_ACCESS_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new UsersHandler(ErrorStatus.UNSUPPORTED_TOKEN);
+            throw new GeneralHandler(ErrorStatus.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
-            throw new UsersHandler(ErrorStatus.ILLEGAL_ARGUMENT_TOKEN);
+            throw new GeneralHandler(ErrorStatus.ILLEGAL_ARGUMENT_TOKEN);
         }
     }
 
