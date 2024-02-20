@@ -80,8 +80,8 @@ public class PostsConverter {
                 .build();
     }
 
-    public static PostResponseDto.StoreInfoDto toStoreInfoDto(Stores store){
-        return PostResponseDto.StoreInfoDto.builder()
+    public static StoreRequestDto.StoreInfoDto toStoreInfoDto(Stores store){
+        return StoreRequestDto.StoreInfoDto.builder()
                 .latitude(store.getLatitude())
                 .longitude(store.getLongitude())
                 .name(store.getName())
@@ -99,7 +99,7 @@ public class PostsConverter {
                 .map(PostsConverter::toHashtagDto).collect(Collectors.toList());
 
         Stores store = storesRepository.findByPost(post).orElseThrow(()-> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
-        PostResponseDto.StoreInfoDto postInfoDto = toStoreInfoDto(store);
+        StoreRequestDto.StoreInfoDto postInfoDto = toStoreInfoDto(store);
 
         boolean mine = false;
         if(user.getId().equals(post.getUser().getId())) {
