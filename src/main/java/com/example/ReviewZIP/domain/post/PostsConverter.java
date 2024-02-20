@@ -6,9 +6,12 @@ import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
 import com.example.ReviewZIP.domain.store.Stores;
+import com.example.ReviewZIP.domain.store.StoresRepository;
 import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
 import com.example.ReviewZIP.domain.user.Users;
 import com.example.ReviewZIP.domain.user.UsersRepository;
+import com.example.ReviewZIP.global.response.code.resultCode.ErrorStatus;
+import com.example.ReviewZIP.global.response.exception.handler.StoreHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,11 +24,13 @@ public class PostsConverter {
     public static UsersRepository usersRepository;
 
     public static FollowsRepository followsRepository;
+    public static StoresRepository storesRepository;
 
 
-    public PostsConverter(UsersRepository usersRepository, FollowsRepository followsRepository) {
+    public PostsConverter(UsersRepository usersRepository, FollowsRepository followsRepository, StoresRepository storesRepository, StoresRepository storesRepository1) {
         this.usersRepository = usersRepository;
         this.followsRepository = followsRepository;
+        this.storesRepository = storesRepository1;
     }
 
     public static Posts toPostDto(PostRequestDto.CreatedPostRequestDto PostDto, Users user) {
@@ -75,6 +80,15 @@ public class PostsConverter {
                 .build();
     }
 
+    public static StoreRequestDto.StoreInfoDto toStoreInfoDto(Stores store){
+        return StoreRequestDto.StoreInfoDto.builder()
+                .latitude(store.getLatitude())
+                .longitude(store.getLongitude())
+                .name(store.getName())
+                .addressName(store.getAddress_name())
+                .roadAddressName(store.getRoad_address_name())
+                .build();
+    }
     public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, Users user, boolean checkLike, boolean checkScrab, String createdAt){
         PostResponseDto.UserInfoDto userInfoDto = toUserInfoDto(post.getUser());
 
@@ -83,6 +97,9 @@ public class PostsConverter {
 
         List<PostResponseDto.HashtagDto> hashtagList = post.getPostHashtagList().stream()
                 .map(PostsConverter::toHashtagDto).collect(Collectors.toList());
+
+        Stores store = storesRepository.findByPost(post).orElseThrow(()-> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
+        StoreRequestDto.StoreInfoDto postInfoDto = toStoreInfoDto(store);
 
         boolean mine = false;
         if(user.getId().equals(post.getUser().getId())) {
@@ -103,6 +120,7 @@ public class PostsConverter {
                 .user(userInfoDto)
                 .checkMine(mine)
                 .postImages(imageListDto)
+                .store(postInfoDto)
                 .createdAt(createdAt)
                 .build();
     }
