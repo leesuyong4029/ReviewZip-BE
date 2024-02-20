@@ -1,5 +1,7 @@
 package com.example.ReviewZIP.domain.post.dto.response;
 
+import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
+import com.example.ReviewZIP.domain.postHashtag.dto.response.PostHashtagResponseDto;
 import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,23 +25,6 @@ public class PostResponseDto {
 
     @Builder
     @Getter
-    @AllArgsConstructor
-    public static class ImageDto{
-        private Long imageId;
-        private String imageUrl;
-    }
-
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class HashtagDto{
-        private Long hashtagId;
-        private String tagName;
-    }
-
-    @Builder
-    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostInfoDto{
@@ -54,8 +39,8 @@ public class PostResponseDto {
         private boolean checkMine;
         private String createdAt;
         private UserInfoDto user;
-        private List<HashtagDto> hashtags;
-        private List<ImageDto> postImages;
+        private List<PostHashtagResponseDto.HashtagDto> hashtags;
+        private List<ImageResponseDto.ImageDto> postImages;
         private StoreRequestDto.StoreInfoDto store;
     }
 
