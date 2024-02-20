@@ -13,6 +13,15 @@ public class PostHashtagResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class HashtagDto{
+        private Long hashtagId;
+        private String tagName;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PostHashtagsPreviewDto {
         private Long hashtagId;
         private String tagName;

@@ -2,9 +2,11 @@ package com.example.ReviewZIP.domain.post;
 
 import com.example.ReviewZIP.domain.follow.FollowsRepository;
 import com.example.ReviewZIP.domain.image.Images;
+import com.example.ReviewZIP.domain.image.dto.response.ImageResponseDto;
 import com.example.ReviewZIP.domain.post.dto.request.PostRequestDto;
 import com.example.ReviewZIP.domain.post.dto.response.PostResponseDto;
 import com.example.ReviewZIP.domain.postHashtag.PostHashtags;
+import com.example.ReviewZIP.domain.postHashtag.dto.response.PostHashtagResponseDto;
 import com.example.ReviewZIP.domain.store.Stores;
 import com.example.ReviewZIP.domain.store.StoresRepository;
 import com.example.ReviewZIP.domain.store.dto.request.StoreRequestDto;
@@ -66,15 +68,15 @@ public class PostsConverter {
                 .build();
     }
 
-    public static PostResponseDto.ImageDto toImageDto(Images image){
-        return PostResponseDto.ImageDto.builder()
+    public static ImageResponseDto.ImageDto toImageDto(Images image){
+        return ImageResponseDto.ImageDto.builder()
                 .imageId(image.getId())
                 .imageUrl(image.getUrl())
                 .build();
     }
 
-    public static PostResponseDto.HashtagDto toHashtagDto(PostHashtags postHashtags){
-        return PostResponseDto.HashtagDto.builder()
+    public static PostHashtagResponseDto.HashtagDto toHashtagDto(PostHashtags postHashtags){
+        return PostHashtagResponseDto.HashtagDto.builder()
                 .hashtagId(postHashtags.getId())
                 .tagName(postHashtags.getHashtag())
                 .build();
@@ -92,10 +94,10 @@ public class PostsConverter {
     public static PostResponseDto.PostInfoDto toPostInfoResultDto(Posts post, Users user, boolean checkLike, boolean checkScrab, String createdAt){
         PostResponseDto.UserInfoDto userInfoDto = toUserInfoDto(post.getUser());
 
-        List<PostResponseDto.ImageDto> imageListDto = post.getPostImageList().stream()
+        List<ImageResponseDto.ImageDto> imageListDto = post.getPostImageList().stream()
                 .map(PostsConverter::toImageDto).collect(Collectors.toList());
 
-        List<PostResponseDto.HashtagDto> hashtagList = post.getPostHashtagList().stream()
+        List<PostHashtagResponseDto.HashtagDto> hashtagList = post.getPostHashtagList().stream()
                 .map(PostsConverter::toHashtagDto).collect(Collectors.toList());
 
         Stores store = storesRepository.findByPost(post).orElseThrow(()-> new StoreHandler(ErrorStatus.STORE_NOT_FOUND));
