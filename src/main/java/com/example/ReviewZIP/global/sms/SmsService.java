@@ -52,6 +52,8 @@ public class SmsService {
         }
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         Users user = usersRepository.findByPhoneNum(requestDto.getPhoneNum())
+                .stream()
+                .findFirst()
                 .orElseThrow(() -> new UsersHandler(ErrorStatus.USER_NOT_FOUND));
         user.setPassword(encodedPassword);
         usersRepository.save(user);
