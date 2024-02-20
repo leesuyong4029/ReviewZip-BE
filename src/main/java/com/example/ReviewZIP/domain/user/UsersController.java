@@ -153,6 +153,7 @@ public class UsersController {
     @Operation(summary = "나의 게시물 목록 가져오기 API",description = "나의 게시글들을 반환, UserInfoDto & ImageDto & HashtagDto & PostInfoDto 이용")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE401", description = "게시물에 장소객체가 매핑되어있지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<List<PostResponseDto.PostInfoDto>> getUserPostList(@AuthenticationPrincipal UserDetails user){
         List<Posts> postList = usersService.getPostList(usersService.getUserId(user));
@@ -165,6 +166,7 @@ public class UsersController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE401", description = "게시물에 장소객체가 매핑되어있지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     public ApiResponse<List<PostResponseDto.PostInfoDto>> getUserScrabList(@AuthenticationPrincipal UserDetails user) {
         List<Scrabs> scrabList = usersService.getScrabList(usersService.getUserId(user));
@@ -177,6 +179,7 @@ public class UsersController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "토큰에 해당하는 유저 없음",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE401", description = "게시물에 장소객체가 매핑되어있지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @Parameters({
             @Parameter(name = "userId", description = "유저의 아이디"),
@@ -193,6 +196,7 @@ public class UsersController {
      @ApiResponses({
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
              @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "USER404", description = "유저가 존재하지 않습니다",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "STORE401", description = "게시물에 장소객체가 매핑되어있지 않습니다.",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
      })
      @Parameters({
              @Parameter(name = "userId", description = "유저의 아이디"),
