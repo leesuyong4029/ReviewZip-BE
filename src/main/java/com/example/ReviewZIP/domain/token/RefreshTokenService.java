@@ -56,6 +56,10 @@ public class RefreshTokenService {
             throw new UsersHandler(ErrorStatus.USER_EXISTS_EMAIL);
         }
 
+        if(usersRepository.existsByNickname(signUpRequestDto.getNickname())){
+            throw new UsersHandler(ErrorStatus.USER_EXISTS_NICKNAME);
+        }
+
         signUpRequestDto.setPassword(encodePassword(signUpRequestDto.getPassword()));
 
         return SignUpResponseDto.signUpResponseDto(usersRepository.save(UsersConverter.toSignUpDto(signUpRequestDto)));
