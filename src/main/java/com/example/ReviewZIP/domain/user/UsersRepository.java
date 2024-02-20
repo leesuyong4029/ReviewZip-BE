@@ -23,5 +23,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     boolean existsBySocial(String social);
     Optional<Users> findBySocial(String social);
 
-    Optional<Users> findByPhoneNum(String phoneNum);
+    List<Users> findByPhoneNum(String phoneNum);
 }
