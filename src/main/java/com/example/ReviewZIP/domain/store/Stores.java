@@ -20,13 +20,10 @@ public class Stores extends BaseEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String address_name;
 
-    @Column(nullable = false)
     private String road_address_name;
 
     @Column(nullable = false)
