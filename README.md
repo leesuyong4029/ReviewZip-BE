@@ -1,5 +1,5 @@
 # 🌟ReviewZip-BE🌟
-## 협업규칙
+## ☝🏻협업규칙
 ### 1. 브랜치 규칙
 
 feat/#이슈번호-기능요약
@@ -20,5 +20,5 @@ feat/#이슈번호-기능요약
 ### 3. Pull Request
 dev <- feat/#이슈번호-기능요약
 
-## ERD
+## 📄ERD
 <img src="Review.ZIP ERD.png">
