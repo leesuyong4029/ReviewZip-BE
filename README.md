@@ -1,24 +1,48 @@
 # 🌟ReviewZip-BE🌟
-## ☝🏻협업규칙
-### 1. 브랜치 규칙
 
-feat/#이슈번호-기능요약
+> 리뷰집 
 
-예시 : feat/#12-login
+## 📖 Description
 
-### 2. Commit Message
+## :baby_chick: Demo
+<p float = "left">
+  <img src = "https://github.com/user-attachments/assets/8c2f9ddb-3382-4f04-8f6e-065c687e9472" width = 200 />
 
-- feat : 새로운 기능 추가
-- fix : 버그 수정, 기능 수정
-- docs : 문서 수정
-- refactor : 코드 리팩토링 (변수명 수정 등)
-- test : 테스트 코드, 리팩토링 테스트 코드 추가
-- style : 코드 스타일 변경, 코드 자체 변경이 없는 경우
-- remove : 파일 또는 코드, 리소스 제거
-- resource : 이미지 리소스, prefab 등의 코드와 상관없는 리소스 추가
+## ⭐ Main Feature
+### 온보딩 기능
 
-### 3. Pull Request
-dev <- feat/#이슈번호-기능요약
+### 회원가입 및 로그인 
+- JWT & OAuth 2.0 (카카오, 구글) 이용
 
+### 기타 기능
+
+## 🔧 Stack
+- **Language** : Java
+- **Library & Framework** : SpringBoot
+- **Database** : AWS RDS (MySQL), Redis 
+- **ORM** : JPA
+- **Deploy** : Docker, GitHub Actions 
+
+
+## 🔨 Server Architecture
+
+
+## ⚒ CI/CD
+
+
+## 👨‍💻 Role & Contribution
+
+**Backend**
+- Spring Security, JWT를 이용한 로컬 로그인 API 개발
+- 프로필 이름, 이미지 수정 기능 개발
+- 인증번호 인증 후 비밀번호 수정 기능 개발 (Cool SMS & Redis 사용)
+
+**etc**
+- 개발 일정 및 이슈 관리 
+
+## 👨‍👩‍👧‍👦 Developer
+* **이수용**
+* **이강산**
+* **오영수**
 ## 📄ERD
 <img src="Review.ZIP ERD.png">
