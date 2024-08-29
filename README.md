@@ -1,12 +1,12 @@
 # 🌟ReviewZip-BE🌟
 
-> 리뷰집 
+> 위치기반 후기 플랫폼, Review.ZIP 
 
 ## 📖 Description
 
 ## :baby_chick: Demo
 <p float = "left">
-  <img src = "https://github.com/user-attachments/assets/8c2f9ddb-3382-4f04-8f6e-065c687e9472" width = 200 />
+ 
 
 ## ⭐ Main Feature
 ### 온보딩 기능
