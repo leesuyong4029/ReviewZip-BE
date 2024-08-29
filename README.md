@@ -59,8 +59,8 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 - 개발 일정 및 이슈 관리 
 
 ## 👨‍👩‍👧‍👦 Developer
-* **이수용** 
-* **이혜수**
-* **이승명**
-* **정윤지**
+* **이수용** ([leesuyong4029](https://github.com/leesuyong4029))
+* **이혜수** ([hsuush](https://github.com/hsuush))
+* **이승명** ([YPYP333YPYP](https://github.com/YPYP333YPYP))
+* **정윤지** ([yoondaeng](https://github.com/yoondaeng))
   
