@@ -13,6 +13,7 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 
 ## ⭐ Main Feature
 ### 게시글 
+- 이미지 업로드/수정/삭제 (AWS S3 사용)
 - 게시글 생성, 조회, 수정, 삭제 기능
 - 검색 기능 (유저 닉네임, 유저 이름)
 - 게시글 해시태그 
@@ -41,7 +42,9 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 
 
 ## ⚒ CI/CD
-
+- GitHub Actions를 활용한 지속적 통합 및 배포
+- feature 브랜치에서 dev로 Pull Request를 보내면, CI가 동작된다.
+- dev에서 master로 Pull Request를 보내면, CI가 동작되고 Merge가 되면, 운영 리소스에 배포된다.
 
 ## 👨‍💻 Role & Contribution
 
