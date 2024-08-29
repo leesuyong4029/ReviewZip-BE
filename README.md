@@ -3,6 +3,8 @@
 > 위치기반 후기 플랫폼, Review.ZIP 
 
 ## 📖 Description
+신뢰성이 약한 리뷰로 인해 어려움을 겪으신 적이 있나요?
+Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통해 각 장소에 대한 신뢰도 높은 리뷰를 제공하는 웹 서비스입니다 :) 
 
 ## :baby_chick: Demo
 <p float = "left">
@@ -28,7 +30,7 @@
 ## 🔧 Stack
 - **Language** : Java
 - **Library & Framework** : SpringBoot
-- **DevOps"**: AWS (EC2, RDS, S3 등), Nginx 
+- **DevOps**: AWS (EC2, RDS, S3 등), Nginx 
 - **Database** : AWS RDS (MySQL), Redis 
 - **ORM** : JPA
 - **Deploy** : Docker, GitHub Actions 
@@ -45,7 +47,7 @@
 **Backend**
 - Spring Security, JWT를 이용한 로컬 로그인 API 개발
 - 프로필 이름, 이미지 수정 기능 개발
-- 인증번호 인증 후 비밀번호 수정 기능 개발 (Cool SMS & Redis 사용)
+- 인증번호 인증 후 비밀번호 수정 기능 구현 (Cool SMS API 연동 및 Redis 사용)
 
 **etc**
 - 개발 일정 및 이슈 관리 
