@@ -40,11 +40,13 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 
 ## 🔨 Server Architecture
 
+## 📄ERD
+<img src="Review.ZIP ERD.png">
 
 ## ⚒ CI/CD
 - GitHub Actions를 활용한 지속적 통합 및 배포
-- feature 브랜치에서 dev로 Pull Request를 보내면, CI가 동작된다.
-- dev에서 master로 Pull Request를 보내면, CI가 동작되고 Merge가 되면, 운영 리소스에 배포된다.
+- `feature` 브랜치에서 `dev`로 Pull Request를 보내면, CI가 동작된다.
+- `dev`에서 `master`로 Pull Request를 보내면, CI가 동작되고 Merge가 되면, 운영 리소스에 배포된다.
 
 ## 👨‍💻 Role & Contribution
 
@@ -57,10 +59,8 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 - 개발 일정 및 이슈 관리 
 
 ## 👨‍👩‍👧‍👦 Developer
-* **이수용**
+* **이수용** 
 * **이혜수**
 * **이승명**
 * **정윤지**
   
-## 📄ERD
-<img src="Review.ZIP ERD.png">
