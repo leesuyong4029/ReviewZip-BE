@@ -18,16 +18,19 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 - 검색 기능 (유저 닉네임, 유저 이름)
 - 게시글 해시태그 
 
+
 ### 회원가입 및 로그인 
 - JWT & OAuth 2.0 (카카오) 이용
 - 비밀번호 인증 후 비밀번호 변경 기능
 - 관심장소 기능 
+
 
 ### 기타 기능
 - 마이페이지
 - 유저 팔로우, 팔로잉 / 조회 기능 
 - 리뷰 스크랩 생성 / 해제 기능
 - 게시글 좋아요 생성 / 해제 기능 
+
 
 ## 🔧 Stack
 - **Language** : Java
@@ -48,6 +51,7 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 - `feature` 브랜치에서 `dev`로 Pull Request를 보내면, CI가 동작된다.
 - `dev`에서 `master`로 Pull Request를 보내면, CI가 동작되고 Merge가 되면, 운영 리소스에 배포된다.
 
+
 ## 👨‍💻 Role & Contribution
 
 **Backend**
@@ -57,6 +61,7 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 
 **etc**
 - 개발 일정 및 이슈 관리 
+
 
 ## 👨‍👩‍👧‍👦 Developer
 * **이수용** ([leesuyong4029](https://github.com/leesuyong4029))
