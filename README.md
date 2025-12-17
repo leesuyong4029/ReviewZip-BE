@@ -51,6 +51,9 @@ Review.ZIP은 평점, 좋아요, 팔로잉/팔로우 등의 여러 기능을 통
 - `feature` 브랜치에서 `dev`로 Pull Request를 보내면, CI가 동작된다.
 - `dev`에서 `master`로 Pull Request를 보내면, CI가 동작되고 Merge가 되면, 운영 리소스에 배포된다.
 
+## 🎥 시연영상
+![ReviewZip-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/2c34af96-04f5-487c-b2bc-e4dbbe2a31df)
+
 
 ## 👨‍💻 Role & Contribution
 
